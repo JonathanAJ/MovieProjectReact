@@ -1,0 +1,3 @@
+rootProject.name = 'BatePapoReact'
+
+include ':app'
