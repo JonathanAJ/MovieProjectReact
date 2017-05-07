@@ -3,40 +3,80 @@
 import React, { Component } from 'react';
 import FaceButton from '../components/FaceButton';
 import LoginDAO from '../dao/LoginDAO';
+import Chat from './Chat';
+
+import { NavigationActions } from 'react-navigation'
+import * as firebase from "firebase";
 
 import {
   StyleSheet,
   View,
-  Text
+  Text,
+  StatusBar
 } from 'react-native';
 
 export default class Login extends Component {
-  
-  static navigationOptions = {
-    title: 'Login',
-    headerTintColor: '#fff',
-    headerStyle: {backgroundColor: '#3b5998'}
-  };
 
   constructor(props) {
     super(props);
     this.login = new LoginDAO();
-    this.navigate = props.navigation;
+    this.nav = props.navigation;
+
+    this.state = {
+      isLogado : 'loading'
+    };
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <FaceButton onPress={this.autenticar().bind(this)}/>
-        <Text style={styles.txt}>Entrar com Facebook</Text>
-      </View>
-    );
+      if(this.state.isLogado == "loading"){
+        
+        return (
+          <View style={styles.container}>
+            <StatusBar backgroundColor={'#2E4678'}/>
+            <Text style={styles.txt}>Loading...</Text>
+          </View>
+        );
+
+      }else if(this.state.isLogado == "false"){
+        
+        return (
+            <View style={styles.container}>
+              <StatusBar backgroundColor={'#2E4678'}/>
+              <FaceButton onPress={this.autenticar.bind(this)}/>
+              <Text style={styles.txt}>Entrar com Facebook</Text>
+            </View>
+        );
+
+      }else{
+        return null;
+      }
   }
 
   autenticar(){
-    this.login.autenticar(this.navigate);
+    this.login.autenticar(this.nav);
   }
 
+  componentWillMount(){
+    firebase.auth().onAuthStateChanged((userFirebase) => {
+      
+      if (userFirebase) {
+        this.setState({isLogado : "true"});
+      }else{
+        this.setState({isLogado : "false"});
+      }
+  
+    }).bind(this);
+  }
+
+  componentDidUpdate(){
+    if(this.state.isLogado == "true"){
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName : 'Chat'})]
+      });
+      this.nav.dispatch(resetAction)
+    }
+  }
 }
 
 const styles = StyleSheet.create({

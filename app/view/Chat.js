@@ -4,25 +4,26 @@ import React, { Component } from 'react';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import Mensagem from '../components/Mensagem'
 import UsuarioDAO from '../dao/UsuarioDAO';
+import * as firebase from "firebase";
 
 import {
   StyleSheet,
   TextInput,
   View,
   ListView,
-  Text
+  Text,
+  Button,
+  StatusBar
 } from 'react-native';
 
 export default class Chat extends Component {
-  
-  static navigationOptions = {
-    title: 'Chat',
-  };
 
   constructor(props) {
     super(props);
   
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    
+    const { params } = this.props.navigation.state;
 
     this.state = {
       mensagem      : "",
@@ -30,10 +31,20 @@ export default class Chat extends Component {
     };
   }
 
+  static navigationOptions = ({ navigation }) => ({
+    title: firebase.auth().currentUser.email,
+  });
+
   render() {
+    const { params } = this.props.navigation.state;
+    const {goBack} = this.props.navigation;
     return (
       <View style={style.container}>
 
+        <StatusBar backgroundColor={'#2E4678'}/>
+
+        <Text>Você é {firebase.auth().currentUser.displayName}</Text>
+        
         <ListView
           enableEmptySections={true}
           renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}

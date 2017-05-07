@@ -1,15 +1,17 @@
 'use-strict'
 
 import FBSDK, {
-    LoginManager,
-    AccessToken
-  } from 'react-native-fbsdk';
+  LoginManager,
+  AccessToken
+} from 'react-native-fbsdk';
+  
+import { NavigationActions } from 'react-navigation'
 
 import * as firebase from 'firebase';
 
 export default class LoginDAO{
 
-  autenticar(navigate){
+  autenticar(nav){
     LoginManager.logInWithReadPermissions(['public_profile', "email", "user_friends"]).then(
         function(result) {
           if (result.isCancelled) {
@@ -29,7 +31,12 @@ export default class LoginDAO{
                   let cred = provider.credential(token);
                   await firebase.auth().signInWithCredential(cred);
 
-                  navigate('Chat');
+                  
+                  const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName : 'Chat'})]
+                  });
+                  nav.dispatch(resetAction)
                 }
               );
 

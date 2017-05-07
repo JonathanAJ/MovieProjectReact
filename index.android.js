@@ -2,4 +2,5 @@
 
 import AppMain from './app/AppMain';
 
-AppMain.start();
+const app = new AppMain;
+app.start();
