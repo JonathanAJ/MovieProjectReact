@@ -1,6 +1,5 @@
 'use-strict'
 
-import {AppRegistry} from 'react-native';
-import BatePapoReact from './app/AppMain';
+import AppMain from './app/AppMain';
 
-AppRegistry.registerComponent('BatePapoReact', () => BatePapoReact);
+AppMain.start();

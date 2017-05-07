@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 
 export default class Banco{
 
-	init(){
+	static init(){
 		
 		const config = {
 		    apiKey: "AIzaSyADzYrPyMOzDYXTudfCtqpA2tVVp3YNUfA",
