@@ -15,7 +15,7 @@ import {
   StatusBar
 } from 'react-native';
 
-export default class Login extends Component {
+export class Login extends Component {
 
   constructor(props) {
     super(props);
@@ -72,7 +72,7 @@ export default class Login extends Component {
     if(this.state.isLogado == "true"){
       const resetAction = NavigationActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName : 'Chat'})]
+        actions: [NavigationActions.navigate({ routeName : 'Main'})]
       });
       this.nav.dispatch(resetAction)
     }

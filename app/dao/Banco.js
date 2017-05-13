@@ -2,10 +2,10 @@
 
 import * as firebase from "firebase";
 
-export default class Banco{
+export class Banco{
 
 	static init(){
-		
+
 		const config = {
 		    apiKey: "AIzaSyADzYrPyMOzDYXTudfCtqpA2tVVp3YNUfA",
 		    authDomain: "batepaporeact.firebaseapp.com",

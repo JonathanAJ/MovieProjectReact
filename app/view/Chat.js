@@ -16,7 +16,7 @@ import {
   StatusBar
 } from 'react-native';
 
-export default class Chat extends Component {
+export class Chat extends Component {
 
   constructor(props) {
     super(props);
@@ -30,10 +30,6 @@ export default class Chat extends Component {
       dataSource    : ds.cloneWithRows([]),
     };
   }
-
-  static navigationOptions = ({ navigation }) => ({
-    title: firebase.auth().currentUser.email,
-  });
 
   render() {
     const { params } = this.props.navigation.state;
@@ -87,7 +83,6 @@ export default class Chat extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D3D3D3',
     padding: 16,
   },
   textInput: {

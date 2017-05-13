@@ -1,48 +1,14 @@
-'use-strict'
-
-import { StackNavigator } from 'react-navigation';
 import {AppRegistry} from 'react-native';
-import * as firebase from 'firebase';
 
-//View Navigation
-import Login from './view/Login';
-import Chat from './view/Chat';
+//database
+import { Banco } from './dao/Banco';
+import { navigatorMain } from './rout/config';
 
-//Database
-import Banco from './dao/Banco';
+export class AppMain{
 
-export default class AppMain{
-
-	start(){
+	static start(){
 
 		Banco.init();
-
-		const navigator = StackNavigator({
-		//RouteConfigs
-			Login: {
-				screen: Login,
-				navigationOptions : ({navigation}) => ({
-			      title: 'Login',
-			    }),
-			},
-			Chat: {
-				screen: Chat,
-				navigationOptions : ({navigation}) => ({
-				    headerLeft: null,
-    				statusBarStyle: {color: 'blue'} ,
-				})
-			}
-		},
-		//StackNavigatorConfig
-			{
-				initialRouteName : 'Login',
-				navigationOptions : ({navigation}) => ({
-				    headerTintColor: '#fff',
-				    headerStyle: {backgroundColor: '#3b5998'}
-				})
-			}
-		);
-
-		AppRegistry.registerComponent('BatePapoReact', () => navigator);
+		AppRegistry.registerComponent('BatePapoReact', () => navigatorMain);
 	}
 }

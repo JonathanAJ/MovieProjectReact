@@ -34,7 +34,7 @@ export default class LoginDAO{
                   
                   const resetAction = NavigationActions.reset({
                     index: 0,
-                    actions: [NavigationActions.navigate({ routeName : 'Chat'})]
+                    actions: [NavigationActions.navigate({ routeName : 'Main'})]
                   });
                   nav.dispatch(resetAction)
                 }
