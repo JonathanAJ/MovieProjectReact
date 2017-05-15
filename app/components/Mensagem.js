@@ -8,7 +8,7 @@ import {
   Text
 } from 'react-native';
 
-export default class Mensagem extends Component {
+export class Mensagem extends Component {
 
 	constructor(props) {
 	  super(props);

@@ -8,7 +8,7 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class FaceButton extends Component {
+export class FaceButton extends Component {
     render() {
         return (
              <TouchableOpacity style={styles.btn} onPress={this.props.onPress}>

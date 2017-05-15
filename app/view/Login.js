@@ -1,7 +1,7 @@
 'use-strict'
 
 import React, { Component } from 'react';
-import FaceButton from '../components/FaceButton';
+import { FaceButton } from '../components/FaceButton';
 import LoginDAO from '../dao/LoginDAO';
 import Chat from './Chat';
 
@@ -42,7 +42,7 @@ export class Login extends Component {
         return (
             <View style={styles.container}>
               <StatusBar backgroundColor={'#2E4678'}/>
-              <FaceButton onPress={this.autenticar.bind(this)}/>
+              <FaceButton onPress={this._autenticar.bind(this)}/>
               <Text style={styles.txt}>Entrar com Facebook</Text>
             </View>
         );
@@ -52,7 +52,7 @@ export class Login extends Component {
       }
   }
 
-  autenticar(){
+  _autenticar(){
     this.login.autenticar(this.nav);
   }
 

@@ -11,21 +11,22 @@ import {
 	View
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 //Views Navigation
 import { Login } from '../view/Login';
 import { Chat } from '../view/Chat';
 import { Perfil } from '../view/Perfil';
 import { Contatos } from '../view/Contatos';
+import { Conversas } from '../view/Conversas';
 
 const TabPricipal = TabNavigator({
-	Chat: {
-		screen: Chat,
+	Conversas: {
+		screen: Conversas,
 		navigationOptions : ({navigation}) => ({
-			title: 'Chat',
+			title: 'Conversas',
 			tabBarIcon: ({ tintColor }) => (
-			    <Icon name={'commenting-o'} size={20} color={tintColor} />
+			    <Icon name={'bubbles'} size={20} color={tintColor} />
 		    )
 		})
 	},
@@ -34,7 +35,7 @@ const TabPricipal = TabNavigator({
 		navigationOptions : ({navigation}) => ({
 			title: 'Contatos',
 			tabBarIcon: ({ tintColor }) => (
-			    <Icon name={'address-card-o'} size={20} color={tintColor} />
+			    <Icon name={'list'} size={20} color={tintColor} />
 		    )
 		})
 	},
@@ -43,7 +44,7 @@ const TabPricipal = TabNavigator({
 		navigationOptions : ({navigation}) => ({
 			title: 'Perfil',
 			tabBarIcon: ({ tintColor }) => (
-			    <Icon name={'user-o'} size={15} color={tintColor} />
+			    <Icon name={'user'} size={20} color={tintColor} />
 		    )
 		})
 	}
@@ -51,7 +52,6 @@ const TabPricipal = TabNavigator({
 {
 	tabBarPosition: 'bottom',
 	lazy: true,
-	animationEnabled: false,
 	tabBarOptions: {
 		showIcon: true,
 		indicatorStyle: {
@@ -78,7 +78,13 @@ export const navigatorMain = StackNavigator({
 	Main: {
 		screen: TabPricipal,
 		navigationOptions : ({navigation}) => ({
-			title: 'Bate Papo',
+			title: 'Boravê',
+		}),
+	},
+	Chat: {
+		screen: Chat,
+		navigationOptions : ({navigation}) => ({
+			
 		}),
 	}
 },

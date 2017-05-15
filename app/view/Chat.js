@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
-import Mensagem from '../components/Mensagem'
+import { Mensagem } from '../components/Mensagem'
 import UsuarioDAO from '../dao/UsuarioDAO';
 import * as firebase from "firebase";
 
@@ -31,6 +31,10 @@ export class Chat extends Component {
     };
   }
 
+  static navigationOptions = ({navigation}) => ({
+    title : navigation.state.params.user.name,
+  });
+
   render() {
     const { params } = this.props.navigation.state;
     const {goBack} = this.props.navigation;
@@ -38,8 +42,6 @@ export class Chat extends Component {
       <View style={style.container}>
 
         <StatusBar backgroundColor={'#2E4678'}/>
-
-        <Text>Você é {firebase.auth().currentUser.displayName}</Text>
         
         <ListView
           enableEmptySections={true}
@@ -72,7 +74,7 @@ export class Chat extends Component {
     usuario.save();
     
     let novoArray = this.state.dataSource._dataBlob.s1.slice(0);
-    novoArray.unshift([mensagem, false]);
+    novoArray.unshift([mensagem, true]);
     this.setState({
       mensagem:"",
       dataSource: this.state.dataSource.cloneWithRows(novoArray)
