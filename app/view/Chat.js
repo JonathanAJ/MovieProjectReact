@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { Mensagem } from '../components/Mensagem'
-import UsuarioDAO from '../dao/UsuarioDAO';
+import { UsuarioDAO } from '../dao/UsuarioDAO';
 import * as firebase from "firebase";
 
 import {
@@ -69,9 +69,6 @@ export class Chat extends Component {
 
   _updateMensagem() {
     let mensagem = this.state.mensagem;
-
-    let usuario = new UsuarioDAO(mensagem);
-    usuario.save();
     
     let novoArray = this.state.dataSource._dataBlob.s1.slice(0);
     novoArray.unshift([mensagem, true]);

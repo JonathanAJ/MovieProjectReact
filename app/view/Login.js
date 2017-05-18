@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import { FaceButton } from '../components/FaceButton';
-import LoginDAO from '../dao/LoginDAO';
-import Chat from './Chat';
+import { LoginDAO } from '../dao/LoginDAO';
+import { Chat } from './Chat';
 
 import { NavigationActions } from 'react-navigation'
 import * as firebase from "firebase";

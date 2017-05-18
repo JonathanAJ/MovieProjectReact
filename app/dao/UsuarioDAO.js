@@ -2,18 +2,21 @@
 
 import * as firebase from "firebase";
 
-export default class UsuarioDAO{
+export class UsuarioDAO{
 
-	constructor(nome) {  
-		this.nome = nome;
+	constructor() {
 		this.database = firebase.database();
 	}
 
-	save(){
-		this.database.ref('users').push().set({
-			nome : this.nome,
-			idade : 21,
-			sexo : "Masculino"
+	saveUser(user){
+		this.database.ref("users/"+user.uid).set({
+			name  : user.displayName,
+			email : user.email,
+			photo : user.photoURL
 		});
+	}
+
+	listUsers(){
+
 	}
 }
