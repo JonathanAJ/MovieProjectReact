@@ -21,20 +21,11 @@ export class Login extends Component {
     super(props);
     this.login = new LoginDAO();
     this.nav = props.navigation;
+    this.unsubscribe;
 
     this.state = {
       isLogado : 'loading'
     };
-
-    firebase.auth().onAuthStateChanged((userFirebase) => {
-      
-      if (userFirebase) {
-        this.setState({isLogado : "true"});
-      }else{
-        this.setState({isLogado : "false"});
-      }
-  
-    });
   }
 
   render() {
@@ -66,7 +57,32 @@ export class Login extends Component {
     this.login.autenticar(this.nav);
   }
 
+  componentDidMount(){
+    console.log('did mount');
+    unsubscribe = firebase.auth().onAuthStateChanged((userFirebase) => {
+      
+    console.log('authchange');
+
+      if (userFirebase) {
+    console.log('authchange true');
+        this.setState({isLogado : "true"});
+      }else{
+    console.log('authchange false');
+        this.setState({isLogado : "false"});
+      }
+  
+    }); 
+  }
+
+  componentWillUnmount() {
+    console.log('will unmount');
+    unsubscribe();
+  }
+
   componentDidUpdate(){
+    
+    console.log('did update');
+
     if(this.state.isLogado == "true"){
       const resetAction = NavigationActions.reset({
         index: 0,

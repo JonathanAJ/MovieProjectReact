@@ -69,9 +69,11 @@ export class LoginDAO{
     });
 
     firebase.auth().signOut().then(function() {  
+      
       LoginManager.logOut();
       nav.dispatch(resetAction)
       alert("Você foi deslogado.")
+
     }, function(error) {
       alert("Error"+error)
     });

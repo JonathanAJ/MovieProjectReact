@@ -22,7 +22,7 @@ export class Chat extends Component {
   constructor(props) {
     super(props);
   
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     const { params } = this.props.navigation.state;
 
     this.userChat = params.user;
@@ -32,10 +32,9 @@ export class Chat extends Component {
 
     this.state = {
       mensagem      : "",
-      dataSource    : ds.cloneWithRows([]),
+      dataSource    : this.ds.cloneWithRows([]),
     };
 
-    this.mensagemDAO.listarMensagens(this, ds, this.userCurrent, this.userChat)
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -74,6 +73,10 @@ export class Chat extends Component {
     );
   }
 
+  componentDidMount(){
+    this.mensagemDAO.listarMensagens(this, this.ds, this.userCurrent, this.userChat)
+  }
+
   _updateMensagem() {
     let mensagem = this.state.mensagem;
 
@@ -81,10 +84,10 @@ export class Chat extends Component {
     
     // let novoArray = this.state.dataSource._dataBlob.s1.slice(0);
     // novoArray.unshift([mensagem, true]);
-    // this.setState({
-    //   mensagem:"",
-    //   dataSource: this.state.dataSource.cloneWithRows(novoArray)
-    // });
+    this.setState({
+      mensagem:"",
+      // dataSource: this.state.dataSource.cloneWithRows(novoArray)
+    });
   }
 }
 

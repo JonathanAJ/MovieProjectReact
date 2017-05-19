@@ -16,15 +16,13 @@ export class Contatos extends Component {
   constructor(props) {
     super(props);
   
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
     this.nav = this.props.navigation;
 
     this.state = {
-      dataSource    : ds.cloneWithRows([]),
+      dataSource    : this.ds.cloneWithRows([]),
     };
-
-    new UsuarioDAO().listUsers(this, ds);
   }
 
   render() {
@@ -38,6 +36,10 @@ export class Contatos extends Component {
           />
       </View>
     );
+  }
+
+  componentDidMount(){
+    new UsuarioDAO().listUsers(this, this.ds);
   }
 }
 
