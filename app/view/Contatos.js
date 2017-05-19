@@ -1,7 +1,6 @@
 'use strict';
 
 import React, { Component } from 'react';
-
 import {
   StyleSheet,
   View,
@@ -9,7 +8,8 @@ import {
   Text
 } from 'react-native';
 
-import {SimpleList} from '../components/SimpleList';
+import { UsuarioDAO } from '../dao/UsuarioDAO';
+import { SimpleList } from '../components/SimpleList';
 
 export class Contatos extends Component {
   
@@ -20,58 +20,11 @@ export class Contatos extends Component {
 
     this.nav = this.props.navigation;
 
-    let arrayTeste =
-      [{
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'João Ferreira Sousa',
-        email: 'joao@gmail.com',
-      },
-      {
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'Vitor Bernando Alencar',
-        email: 'vitor@gmail.com',
-      },{
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'João Ferreira Sousa',
-        email: 'joao@gmail.com',
-      },
-      {
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'Vitor Bernando Alencar',
-        email: 'vitor@gmail.com',
-      },{
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'João Ferreira Sousa',
-        email: 'joao@gmail.com',
-      },
-      {
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'Vitor Bernando Alencar',
-        email: 'vitor@gmail.com',
-      },{
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'João Ferreira Sousa',
-        email: 'joao@gmail.com',
-      },
-      {
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'Vitor Bernando Alencar',
-        email: 'vitor@gmail.com',
-      },{
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'João Ferreira Sousa',
-        email: 'joao@gmail.com',
-      },
-      {
-        image: 'http://www.imran.com/xyper_images/icon-user-default.png',
-        name: 'Vitor Bernando Alencar',
-        email: 'vitor@gmail.com',
-      }];
-
     this.state = {
-      mensagem      : "",
-      dataSource    : ds.cloneWithRows(arrayTeste),
+      dataSource    : ds.cloneWithRows([]),
     };
+
+    new UsuarioDAO().listUsers(this, ds);
   }
 
   render() {
@@ -82,7 +35,7 @@ export class Contatos extends Component {
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <SimpleList user={rowData} nav={this.nav}/>}
-        />
+          />
       </View>
     );
   }
@@ -91,6 +44,5 @@ export class Contatos extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
   },
 });

@@ -25,6 +25,16 @@ export class Login extends Component {
     this.state = {
       isLogado : 'loading'
     };
+
+    firebase.auth().onAuthStateChanged((userFirebase) => {
+      
+      if (userFirebase) {
+        this.setState({isLogado : "true"});
+      }else{
+        this.setState({isLogado : "false"});
+      }
+  
+    });
   }
 
   render() {
@@ -54,18 +64,6 @@ export class Login extends Component {
 
   _autenticar(){
     this.login.autenticar(this.nav);
-  }
-
-  componentWillMount(){
-    firebase.auth().onAuthStateChanged((userFirebase) => {
-      
-      if (userFirebase) {
-        this.setState({isLogado : "true"});
-      }else{
-        this.setState({isLogado : "false"});
-      }
-  
-    }).bind(this);
   }
 
   componentDidUpdate(){

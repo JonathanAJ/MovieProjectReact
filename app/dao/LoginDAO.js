@@ -57,4 +57,25 @@ export class LoginDAO{
       );
   }
 
+  sair(nav){
+    /*
+     * Reseta a navegação para uma nova
+     */
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName : 'Login'})
+      ]
+    });
+
+    firebase.auth().signOut().then(function() {  
+      LoginManager.logOut();
+      nav.dispatch(resetAction)
+      alert("Você foi deslogado.")
+    }, function(error) {
+      alert("Error"+error)
+    });
+
+  }
+
 }

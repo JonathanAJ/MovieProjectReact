@@ -1,6 +1,7 @@
 'use-strict'
 
 import React, { Component } from 'react';
+import * as firebase from "firebase";
 
 import {
   StyleSheet,
@@ -16,11 +17,17 @@ export class Mensagem extends Component {
 	  this.state = {
 
 	  };
+    this.currentUser = firebase.auth().currentUser;
 	}
 
 	render() {
 
-    const isMy = this.props.isMy;
+    const data = this.props.data;
+    let isMy = false;
+
+    if(firebase.auth().currentUser.uid === data.fromUID){
+      isMy = true
+    }
 
 		return (
 			<View style={{flex: 1, flexDirection: 'row'}}>
@@ -28,7 +35,7 @@ export class Mensagem extends Component {
 
 				<Text style={isMy ? style.me : style.you}>
 					<Text>
-						{this.props.texto}
+						{data.content}
 					</Text>
 				</Text>
 
@@ -43,6 +50,7 @@ const style = StyleSheet.create({
   	backgroundColor: '#3598DC',
     color: '#fff',
     marginBottom: 5,
+    marginRight: 10,
     borderRadius: 10,
     padding: 8,
     elevation: 2
@@ -51,6 +59,7 @@ const style = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     color: '#444',
     marginBottom: 5,
+    marginLeft: 10,
     borderRadius: 10,
     padding: 8,
     elevation: 2

@@ -28,13 +28,13 @@ export class SimpleList extends Component {
 
 		return (
 		  <TouchableOpacity style={styles.container} onPress={this._onPress.bind(this)}>
-			<Image
-			  style={styles.imagemList}
-			  source={{uri: this.user.image}} />
-			  <View>
-			  	<Text style={styles.titulo}>{this.user.name}</Text>
-				<Text style={styles.subTitulo}>{this.user.email}</Text>
-			  </View>
+        <Image
+          style={styles.imagemList}
+          source={{uri: this.user.photo}} />
+        <View>
+        	 <Text style={styles.titulo}>{this.user.name}</Text>
+      	   <Text style={styles.subTitulo}>{this.user.email}</Text>
+        </View>
 		  </TouchableOpacity>
 		);
 	}
@@ -47,10 +47,14 @@ export class SimpleList extends Component {
 
 const styles = StyleSheet.create({
   container : {
-  	backgroundColor: 'white',
+    borderColor: '#999',
+    borderBottomWidth: 1,
   	flex: 1,
   	flexDirection: 'row',
-    marginBottom: 5,
+    paddingLeft: 16,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingRight: 8,
   },
   titulo : {
   	margin: 4,

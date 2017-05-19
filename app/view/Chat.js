@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { Mensagem } from '../components/Mensagem'
 import { UsuarioDAO } from '../dao/UsuarioDAO';
+import { MensagemDAO } from '../dao/MensagemDAO';
 import * as firebase from "firebase";
 
 import {
@@ -22,13 +23,19 @@ export class Chat extends Component {
     super(props);
   
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    
     const { params } = this.props.navigation.state;
+
+    this.userChat = params.user;
+    this.userCurrent = firebase.auth().currentUser
+
+    this.mensagemDAO = new MensagemDAO();
 
     this.state = {
       mensagem      : "",
       dataSource    : ds.cloneWithRows([]),
     };
+
+    this.mensagemDAO.listarMensagens(this, ds, this.userCurrent, this.userChat)
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -48,7 +55,7 @@ export class Chat extends Component {
           renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Mensagem texto={rowData[0]} isMy={rowData[1]} />}
+          renderRow={(rowData) => <Mensagem data={rowData} />}
         />
         
         <TextInput
@@ -69,13 +76,15 @@ export class Chat extends Component {
 
   _updateMensagem() {
     let mensagem = this.state.mensagem;
+
+    this.mensagemDAO.criarMensagem(this.userCurrent, this.userChat, mensagem);
     
-    let novoArray = this.state.dataSource._dataBlob.s1.slice(0);
-    novoArray.unshift([mensagem, true]);
-    this.setState({
-      mensagem:"",
-      dataSource: this.state.dataSource.cloneWithRows(novoArray)
-    });
+    // let novoArray = this.state.dataSource._dataBlob.s1.slice(0);
+    // novoArray.unshift([mensagem, true]);
+    // this.setState({
+    //   mensagem:"",
+    //   dataSource: this.state.dataSource.cloneWithRows(novoArray)
+    // });
   }
 }
 

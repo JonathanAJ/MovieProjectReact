@@ -6,6 +6,7 @@ export class UsuarioDAO{
 
 	constructor() {
 		this.database = firebase.database();
+		this.refUsers = this.database.ref('users');
 	}
 
 	saveUser(user){
@@ -16,7 +17,25 @@ export class UsuarioDAO{
 		});
 	}
 
-	listUsers(){
+	listUsers(context, ds){
 
+		this.refUsers.orderByChild('name').on('value', function(snapshot) {
+			// clear array
+			let newArray = [];
+
+			snapshot.forEach(function(childSnapshot) {
+			      var key = childSnapshot.key;
+			      var childData = childSnapshot.val();
+			      childData.uid = key;
+
+			      newArray.push(childData);
+			  });
+
+		    console.log(newArray)
+		    console.log(context)
+		    context.setState({
+		      	dataSource: ds.cloneWithRows(newArray)
+		    });
+		});
 	}
 }
