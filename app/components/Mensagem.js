@@ -1,7 +1,7 @@
 'use-strict'
 
 import React, { Component } from 'react';
-import * as firebase from "firebase";
+import firebase from '../dao/Banco';
 
 import {
   StyleSheet,

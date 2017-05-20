@@ -1,45 +1,45 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   StyleSheet,
   View,
-  ListView,
+  FlatList,
   Text
 } from 'react-native';
 
 import { UsuarioDAO } from '../dao/UsuarioDAO';
 import { SimpleList } from '../components/SimpleList';
 
-export class Contatos extends Component {
+export class Contatos extends PureComponent {
   
   constructor(props) {
     super(props);
-  
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
     this.nav = this.props.navigation;
 
     this.state = {
-      dataSource    : this.ds.cloneWithRows([]),
+      dataContatos    : [],
     };
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <ListView
-          enableEmptySections={true}
+        <FlatList
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <SimpleList user={rowData} nav={this.nav}/>}
+          data={this.state.dataContatos}
+          renderItem={item => <SimpleList user={item.item} nav={this.nav}/>}
+          keyExtractor={(item, index) => item.uid}
+          extraData={this.state}
           />
       </View>
     );
   }
 
   componentDidMount(){
-    new UsuarioDAO().listUsers(this, this.ds);
+    console.log('Contatos DidMount')
+    new UsuarioDAO().listUsers(this);
   }
 }
 

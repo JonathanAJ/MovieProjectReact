@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "25915584080",
+    "firebase_url": "https://batepaporeact.firebaseio.com",
+    "project_id": "batepaporeact",
+    "storage_bucket": "batepaporeact.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25915584080:android:3a43822fa947a003",
+        "android_client_info": {
+          "package_name": "com.batepaporeact"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25915584080-qq1v3hv37v69k0i1dg6q8g7qvgmkim32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHWcFVvLKl-DVSUcLoeNc9Y8tvl6IMO0Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

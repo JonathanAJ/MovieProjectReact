@@ -5,7 +5,7 @@ import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { Mensagem } from '../components/Mensagem'
 import { UsuarioDAO } from '../dao/UsuarioDAO';
 import { MensagemDAO } from '../dao/MensagemDAO';
-import * as firebase from "firebase";
+import firebase from '../dao/Banco';
 
 import {
   StyleSheet,
@@ -54,7 +54,7 @@ export class Chat extends Component {
           renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Mensagem data={rowData} />}
+          renderRow={rowData => <Mensagem data={rowData} />}
         />
         
         <TextInput
@@ -74,7 +74,7 @@ export class Chat extends Component {
   }
 
   componentDidMount(){
-    this.mensagemDAO.listarMensagens(this, this.ds, this.userCurrent, this.userChat)
+    this.mensagemDAO.listarMensagens(this.userCurrent, this.userChat)
   }
 
   _updateMensagem() {

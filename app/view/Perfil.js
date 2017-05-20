@@ -8,7 +8,7 @@ import {
   Button,
   Text
 } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from '../dao/Banco';
 import {LoginDAO} from '../dao/LoginDAO';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 

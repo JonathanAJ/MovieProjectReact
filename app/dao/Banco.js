@@ -1,20 +1,10 @@
 'use-strict'
 
-import * as firebase from "firebase";
+import RNFirebase from 'react-native-firebase';
 
-export class Banco{
+const firebase = RNFirebase.initializeApp({
+	debug: true,
+	persistence: true
+});
 
-	static init(){
-
-		const config = {
-		    apiKey: "AIzaSyADzYrPyMOzDYXTudfCtqpA2tVVp3YNUfA",
-		    authDomain: "batepaporeact.firebaseapp.com",
-		    databaseURL: "https://batepaporeact.firebaseio.com",
-		    projectId: "batepaporeact",
-		    storageBucket: "batepaporeact.appspot.com",
-		    messagingSenderId: "25915584080"
-		};
-
-		firebase.initializeApp(config);
-	}
-}
+export default firebase;

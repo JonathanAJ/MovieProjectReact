@@ -6,7 +6,7 @@ import { LoginDAO } from '../dao/LoginDAO';
 import { Chat } from './Chat';
 
 import { NavigationActions } from 'react-navigation'
-import * as firebase from "firebase";
+import firebase from '../dao/Banco';
 
 import {
   StyleSheet,
@@ -29,16 +29,7 @@ export class Login extends Component {
   }
 
   render() {
-      if(this.state.isLogado == "loading"){
-        
-        return (
-          <View style={styles.container}>
-            <StatusBar backgroundColor={'#2E4678'}/>
-            <Text style={styles.txt}>Loading...</Text>
-          </View>
-        );
-
-      }else if(this.state.isLogado == "false"){
+      if(this.state.isLogado == "false"){
         
         return (
             <View style={styles.container}>
@@ -48,6 +39,8 @@ export class Login extends Component {
             </View>
         );
 
+      }else if(this.state.isLogado == "loading"){
+        return null;
       }else{
         return null;
       }
@@ -59,7 +52,7 @@ export class Login extends Component {
 
   componentDidMount(){
     console.log('did mount');
-    unsubscribe = firebase.auth().onAuthStateChanged((userFirebase) => {
+    this.unsubscribe = firebase.auth().onAuthStateChanged((userFirebase) => {
       
     console.log('authchange');
 
@@ -76,7 +69,7 @@ export class Login extends Component {
 
   componentWillUnmount() {
     console.log('will unmount');
-    unsubscribe();
+    this.unsubscribe();
   }
 
   componentDidUpdate(){

@@ -1,40 +1,38 @@
 'use strict';
 
-import * as firebase from 'firebase';
+import firebase from './Banco';
 
 export class MensagemDAO{
 	
-	constructor(){
+	constructor(context){
 		this.database = firebase.database();
 		this.refUsers = this.database.ref('users');
 		this.refChats = this.database.ref('chats');
 		this.refMsgs = this.database.ref('messages');
+		this.context = context;
+		this.chat = null;
 	}
 
-	listarMensagens(context, ds, me, to){
+	iniciaChat(me, to){
+		const refUsers = this.refUsers;
 
-		const chat = this.isVerifyChat(me, to);
+		refUsers.child(me.uid + '/my_chats').once('value', snap => {
 
-		if(chat.isExist){
-			this.refMsgs.child(chat.keyValue).orderByChild('createAt').on('value', function(snapshot) {
-				// clear array
-				let newArray = [];
+			snap.forEach(childSnapshot => {
+				
+				const key = childSnapshot.key;
+				const childData = childSnapshot.val();
 
-				snapshot.forEach(function(childSnapshot) {
-				      var key = childSnapshot.key;
-				      var childData = childSnapshot.val();
-				      childData.uid = key;
-
-				      newArray.unshift(childData);
-				  });
-
-			    console.log(newArray)
-			    console.log(context)
-			    context.setState({
-			      	dataSource: ds.cloneWithRows(newArray)
-			    });
+				refUsers.child(to.uid + '/my_chats/' + key).once('value', snap => {
+					
+					if(snap.val() == true){
+						this.chat.isExist = true;
+						this.chat.keyValue = key;
+						return true; //break
+					}
+				});
 			});
-		}
+		});
 	}
 
 	criarMensagem(me, to, message){
@@ -52,7 +50,10 @@ export class MensagemDAO{
 			this.refUsers.child(to.uid + '/my_chats/' + chat.keyValue).set(true);
 		}
 
-		this.refMsgs.child(chat.keyValue).push().set({
+		const msgKey = this.refMsgs.child(chat.keyValue).push().key;
+
+		this.refMsgs.child(chat.keyValue +'/'+ key +'/').set({
+			msgUID : msgKey,
 			fromUID : me.uid,
 			fromName : me.displayName,
 			content : message,
@@ -60,36 +61,25 @@ export class MensagemDAO{
 		});
 	}
 
-	isVerifyChat(me, to){
-		const refUsers = this.refUsers;
+	listarMensagens(me, to){
+		this.refMsgs.child(chat.keyValue).orderByChild('createAt').on('value', snapshot => {
+			// clear array
+			let newArray = [];
 
-		let chat = {
-			isExist : false,
-			keyValue : null,
-		}
+			snapshot.forEach(childSnapshot => {
+			      var key = childSnapshot.key;
+			      var childData = childSnapshot.val();
+			      childData.uid = key;
 
-		refUsers.child(me.uid + '/my_chats').once('value', function (snap) {
-
-			snap.forEach(function(childSnapshot) {
-				
-				const key = childSnapshot.key;
-				const childData = childSnapshot.val();
-
-				refUsers.child(to.uid + '/my_chats/' + key).once('value', function (snap) {
-					
-					if(snap.val() == true){
-						
-						console.log("Já tem um chat")
-						chat.isExist =  true;
-						chat.keyValue = key;
-
-						return 0;
-					}
-				});
+			      newArray.unshift(childData);
 			});
-		});
 
-		return chat;
+		    console.log(newArray)
+		    console.log(context)
+		    context.setState({
+		      	dataSource: ds.cloneWithRows(newArray)
+		    });
+		});
 	}
 
 }

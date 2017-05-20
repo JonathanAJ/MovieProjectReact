@@ -1,10 +1,11 @@
 'use-strict'
 
-import * as firebase from "firebase";
+import firebase from './Banco';
 
 export class UsuarioDAO{
 
 	constructor() {
+		this.me = firebase.auth().currentUser;
 		this.database = firebase.database();
 		this.refUsers = this.database.ref('users');
 	}
@@ -17,24 +18,26 @@ export class UsuarioDAO{
 		});
 	}
 
-	listUsers(context, ds){
+	listUsers(context){
 
-		this.refUsers.orderByChild('name').on('value', function(snapshot) {
+		this.refUsers.orderByChild('name').on('value', snapshot => {
 			// clear array
 			let newArray = [];
 
-			snapshot.forEach(function(childSnapshot) {
-			      var key = childSnapshot.key;
-			      var childData = childSnapshot.val();
-			      childData.uid = key;
-
-			      newArray.push(childData);
-			  });
+			snapshot.forEach(childSnapshot => {
+				const key = childSnapshot.key;
+				
+				if(key != this.me.uid){
+					const childData = childSnapshot.val();
+					childData.uid = key;
+					newArray.push(childData);
+				}
+			});
 
 		    console.log(newArray)
 		    console.log(context)
 		    context.setState({
-		      	dataSource: ds.cloneWithRows(newArray)
+		      	dataContatos: newArray,
 		    });
 		});
 	}
