@@ -19,7 +19,8 @@ export class Contatos extends PureComponent {
     this.nav = this.props.navigation;
 
     this.state = {
-      dataContatos    : [],
+      dataContatos : [],
+      isLoading : true,
     };
   }
 

@@ -28,13 +28,12 @@ export class Chat extends Component {
     this.userChat = params.user;
     this.userCurrent = firebase.auth().currentUser
 
-    this.mensagemDAO = new MensagemDAO();
-
     this.state = {
       mensagem      : "",
       dataSource    : this.ds.cloneWithRows([]),
     };
 
+    this.mensagemDAO = new MensagemDAO(this, this.userCurrent, this.userChat);
   }
 
   static navigationOptions = ({navigation}) => ({
