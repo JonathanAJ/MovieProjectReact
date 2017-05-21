@@ -11,6 +11,7 @@ export class MensagemDAO{
 		this.refMsgs = this.database.ref('messages');
 		this.chat = {isExist : false, keyValue: null};
 		this.context = context;
+		this.inicialLoad = true;
 
 		this.me = me;
 		this.to = to;
@@ -43,12 +44,12 @@ export class MensagemDAO{
 				});
 			});
 
-			if(this.chat.isExist)
-				this.listarMensagens();
-			else{
+			if(!this.chat.isExist){
 				this.criarChat();
-				this.listarMensagens();
 			}
+			
+			this.listarMensagens();
+    		this.listenerAdded();
 
 		});
 	}
@@ -70,29 +71,56 @@ export class MensagemDAO{
 	}
 
 	listarMensagens(){
-		console.log('on '+this.chat.keyValue);
-		this.refMsgs.child(this.chat.keyValue).orderByChild('createAt').on('child_added', this.listenerListarMsg);
+		console.log('once '+this.chat.keyValue);
+		this.refMsgs.child(this.chat.keyValue).once('value', (snapshot) => {
+
+			const oldArray = this.context.state.dataSource._dataBlob.s1.slice(0);
+					
+			snapshot.forEach(obj => {
+				console.log("mount? "+this.context.mounted)
+				if(this.context.mounted == true){
+					// console.log(obj.val())
+					oldArray.unshift(obj.val())
+				}
+			});
+			//retira o ultimo valor para o child added adicionalo
+			oldArray.shift();
+
+			this.context.setState({
+			      dataSource: this.context.state.dataSource.cloneWithRows(oldArray)
+			});
+			console.log("once "+this.inicialLoad)
+			this.inicialLoad = false;
+    	});
 	}
+
+	listenerAdded(){
+		console.log('on '+this.chat.keyValue);
+		this.refMsgs.child(this.chat.keyValue)
+					.limitToLast(1)
+					.on('child_added', this.listenerOneMsg);
+	}
+
+	listenerOneMsg = (snapshot) => {
+
+		console.log("on "+this.inicialLoad)
+		if(!this.inicialLoad){
+			console.log("mount? "+this.context.mounted)
+			if(this.context.mounted == true){
+				// console.log(snapshot.val())
+				const oldArray = this.context.state.dataSource._dataBlob.s1.slice(0);
+				oldArray.unshift(snapshot.val())
+				this.context.setState({
+				      dataSource: this.context.state.dataSource.cloneWithRows(oldArray)
+				});
+			}
+		}
+    }
 
 	offListarMensagens(){
 		console.log('off '+this.chat.keyValue);
-		this.refMsgs.child(this.chat.keyValue).orderByChild('createAt').off(this.listenerListarMsg);
+		this.refMsgs.child(this.chat.keyValue).off(this.listenerOneMsg);
 	}
-
-	listenerListarMsg = (snapshot) => {
-
-      console.log("mount? "+this.context.mounted)
-      if(this.context.mounted == true){
-        console.log(snapshot.val())
-
-        const oldArray = this.context.state.dataSource._dataBlob.s1.slice(0);
-        oldArray.unshift(snapshot.val())
-
-        this.context.setState({
-              dataSource: this.context.state.dataSource.cloneWithRows(oldArray)
-        });
-      }
-    }
 
 	criarMensagem(message){
 		const me = this.me;

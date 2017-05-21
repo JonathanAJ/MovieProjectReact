@@ -93,8 +93,11 @@ export class Chat extends Component {
     }
   }
 
-  componentDidMount(){
+  componentWillMount(){
     this.mensagemDAO.iniciaChat();
+  }
+
+  componentDidMount(){
     this.mounted = true;
   }
 
