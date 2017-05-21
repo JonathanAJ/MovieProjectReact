@@ -4,7 +4,8 @@ import firebase from './Banco';
 
 export class UsuarioDAO{
 
-	constructor() {
+	constructor(context) {
+		this.context = context;
 		this.me = firebase.auth().currentUser;
 		this.database = firebase.database();
 		this.refUsers = this.database.ref('users');
@@ -18,27 +19,23 @@ export class UsuarioDAO{
 		});
 	}
 
-	listUsers(context){
+	listUsers(){
 
-		this.refUsers.orderByChild('name').on('value', snapshot => {
-			// clear array
-			let newArray = [];
+		this.refUsers.orderByChild('name').on('child_added', snapshot => {
 
-			snapshot.forEach(childSnapshot => {
-				const key = childSnapshot.key;
-				
-				if(key != this.me.uid){
-					const childData = childSnapshot.val();
-					childData.uid = key;
-					newArray.push(childData);
-				}
-			});
+			const key = snapshot.key;
+			const value = snapshot.val();
+			value.uid = key;
 
-		    console.log(newArray)
-		    console.log(context)
-		    context.setState({
-		      	dataContatos: newArray,
-		    });
+			if(value.uid != this.me.uid){
+
+				const oldArray = this.context.state.dataContatos.slice(0);
+			 	oldArray.push(value)
+
+				this.context.setState({
+			      	dataContatos: oldArray
+			    });
+			}
 		});
 	}
 }

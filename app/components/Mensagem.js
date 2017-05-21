@@ -47,20 +47,20 @@ export class Mensagem extends Component {
 
 const style = StyleSheet.create({
   me: {
-  	backgroundColor: '#3598DC',
-    color: '#fff',
+  	backgroundColor: '#89E3D3',
+    color: '#444',
     marginBottom: 5,
-    marginRight: 10,
     borderRadius: 10,
+    marginRight: 8,
     padding: 8,
     elevation: 2
   },
   you: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#F2CFA2',
     color: '#444',
     marginBottom: 5,
-    marginLeft: 10,
     borderRadius: 10,
+    marginLeft: 8,
     padding: 8,
     elevation: 2
   }

@@ -31,7 +31,7 @@ export class LoginDAO{
               /*
                * Salva usuário no Real Time Database
                */
-              new UsuarioDAO().saveUser(user);
+              new UsuarioDAO(this).saveUser(user);
               /*
                * Reseta a navegação para uma nova
                */

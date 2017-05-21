@@ -63,7 +63,7 @@ const TabPricipal = TabNavigator({
 		},
 		style: {
 			height: 50,
-			backgroundColor: '#3b5998',
+			backgroundColor: '#44B7B2',
 		},
 	}
 });
@@ -78,7 +78,7 @@ export const navigatorMain = StackNavigator({
 	Main: {
 		screen: TabPricipal,
 		navigationOptions : ({navigation}) => ({
-			title: 'Boravê',
+			title: 'Boraver',
 		}),
 	},
 	Chat: {
@@ -91,6 +91,6 @@ export const navigatorMain = StackNavigator({
 {
 	navigationOptions : ({navigation}) => ({
 	    headerTintColor: '#fff',
-	    headerStyle: {backgroundColor: '#3b5998'}
+	    headerStyle: {backgroundColor: '#44B7B2'}
 	})
 });

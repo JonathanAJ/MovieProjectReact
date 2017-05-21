@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import {
+  StatusBar,
   StyleSheet,
   View,
   FlatList,
@@ -22,11 +23,16 @@ export class Contatos extends PureComponent {
       dataContatos : [],
       isLoading : true,
     };
+
+    this.usuarioDAO = new UsuarioDAO(this);
   }
 
   render() {
     return (
       <View style={styles.container}>
+        
+        <StatusBar backgroundColor={'#11A3A0'}/>
+
         <FlatList
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
           data={this.state.dataContatos}
@@ -40,7 +46,7 @@ export class Contatos extends PureComponent {
 
   componentDidMount(){
     console.log('Contatos DidMount')
-    new UsuarioDAO().listUsers(this);
+    this.usuarioDAO.listUsers();
   }
 }
 

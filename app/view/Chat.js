@@ -7,6 +7,8 @@ import { UsuarioDAO } from '../dao/UsuarioDAO';
 import { MensagemDAO } from '../dao/MensagemDAO';
 import firebase from '../dao/Banco';
 
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+
 import {
   StyleSheet,
   TextInput,
@@ -14,7 +16,8 @@ import {
   ListView,
   Text,
   Button,
-  StatusBar
+  StatusBar,
+  TouchableOpacity
 } from 'react-native';
 
 export class Chat extends Component {
@@ -33,6 +36,8 @@ export class Chat extends Component {
       dataSource    : this.ds.cloneWithRows([]),
     };
 
+    this.mounted = false;
+
     this.mensagemDAO = new MensagemDAO(this, this.userCurrent, this.userChat);
   }
 
@@ -46,63 +51,86 @@ export class Chat extends Component {
     return (
       <View style={style.container}>
 
-        <StatusBar backgroundColor={'#2E4678'}/>
+        <StatusBar backgroundColor={'#11A3A0'}/>
         
         <ListView
           enableEmptySections={true}
           renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-          style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
+          style={{flex: 1, paddingBottom: 20, marginBottom: 2, padding: 8}}
           dataSource={this.state.dataSource}
           renderRow={rowData => <Mensagem data={rowData} />}
         />
-        
-        <TextInput
-          style={style.textInput}
-          multiline={true}
-          numberOfLines={2}
-          selectionColor="#444"
-          underlineColorAndroid="transparent"
-          placeholder="Escreva uma mensagem..."
-          value={this.state.mensagem}
-          onChangeText={(text) => this.setState({mensagem : text})}
-          onSubmitEditing={this._updateMensagem.bind(this)}
-        />
-      
+
+        <View style={style.rootInputChat}>
+          <TextInput
+            style={style.textInput}
+            multiline={true}
+            numberOfLines={2}
+            selectionColor="#444"
+            underlineColorAndroid="transparent"
+            placeholder="Escreva uma mensagem..."
+            value={this.state.mensagem}
+            onChangeText={(text) => this.setState({mensagem : text})}
+            onSubmitEditing={this.updateMensagem} />
+
+          <TouchableOpacity style={style.btnSend} onPress={this.updateMensagem}>
+              <Icon name={'cursor'} size={35} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
-  componentDidMount(){
-    this.mensagemDAO.listarMensagens(this.userCurrent, this.userChat)
-  }
-
-  _updateMensagem() {
+  updateMensagem = () => {
     let mensagem = this.state.mensagem;
 
-    this.mensagemDAO.criarMensagem(this.userCurrent, this.userChat, mensagem);
-    
-    // let novoArray = this.state.dataSource._dataBlob.s1.slice(0);
-    // novoArray.unshift([mensagem, true]);
-    this.setState({
-      mensagem:"",
-      // dataSource: this.state.dataSource.cloneWithRows(novoArray)
-    });
+    if(mensagem){
+      console.log("mes"+mensagem)
+      this.mensagemDAO.criarMensagem(mensagem);
+      this.setState({
+        mensagem:"",
+      });
+    }
+  }
+
+  componentDidMount(){
+    this.mensagemDAO.iniciaChat();
+    this.mounted = true;
+  }
+
+  componentWillUnmount(){
+    console.log('willUnmount Chat')
+    this.mensagemDAO.offListarMensagens();
+    this.mounted = false;
   }
 }
 
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+  },
+  rootInputChat :{
+    flex: 0,
+    height: 54,
+    elevation: 20,
+    flexDirection: 'row',
+    backgroundColor: '#CFEFFC'
+  },
+  btnSend:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingRight: 16,
+    paddingLeft: 12,
+    borderColor: '#bcbcbc',
+    borderLeftWidth: 1,
   },
   textInput: {
-    height: 45,
+    flex: 4,
     borderColor: 'transparent',
-    backgroundColor: '#f2f2f2',
-    borderRadius: 5,
+    backgroundColor: 'transparent',
     color: '#444',
-    paddingLeft: 16,
-    paddingRight: 16,
-    elevation: 6
+    marginLeft: 16,
+    marginRight: 4
   }
 });

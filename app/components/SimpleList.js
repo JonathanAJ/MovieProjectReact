@@ -20,12 +20,11 @@ export class SimpleList extends Component {
 		this.state = {
 
 		};
+    
+    console.log(this.user)
 	}
 
 	render() {
-
-		console.log(this.user)
-
 		return (
 		  <TouchableOpacity style={styles.container} onPress={this._onPress.bind(this)}>
         <Image

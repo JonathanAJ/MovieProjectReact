@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
+  StatusBar,
   Image,
   Button,
   Text
@@ -29,6 +30,7 @@ export class Perfil extends Component {
   render() {
     return (
       <View style={styles.content}>
+        <StatusBar backgroundColor={'#11A3A0'}/>
         <Image
           style={styles.imagemPerfil}
           source={{uri: this.state.user.photoURL}}/>
@@ -38,7 +40,7 @@ export class Perfil extends Component {
               style={styles.btSair}
               name="logout"
               size={15}
-              backgroundColor="#3b5998"
+              backgroundColor="#44B7B2"
               onPress={this._sair.bind(this)}>
           Sair
         </Icon.Button>

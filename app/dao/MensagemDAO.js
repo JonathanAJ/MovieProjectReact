@@ -44,10 +44,10 @@ export class MensagemDAO{
 			});
 
 			if(this.chat.isExist)
-				listarMensagens();
+				this.listarMensagens();
 			else{
-				criarChat();
-				listarMensagens();
+				this.criarChat();
+				this.listarMensagens();
 			}
 
 		});
@@ -60,38 +60,39 @@ export class MensagemDAO{
 		const me = this.me;
 		const to = this.to;
 
-		this.chat.keyValue = this.refChats.push().key;
-		
-		this.refChats.child(chat.keyValue + '/members/' + me.uid).set(true);
-		this.refChats.child(chat.keyValue + '/members/' + to.uid).set(true);
+		this.chat.keyValue = this.getKeyPattern(me, to); 
 
-		this.refUsers.child(me.uid + '/my_chats/' + chat.keyValue).set(true);
-		this.refUsers.child(to.uid + '/my_chats/' + chat.keyValue).set(true);
+		this.refChats.child(this.chat.keyValue + '/members/' + me.uid).set(true);
+		this.refChats.child(this.chat.keyValue + '/members/' + to.uid).set(true);
+
+		this.refUsers.child(me.uid + '/my_chats/' + this.chat.keyValue).set(true);
+		this.refUsers.child(to.uid + '/my_chats/' + this.chat.keyValue).set(true);
 	}
 
 	listarMensagens(){
-		const me = this.me;
-		const to = this.to;
-
-		this.refMsgs.child(this.chat.keyValue).orderByChild('createAt').on('value', snapshot => {
-			// clear array
-			let newArray = [];
-
-			snapshot.forEach(childSnapshot => {
-			      var key = childSnapshot.key;
-			      var childData = childSnapshot.val();
-			      childData.uid = key;
-
-			      newArray.unshift(childData);
-			});
-
-		    console.log(newArray)
-		    console.log(this.context)
-		    this.context.setState({
-		      	dataSource: context.state.dataSource.cloneWithRows(newArray)
-		    });
-		});
+		console.log('on '+this.chat.keyValue);
+		this.refMsgs.child(this.chat.keyValue).orderByChild('createAt').on('child_added', this.listenerListarMsg);
 	}
+
+	offListarMensagens(){
+		console.log('off '+this.chat.keyValue);
+		this.refMsgs.child(this.chat.keyValue).orderByChild('createAt').off(this.listenerListarMsg);
+	}
+
+	listenerListarMsg = (snapshot) => {
+
+      console.log("mount? "+this.context.mounted)
+      if(this.context.mounted == true){
+        console.log(snapshot.val())
+
+        const oldArray = this.context.state.dataSource._dataBlob.s1.slice(0);
+        oldArray.unshift(snapshot.val())
+
+        this.context.setState({
+              dataSource: this.context.state.dataSource.cloneWithRows(oldArray)
+        });
+      }
+    }
 
 	criarMensagem(message){
 		const me = this.me;
@@ -111,8 +112,9 @@ export class MensagemDAO{
 		}
 	}
 
-	cancelRef(){
-		this.refMsgs.child(this.chat.keyValue).orderByChild('createAt').off();
+	getKeyPattern(me, to){
+		return "chat_"+(me.uid < to.uid ? 
+							me.uid +"_"+ to.uid :
+							to.uid +"_"+ me.uid);
 	}
-
 }

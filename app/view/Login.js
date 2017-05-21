@@ -33,7 +33,7 @@ export class Login extends Component {
         
         return (
             <View style={styles.container}>
-              <StatusBar backgroundColor={'#2E4678'}/>
+              <StatusBar backgroundColor={'#44B7B2'}/>
               <FaceButton onPress={this._autenticar.bind(this)}/>
               <Text style={styles.txt}>Entrar com Facebook</Text>
             </View>
