@@ -1,10 +1,10 @@
 'use-strict'
 
 import React, { Component } from 'react';
-import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import { Mensagem } from '../components/Mensagem'
 import { UsuarioDAO } from '../dao/UsuarioDAO';
 import { MensagemDAO } from '../dao/MensagemDAO';
+import { GiftedChat, Bubble, Composer, Send, InputToolbar } from 'react-native-gifted-chat';
 import firebase from '../dao/Banco';
 
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
@@ -13,7 +13,6 @@ import {
   StyleSheet,
   TextInput,
   View,
-  ListView,
   Text,
   Button,
   StatusBar,
@@ -22,118 +21,111 @@ import {
 
 export class Chat extends Component {
 
-  constructor(props) {
-    super(props);
-  
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    const { params } = this.props.navigation.state;
+	constructor(props) {
+		super(props);
 
-    this.userChat = params.user;
-    this.userCurrent = firebase.auth().currentUser
+		const { params } = this.props.navigation.state;
 
-    this.state = {
-      mensagem      : "",
-      dataSource    : this.ds.cloneWithRows([]),
-    };
+		this.userChat = params.user;
+		this.userCurrent = firebase.auth().currentUser
 
-    this.mounted = false;
+		this.chatData = [];
 
-    this.mensagemDAO = new MensagemDAO(this, this.userCurrent, this.userChat);
-  }
+		this.state = {
+		  mensagem      : "",
+		  chatData      : this.chatData,
+		};
 
-  static navigationOptions = ({navigation}) => ({
-    title : navigation.state.params.user.name,
-  });
+		this.mounted = false;
 
-  render() {
-    const { params } = this.props.navigation.state;
-    const {goBack} = this.props.navigation;
-    return (
-      <View style={style.container}>
+		this.mensagemDAO = new MensagemDAO(this, this.userCurrent, this.userChat);
+	}
 
-        <StatusBar backgroundColor={'#11A3A0'}/>
-        
-        <ListView
-          enableEmptySections={true}
-          renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
-          style={{flex: 1, paddingBottom: 20, marginBottom: 2, padding: 8}}
-          dataSource={this.state.dataSource}
-          renderRow={rowData => <Mensagem data={rowData} />}
-        />
+	static navigationOptions = ({navigation}) => ({
+		title : navigation.state.params.user.name,
+	});
 
-        <View style={style.rootInputChat}>
-          <TextInput
-            style={style.textInput}
-            multiline={true}
-            numberOfLines={2}
-            selectionColor="#444"
-            underlineColorAndroid="transparent"
-            placeholder="Escreva uma mensagem..."
-            value={this.state.mensagem}
-            onChangeText={(text) => this.setState({mensagem : text})}
-            onSubmitEditing={this.updateMensagem} />
+	renderBubble(props) {
+	    return (
+	      <Bubble
+	      	{...props}
+	        wrapperStyle={{right: {backgroundColor: '#89E3D3'},
+	        			   left: {backgroundColor:'#F2CFA2', marginLeft: 0}}}
+	        textStyle={{right: {color: '#444'}, left: {color: '#444'}}}/>
+	    );
+	}
 
-          <TouchableOpacity style={style.btnSend} onPress={this.updateMensagem}>
-              <Icon name={'cursor'} size={35} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
+	renderComposer(props) {
+		return (
+			<Composer 
+				{...props}
+				placeholder={'Escreva sua mensagem...'} />
+		);
+	}
 
-  updateMensagem = () => {
-    let mensagem = this.state.mensagem;
+	renderSend(props) {
+		return (
+			<Send
+				{...props}
+				label={'Enviar'}
+				textStyle={{color:'#44B7B2'}} />
+		);
+	}
 
-    if(mensagem){
-      console.log("mes"+mensagem)
-      this.mensagemDAO.criarMensagem(mensagem);
-      this.setState({
-        mensagem:"",
-      });
-    }
-  }
+	renderInputToolbar(props){
+		return(
+			<InputToolbar
+				{...props}
+				containerStyle={style.inputChat}
+				/>
+		);
+	}
 
-  componentWillMount(){
-    this.mensagemDAO.iniciaChat();
-  }
+	render() {
+		return (
+		  <View style={style.container}>
+		    <StatusBar backgroundColor={'#11A3A0'}/>
+		    <GiftedChat
+		    	renderBubble={this.renderBubble}
+		    	renderComposer={this.renderComposer}
+		    	renderSend={this.renderSend}
+		    	renderInputToolbar={this.renderInputToolbar}
 
-  componentDidMount(){
-    this.mounted = true;
-  }
+		    	messages={this.state.chatData}
+		    	onSend={this.onSend}
+		    	user={{_id : this.userCurrent.uid}}
+			/>
+		  </View>
+		);
+	}
 
-  componentWillUnmount(){
-    console.log('willUnmount Chat')
-    this.mensagemDAO.offListarMensagens();
-    this.mounted = false;
-  }
+	onSend = (chatData = []) => {
+		this.updateMensagem(chatData);
+	}
+
+	updateMensagem = (chatData = []) => {
+		  this.mensagemDAO.criarMensagem(chatData);
+	}
+
+	componentWillMount(){
+		this.mensagemDAO.iniciaChat();
+		this.mounted = true;
+	}
+
+	componentWillUnmount(){
+		console.log('willUnmount Chat')
+		this.mensagemDAO.offListarMensagens();
+		this.mounted = false;
+	}
 }
 
 const style = StyleSheet.create({
   container: {
     flex: 1,
   },
-  rootInputChat :{
-    flex: 0,
-    height: 54,
+  inputChat :{
+    borderTopWidth: 0,
     elevation: 20,
-    flexDirection: 'row',
     backgroundColor: '#CFEFFC'
   },
-  btnSend:{
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: 16,
-    paddingLeft: 12,
-    borderColor: '#bcbcbc',
-    borderLeftWidth: 1,
-  },
-  textInput: {
-    flex: 4,
-    borderColor: 'transparent',
-    backgroundColor: 'transparent',
-    color: '#444',
-    marginLeft: 16,
-    marginRight: 4
-  }
 });

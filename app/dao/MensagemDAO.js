@@ -11,7 +11,6 @@ export class MensagemDAO{
 		this.refMsgs = this.database.ref('messages');
 		this.chat = {isExist : false, keyValue: null};
 		this.context = context;
-		this.inicialLoad = true;
 
 		this.me = me;
 		this.to = to;
@@ -49,8 +48,6 @@ export class MensagemDAO{
 			}
 			
 			this.listarMensagens();
-    		this.listenerAdded();
-
 		});
 	}
 
@@ -70,50 +67,29 @@ export class MensagemDAO{
 		this.refUsers.child(to.uid + '/my_chats/' + this.chat.keyValue).set(true);
 	}
 
+	/*
+	 Faz uma listagem das mensagens com child added
+	 */
 	listarMensagens(){
-		console.log('once '+this.chat.keyValue);
-		this.refMsgs.child(this.chat.keyValue).once('value', (snapshot) => {
-
-			const oldArray = this.context.state.dataSource._dataBlob.s1.slice(0);
-					
-			snapshot.forEach(obj => {
-				console.log("mount? "+this.context.mounted)
-				if(this.context.mounted == true){
-					// console.log(obj.val())
-					oldArray.unshift(obj.val())
-				}
-			});
-			//retira o ultimo valor para o child added adicionalo
-			oldArray.shift();
-
-			this.context.setState({
-			      dataSource: this.context.state.dataSource.cloneWithRows(oldArray)
-			});
-			console.log("once "+this.inicialLoad)
-			this.inicialLoad = false;
-    	});
-	}
-
-	listenerAdded(){
 		console.log('on '+this.chat.keyValue);
 		this.refMsgs.child(this.chat.keyValue)
-					.limitToLast(1)
+					.orderByChild('createdAt')
 					.on('child_added', this.listenerOneMsg);
 	}
 
 	listenerOneMsg = (snapshot) => {
 
-		console.log("on "+this.inicialLoad)
-		if(!this.inicialLoad){
-			console.log("mount? "+this.context.mounted)
-			if(this.context.mounted == true){
-				// console.log(snapshot.val())
-				const oldArray = this.context.state.dataSource._dataBlob.s1.slice(0);
-				oldArray.unshift(snapshot.val())
-				this.context.setState({
-				      dataSource: this.context.state.dataSource.cloneWithRows(oldArray)
-				});
-			}
+		console.log("mount? "+this.context.mounted)
+		if(this.context.mounted == true){
+			console.log(snapshot.val())
+
+			const oldArray = this.context.state.chatData.slice(0);
+			const obj = this.getChartObject(snapshot.val());
+			oldArray.unshift(obj)
+
+			this.context.setState({
+		      chatData: oldArray
+			});
 		}
     }
 
@@ -122,7 +98,21 @@ export class MensagemDAO{
 		this.refMsgs.child(this.chat.keyValue).off(this.listenerOneMsg);
 	}
 
-	criarMensagem(message){
+	getChartObject(chat){
+		return {
+			_id : chat.msgId,
+			text : chat.text,
+			createdAt : chat.data,
+			user : {
+				_id : chat.byId,
+				name: chat.byName,
+				avatar: chat.avatar,
+			}
+
+		}
+	}
+
+	criarMensagem(chat){
 		const me = this.me;
 		const to = this.to;
 
@@ -131,11 +121,13 @@ export class MensagemDAO{
 			const msgKey = this.refMsgs.child(this.chat.keyValue).push().key;
 
 			this.refMsgs.child(this.chat.keyValue +'/'+ msgKey +'/').set({
-				msgUID : msgKey,
-				fromUID : me.uid,
-				fromName : me.displayName,
-				content : message,
-				createAt : firebase.database.ServerValue.TIMESTAMP
+				msgId : msgKey,
+				byId : me.uid,
+				byName : me.displayName,
+				text : chat[0].text,
+				data : chat[0].createdAt,
+				avatar : me.photoURL,
+				createdAt : firebase.database.ServerValue.TIMESTAMP
 			});
 		}
 	}
