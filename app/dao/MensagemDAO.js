@@ -60,8 +60,14 @@ export class MensagemDAO{
 
 		this.chat.keyValue = this.getKeyPattern(me, to); 
 
-		this.refChats.child(this.chat.keyValue + '/members/' + me.uid).set(true);
-		this.refChats.child(this.chat.keyValue + '/members/' + to.uid).set(true);
+		this.refChats.child(this.chat.keyValue + '/members/' + me.uid).update({
+			displayName : me.displayName,
+			photoURL : me.photoURL
+		});
+		this.refChats.child(this.chat.keyValue + '/members/' + to.uid).update({
+			displayName : to.displayName,
+			photoURL : to.photoURL
+		});
 
 		this.refUsers.child(me.uid + '/my_chats/' + this.chat.keyValue).set(true);
 		this.refUsers.child(to.uid + '/my_chats/' + this.chat.keyValue).set(true);
@@ -112,6 +118,13 @@ export class MensagemDAO{
 		}
 	}
 
+	criarUltimaMensagem(message){
+		this.refChats.child(this.chat.keyValue).update({
+			lastMessage : message,
+			createdAt : new Date()
+		});
+	}
+
 	criarMensagem(chat){
 		const me = this.me;
 		const to = this.to;
@@ -129,6 +142,8 @@ export class MensagemDAO{
 				avatar : me.photoURL,
 				createdAt : firebase.database.ServerValue.TIMESTAMP
 			});
+
+			this.criarUltimaMensagem(chat[0].text);
 		}
 	}
 

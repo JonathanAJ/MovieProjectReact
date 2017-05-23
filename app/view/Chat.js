@@ -42,7 +42,7 @@ export class Chat extends Component {
 	}
 
 	static navigationOptions = ({navigation}) => ({
-		title : navigation.state.params.user.name,
+		title : navigation.state.params.user.displayName,
 	});
 
 	renderBubble(props) {

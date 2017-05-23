@@ -13,9 +13,9 @@ export class UsuarioDAO{
 
 	saveUser(user){
 		this.database.ref("users/"+user.uid).set({
-			name  : user.displayName,
+			displayName  : user.displayName,
 			email : user.email,
-			photo : user.photoURL
+			photoURL : user.photoURL
 		});
 	}
 
@@ -36,6 +36,19 @@ export class UsuarioDAO{
 			      	dataContatos: oldArray
 			    });
 			}
+		});
+	}
+
+
+	listUserById(id, callback){
+
+		this.refUsers.child(id).once('value', snapshot => {
+
+			const key = snapshot.key;
+			const value = snapshot.val();
+			value.uid = key;
+
+			callback(value);
 		});
 	}
 }

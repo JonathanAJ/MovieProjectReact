@@ -15,13 +15,14 @@ export class SimpleList extends Component {
 	constructor(props) {
 		super(props);
 	
-		this.user = this.props.user
+		this.user = this.props.user;
+    this.description = this.props.description;
 
 		this.state = {
 
 		};
     
-    console.log(this.user)
+    // console.log(this.user)
 	}
 
 	render() {
@@ -29,10 +30,10 @@ export class SimpleList extends Component {
 		  <TouchableOpacity style={styles.container} onPress={this._onPress.bind(this)}>
         <Image
           style={styles.imagemList}
-          source={{uri: this.user.photo}} />
-        <View>
-        	 <Text style={styles.titulo}>{this.user.name}</Text>
-      	   <Text style={styles.subTitulo}>{this.user.email}</Text>
+          source={{uri: this.user.photoURL}} />
+        <View style={styles.containerText}>
+        	 <Text style={styles.titulo} numberOfLines ={1}>{this.user.displayName}</Text>
+      	   <Text style={styles.subTitulo} numberOfLines ={1}>{this.description}</Text>
         </View>
 		  </TouchableOpacity>
 		);
@@ -46,8 +47,6 @@ export class SimpleList extends Component {
 
 const styles = StyleSheet.create({
   container : {
-    borderColor: '#999',
-    borderBottomWidth: 1,
   	flex: 1,
   	flexDirection: 'row',
     paddingLeft: 16,
@@ -55,14 +54,20 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingRight: 8,
   },
+  containerText : {
+    flex: 1,
+    marginLeft: 16,
+    marginRight: 8,
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 0.5
+  },
   titulo : {
-  	margin: 4,
   	color: 'black',
   	fontSize : 18,
   },
   subTitulo : {
-  	marginLeft: 10,
-  	fontStyle: 'italic',
+    marginTop: 4,
+    paddingRight: 16,
   	fontSize : 12,
   },
   imagemList : {
