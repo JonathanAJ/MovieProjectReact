@@ -2,54 +2,63 @@
 
 import firebase from './Banco';
 import { UsuarioDAO } from './UsuarioDAO';
+import {
+  ListView
+} from 'react-native';
 
 export class ConversaDAO{
 	
 	constructor(context){
 		this.db = firebase.database();
 		this.context = context;
-		this.arrayMessageExist = [];
 		this.usuarioDAO = new UsuarioDAO(context);
-
+    	this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    	this.inicialQuery = false;
 		this.me = firebase.auth().currentUser;
-
-		this.isInitQuery = true;
 	}
 
-	init(){
-		this.initConversas(this.initState)
+	initConversas(){
+		const me = this.me;
+		this.initListenerChatsValue();
+		this.initListenerChatsChange();
 	}
 
-	initConversas(callback){
+	initListenerChatsValue(){
 		const me = this.me;
 
-		this.db.ref('users/' + me.uid + '/my_chats').once('value', snap => {
+		this.db.ref('users/' + me.uid + '/my_chats').on('value', snap => {
 
+			this.clearState();
+			
 			snap.forEach(childSnapshot => {
 				
 				const key = childSnapshot.key;
-				const childData = childSnapshot.val();
 
+				this.db.ref('chats/' + key).once('value', obj => {
 
-				this.db.ref('messages/' + key).once('value', snap => {
-					
-					if(snap.exists()){
-
-						this.db.ref('chats/' + key).on('value', snap => {
-							console.log('ok')
-
-							let obj = snap.val();
-							obj.keyChat = key;
-							this.addArray(obj);
-						});
-					}
-				});
-
+					let newObj = obj.val();
+					newObj.keyChat = key;
+					this.addArray(newObj);
+				});	
 			});
+		});
+	}
 
-			this.isInitQuery = false;
-			callback(this.arrayMessageExist);
-		});	
+	initListenerChatsChange(snap){
+		const me = this.me;
+
+		this.db.ref('users/' + me.uid + '/my_chats').on('child_added', snap => {
+			
+			const key = snap.key;
+
+			this.db.ref('chats/' + key).on('child_changed', obj => {
+				console.log('ok', obj)
+
+				// let newObj = obj.val();
+				// newObj.keyChat = key;
+				// this.addArray(newObj);
+			});
+		});
 	}
 
 	addArray(obj){
@@ -63,40 +72,30 @@ export class ConversaDAO{
 		}
 		console.log(obj);
 
-		this.arrayMessageExist.push(obj);
-		this.arrayMessageExist.sort((a, b) => {
+		const arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
+
+		arrayOld.push(obj);
+		arrayOld.sort((a, b) => {
 			return new Date(b.createdAt) - new Date(a.createdAt)
 		});
 
+		this.initState(arrayOld);
 	}
 
-	initState = array => {
+	clearArray(){
+		this.context.state.dataConversas._dataBlob.s1 = [];
+	}
+
+	initState(array){
+		this.clearState();
 		this.context.setState({
-			dataConversas : array
+	    	dataConversas : this.ds.cloneWithRows(array),
 		});
 	}
 
 	clearState(){
 		this.context.setState({
-			dataConversas : []
+			dataConversas :  this.ds.cloneWithRows([])
 		});	
-	}
-
-	listenerConversas(){
-		// const me = this.me;
-
-		// this.refUsers.child(me.uid + '/my_chats').once('value', snap => {
-
-		// 	snap.forEach(childSnapshot => {
-				
-		// 		const key = childSnapshot.key;
-		// 		const childData = childSnapshot.val();
-
-		// 		this.refChats.child(key).on('value', snap => {
-		// 			this.clearState()
-		// 			this.initConversas(this.initState);
-		// 		});
-		// 	});
-		// });
 	}
 }

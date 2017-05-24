@@ -38,16 +38,11 @@ export class MensagemDAO{
 							isExist : true,
 							keyValue : key
 						}
+						this.listarMensagens();
 						return true; //break
 					}
 				});
 			});
-
-			if(!this.chat.isExist){
-				this.criarChat();
-			}
-			
-			this.listarMensagens();
 		});
 	}
 
@@ -71,6 +66,9 @@ export class MensagemDAO{
 
 		this.refUsers.child(me.uid + '/my_chats/' + this.chat.keyValue).set(true);
 		this.refUsers.child(to.uid + '/my_chats/' + this.chat.keyValue).set(true);
+
+		this.chat.isExist = true;
+		this.listarMensagens();
 	}
 
 	/*
@@ -79,7 +77,6 @@ export class MensagemDAO{
 	listarMensagens(){
 		console.log('on '+this.chat.keyValue);
 		this.refMsgs.child(this.chat.keyValue)
-					.orderByChild('createdAt')
 					.on('child_added', this.listenerOneMsg);
 	}
 
@@ -128,6 +125,10 @@ export class MensagemDAO{
 	criarMensagem(chat){
 		const me = this.me;
 		const to = this.to;
+
+		if(!this.chat.isExist){
+			this.criarChat();
+		}
 
 		if(this.chat.keyValue != null){
 

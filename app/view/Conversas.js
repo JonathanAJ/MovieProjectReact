@@ -5,7 +5,7 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  FlatList,
+  ListView,
   Text
 } from 'react-native';
 
@@ -20,9 +20,9 @@ export class Conversas extends PureComponent {
     super(props);
 
     this.nav = this.props.navigation;
-
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataConversas : [],
+      dataConversas : ds.cloneWithRows([]),
       isLoading : true,
     };
 
@@ -35,12 +35,11 @@ export class Conversas extends PureComponent {
         
         <StatusBar backgroundColor={'#11A3A0'}/>
 
-        <FlatList
+        <ListView
+          enableEmptySections={true}
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
-          data={this.state.dataConversas}
-          renderItem={item => <SimpleList user={item.item} description={item.item.lastMessage} nav={this.nav}/>}
-          keyExtractor={(item, index) => index}
-          extraData={this.state}
+          dataSource={this.state.dataConversas}
+          renderRow={item => <SimpleList user={item} description={item.lastMessage} nav={this.nav}/>}
           />
       </View>
     );
@@ -48,7 +47,7 @@ export class Conversas extends PureComponent {
 
   componentWillMount(){
     console.log('Conversas Will Mount')
-    this.conversaDAO.init();
+    this.conversaDAO.initConversas();
   }
 }
 
