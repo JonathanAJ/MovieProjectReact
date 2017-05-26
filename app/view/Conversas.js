@@ -39,7 +39,10 @@ export class Conversas extends PureComponent {
           enableEmptySections={true}
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
           dataSource={this.state.dataConversas}
-          renderRow={item => <SimpleList user={item} description={item.lastMessage} nav={this.nav}/>}
+          renderRow={item => <SimpleList user={item}
+                                         nav={this.nav}
+                                         date={item.createdAt}
+                                         description={item.lastMessage} />}
           />
       </View>
     );

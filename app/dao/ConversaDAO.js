@@ -18,7 +18,6 @@ export class ConversaDAO{
 	}
 
 	initConversas(){
-		const me = this.me;
 		this.initListenerChatsValue();
 		this.initListenerChatsChange();
 	}
@@ -51,14 +50,42 @@ export class ConversaDAO{
 			
 			const key = snap.key;
 
-			this.db.ref('chats/' + key).on('child_changed', obj => {
-				console.log('ok', obj)
+			this.db.ref('chats/' + key).on('child_changed', snapshot => {
+				
+				const index = this.findIndexInList(key);
+				console.log("index", index);
+				console.log("objChanged", snapshot);
 
-				// let newObj = obj.val();
-				// newObj.keyChat = key;
-				// this.addArray(newObj);
+				let arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
+
+				const obj = arrayOld[index];
+
+				if(snapshot.key == 'lastMessage')
+					obj.lastMessage = snapshot.val();
+				else if(snapshot.key == 'createdAt')
+					obj.createdAt = snapshot.val();
+
+				arrayOld[index] = obj;
+				arrayOld = this.sortByDate(arrayOld);
+				
+				this.initState(arrayOld);
 			});
 		});
+	}
+
+	findIndexInList(idKey){
+
+		const arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
+		let index = -1;
+
+		arrayOld.forEach((obj, i) => {
+
+			if(obj.keyChat == idKey){
+				index = i;
+				return;
+			}
+		});
+		return index;
 	}
 
 	addArray(obj){
@@ -70,16 +97,20 @@ export class ConversaDAO{
 				obj.displayName = obj.members[keyMember].displayName;
 			}
 		}
-		console.log(obj);
 
-		const arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
+		let arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
 
 		arrayOld.push(obj);
-		arrayOld.sort((a, b) => {
-			return new Date(b.createdAt) - new Date(a.createdAt)
-		});
+		arrayOld = this.sortByDate(arrayOld);
 
 		this.initState(arrayOld);
+	}
+
+	sortByDate(array){
+		array.sort((a, b) => {
+			return new Date(b.createdAt) - new Date(a.createdAt)
+		});
+		return array;
 	}
 
 	clearArray(){

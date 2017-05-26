@@ -10,6 +10,8 @@ import {
   View,
 } from 'react-native';
 
+import {formatDateConversas} from '../rout/Util';
+
 export class SimpleList extends Component {
 
 	constructor(props) {
@@ -21,8 +23,6 @@ export class SimpleList extends Component {
 		this.state = {
 
 		};
-    
-    // console.log(this.user)
 	}
 
 	render() {
@@ -35,6 +35,9 @@ export class SimpleList extends Component {
         	 <Text style={styles.titulo} numberOfLines ={1}>{this.user.displayName}</Text>
       	   <Text style={styles.subTitulo} numberOfLines ={1}>{this.description}</Text>
         </View>
+        <Text style={styles.subTitulo}>
+          {formatDateConversas(this.props.date)}
+        </Text>
 		  </TouchableOpacity>
 		);
 	}
@@ -53,13 +56,13 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     paddingRight: 8,
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 0.5
   },
   containerText : {
     flex: 1,
     marginLeft: 16,
-    marginRight: 8,
-    borderBottomColor: '#bbb',
-    borderBottomWidth: 0.5
+    marginRight: 8
   },
   titulo : {
   	color: 'black',
