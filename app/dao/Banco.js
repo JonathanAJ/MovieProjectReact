@@ -1,4 +1,4 @@
-'use-strict'
+'use-strict';
 
 import RNFirebase from 'react-native-firebase';
 

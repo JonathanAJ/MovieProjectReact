@@ -1,11 +1,11 @@
-'use-strict'
+'use-strict';
 
 import React, { Component } from 'react';
 import { FaceButton } from '../components/FaceButton';
 import { LoginDAO } from '../dao/LoginDAO';
 import { Chat } from './Chat';
 
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation';
 import firebase from '../dao/Banco';
 
 import {
@@ -81,7 +81,7 @@ export class Login extends Component {
         index: 0,
         actions: [NavigationActions.navigate({ routeName : 'Main'})]
       });
-      this.nav.dispatch(resetAction)
+      this.nav.dispatch(resetAction);
     }
   }
 }

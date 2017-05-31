@@ -1,18 +1,15 @@
 'use strict';
 
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import {
   StatusBar,
   StyleSheet,
   View,
   ListView,
-  Text
 } from 'react-native';
 
 import { ConversaDAO } from '../dao/ConversaDAO';
 import { SimpleList } from '../components/SimpleList';
-
-import firebase from '../dao/Banco';
 
 export class Conversas extends PureComponent {
   
@@ -49,7 +46,7 @@ export class Conversas extends PureComponent {
   }
 
   componentWillMount(){
-    console.log('Conversas Will Mount')
+    console.log('Conversas Will Mount');
     this.conversaDAO.initConversas();
   }
 }

@@ -1,3 +1,5 @@
+'use-strict';
+
 import {AppRegistry} from 'react-native';
 
 import { navigatorMain } from './rout/config';

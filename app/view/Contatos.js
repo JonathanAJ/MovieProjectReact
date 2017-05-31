@@ -37,7 +37,7 @@ export class Contatos extends PureComponent {
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
           data={this.state.dataContatos}
           renderItem={item => <SimpleList user={item.item} description={item.item.email} nav={this.nav}/>}
-          keyExtractor={(item, index) => item.uid}
+          keyExtractor={(item) => item.uid}
           extraData={this.state}
           />
       </View>
@@ -45,7 +45,7 @@ export class Contatos extends PureComponent {
   }
 
   componentWillMount(){
-    console.log('Contatos WillMount')
+    console.log('Contatos WillMount');
     this.usuarioDAO.listUsers();
   }
 }

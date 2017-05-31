@@ -12,8 +12,8 @@ export class ConversaDAO{
 		this.db = firebase.database();
 		this.context = context;
 		this.usuarioDAO = new UsuarioDAO(context);
-    	this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    	this.inicialQuery = false;
+		this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		this.inicialQuery = false;
 		this.me = firebase.auth().currentUser;
 	}
 
@@ -43,7 +43,7 @@ export class ConversaDAO{
 		});
 	}
 
-	initListenerChatsChange(snap){
+	initListenerChatsChange(){
 		const me = this.me;
 
 		this.db.ref('users/' + me.uid + '/my_chats').on('child_added', snap => {
@@ -108,7 +108,7 @@ export class ConversaDAO{
 
 	sortByDate(array){
 		array.sort((a, b) => {
-			return new Date(b.createdAt) - new Date(a.createdAt)
+			return new Date(b.createdAt) - new Date(a.createdAt);
 		});
 		return array;
 	}
@@ -120,7 +120,7 @@ export class ConversaDAO{
 	initState(array){
 		this.clearState();
 		this.context.setState({
-	    	dataConversas : this.ds.cloneWithRows(array),
+			dataConversas : this.ds.cloneWithRows(array),
 		});
 	}
 

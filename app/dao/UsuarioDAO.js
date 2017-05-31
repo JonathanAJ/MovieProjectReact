@@ -1,4 +1,4 @@
-'use-strict'
+'use-strict';
 
 import firebase from './Banco';
 
@@ -30,11 +30,11 @@ export class UsuarioDAO{
 			if(value.uid != this.me.uid){
 
 				const oldArray = this.context.state.dataContatos.slice(0);
-			 	oldArray.push(value)
+				oldArray.push(value);
 
 				this.context.setState({
-			      	dataContatos: oldArray
-			    });
+					dataContatos: oldArray
+				});
 			}
 		});
 	}

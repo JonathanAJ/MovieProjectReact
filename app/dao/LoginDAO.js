@@ -1,13 +1,12 @@
-'use-strict'
+'use-strict';
 
-import FBSDK, {
+import {
   LoginManager,
   AccessToken
 } from 'react-native-fbsdk';
   
 import { NavigationActions } from 'react-navigation';
 import { UsuarioDAO } from './UsuarioDAO';
-import { Usuario } from '../model/Usuario';
 
 import firebase from './Banco';
 
@@ -22,12 +21,12 @@ export class LoginDAO{
         /*
          * Acessa o Token do Facebook gerado para logar-se no FIREBASE
          */
-        AccessToken.getCurrentAccessToken().then(async data => {
+        AccessToken.getCurrentAccessToken().then(data => {
 
             const token = data.accessToken;
             const provider = firebase.auth.FacebookAuthProvider;
             const cred = provider.credential(token);
-            await firebase.auth().signInWithCredential(cred).then(user => {
+            firebase.auth().signInWithCredential(cred).then(user => {
               /*
                * Salva usuário no Real Time Database
                */
@@ -39,7 +38,7 @@ export class LoginDAO{
                 index: 0,
                 actions: [NavigationActions.navigate({ routeName : 'Main'})]
               });
-              nav.dispatch(resetAction)
+              nav.dispatch(resetAction);
 
             }, error => {
                 console.log("Sign In Firebase Error", error);
@@ -66,12 +65,12 @@ export class LoginDAO{
     firebase.auth().signOut().then(() => {  
       
       LoginManager.logOut();
-      nav.dispatch(resetAction)
-      alert("Você foi deslogado.")
+      nav.dispatch(resetAction);
+      alert("Você foi deslogado.");
 
     },error => {
    
-      alert("Error"+error)
+      alert("Error "+error);
     
     });
   }

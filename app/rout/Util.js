@@ -1,4 +1,4 @@
-'use-strict'
+'use-strict';
 
 export const formatDateConversas = (dateStrig) => {
 
@@ -32,9 +32,9 @@ export const formatDateConversas = (dateStrig) => {
 
 	let dateFormat;
 
-	console.log("hoje", hoje)
-	console.log("ontem", ontem)
-	console.log("d", d)
+	console.log("hoje", hoje);
+	console.log("ontem", ontem);
+	console.log("d", d);
 
 	if(d < ontem)
 		dateFormat = dia + "/" + mes + "/" + ano;

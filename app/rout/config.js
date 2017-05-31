@@ -1,4 +1,4 @@
-'use-strict'
+'use-strict';
 
 import React from 'react';
 
@@ -6,10 +6,6 @@ import {
 	StackNavigator,
 	TabNavigator
 } from 'react-navigation';
-
-import {
-	View
-} from 'react-native';
 
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -26,8 +22,8 @@ const TabPricipal = TabNavigator({
 		navigationOptions : ({navigation}) => ({
 			title: 'Conversas',
 			tabBarIcon: ({ tintColor }) => (
-			    <Icon name={'bubbles'} size={20} color={tintColor} />
-		    )
+				<Icon name={'bubbles'} size={20} color={tintColor} />
+			)
 		})
 	},
 	Contatos: {
@@ -35,8 +31,8 @@ const TabPricipal = TabNavigator({
 		navigationOptions : ({navigation}) => ({
 			title: 'Contatos',
 			tabBarIcon: ({ tintColor }) => (
-			    <Icon name={'list'} size={20} color={tintColor} />
-		    )
+				<Icon name={'list'} size={20} color={tintColor} />
+			)
 		})
 	},
 	Perfil: {
@@ -44,8 +40,8 @@ const TabPricipal = TabNavigator({
 		navigationOptions : ({navigation}) => ({
 			title: 'Perfil',
 			tabBarIcon: ({ tintColor }) => (
-			    <Icon name={'user'} size={20} color={tintColor} />
-		    )
+				<Icon name={'user'} size={20} color={tintColor} />
+			)
 		})
 	}
 },
@@ -90,7 +86,7 @@ export const navigatorMain = StackNavigator({
 },
 {
 	navigationOptions : ({navigation}) => ({
-	    headerTintColor: '#fff',
-	    headerStyle: {backgroundColor: '#44B7B2'}
+		headerTintColor: '#fff',
+		headerStyle: {backgroundColor: '#44B7B2'}
 	})
 });

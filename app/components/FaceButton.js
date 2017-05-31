@@ -16,7 +16,7 @@ export class FaceButton extends Component {
                     <Icon name={'facebook-f'} size={50} color={'white'} />
                 </View>
             </TouchableOpacity>
-        )
+        );
     }
 }
 
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     }
-})
+});

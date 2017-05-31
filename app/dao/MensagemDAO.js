@@ -29,7 +29,6 @@ export class MensagemDAO{
 			snap.forEach(childSnapshot => {
 				
 				const key = childSnapshot.key;
-				const childData = childSnapshot.val();
 
 				this.refUsers.child(to.uid + '/my_chats/' + key).once('value', snap => {
 					
@@ -37,7 +36,7 @@ export class MensagemDAO{
 						this.chat = {
 							isExist : true,
 							keyValue : key
-						}
+						};
 						this.listarMensagens();
 						return true; //break
 					}
@@ -79,22 +78,22 @@ export class MensagemDAO{
 		this.refMsgs.child(this.chat.keyValue)
 					.on('child_added', this.listenerOneMsg);
 	}
+	
+	listenerOneMsg(snapshot){
 
-	listenerOneMsg = (snapshot) => {
-
-		console.log("mount? "+this.context.mounted)
+		console.log("mount? "+this.context.mounted);
 		if(this.context.mounted == true){
-			console.log(snapshot.val())
+			console.log(snapshot.val());
 
 			const oldArray = this.context.state.chatData.slice(0);
 			const obj = this.getChartObject(snapshot.val());
-			oldArray.unshift(obj)
+			oldArray.unshift(obj);
 
 			this.context.setState({
-		      chatData: oldArray
+				chatData: oldArray
 			});
 		}
-    }
+	}
 
 	offListarMensagens(){
 		console.log('off '+this.chat.keyValue);
@@ -112,7 +111,7 @@ export class MensagemDAO{
 				avatar: chat.avatar,
 			}
 
-		}
+		};
 	}
 
 	criarUltimaMensagem(message){
@@ -124,7 +123,6 @@ export class MensagemDAO{
 
 	criarMensagem(chat){
 		const me = this.me;
-		const to = this.to;
 
 		if(!this.chat.isExist){
 			this.criarChat();

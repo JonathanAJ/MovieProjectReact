@@ -1,33 +1,33 @@
-'use-strict'
+'use-strict';
 
 import React, { Component } from 'react';
 import firebase from '../dao/Banco';
 
 import {
-  StyleSheet,
-  View,
-  Text
+	StyleSheet,
+	View,
+	Text
 } from 'react-native';
 
 export class Mensagem extends Component {
 
 	constructor(props) {
-	  super(props);
+		super(props);
 	
-	  this.state = {
+		this.state = {
 
-	  };
-    this.currentUser = firebase.auth().currentUser;
+		};
+		this.currentUser = firebase.auth().currentUser;
 	}
 
 	render() {
 
-    const data = this.props.data;
-    let isMy = false;
+		const data = this.props.data;
+		let isMy = false;
 
-    if(firebase.auth().currentUser.uid === data.fromUID){
-      isMy = true
-    }
+		if(firebase.auth().currentUser.uid === data.fromUID){
+			isMy = true;
+		}
 
 		return (
 			<View style={{flex: 1, flexDirection: 'row'}}>
@@ -46,22 +46,22 @@ export class Mensagem extends Component {
 }
 
 const style = StyleSheet.create({
-  me: {
-  	backgroundColor: '#89E3D3',
-    color: '#444',
-    marginBottom: 5,
-    borderRadius: 10,
-    marginRight: 8,
-    padding: 8,
-    elevation: 2
-  },
-  you: {
-    backgroundColor: '#F2CFA2',
-    color: '#444',
-    marginBottom: 5,
-    borderRadius: 10,
-    marginLeft: 8,
-    padding: 8,
-    elevation: 2
-  }
+	me: {
+		backgroundColor: '#89E3D3',
+		color: '#444',
+		marginBottom: 5,
+		borderRadius: 10,
+		marginRight: 8,
+		padding: 8,
+		elevation: 2
+	},
+	you: {
+		backgroundColor: '#F2CFA2',
+		color: '#444',
+		marginBottom: 5,
+		borderRadius: 10,
+		marginLeft: 8,
+		padding: 8,
+		elevation: 2
+	}
 });
