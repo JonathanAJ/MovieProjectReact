@@ -15,14 +15,34 @@ import { Chat } from '../view/Chat';
 import { Perfil } from '../view/Perfil';
 import { Contatos } from '../view/Contatos';
 import { Conversas } from '../view/Conversas';
+import { Home } from '../view/Home';
+import { Filmes } from '../view/Filmes';
 
 const TabPricipal = TabNavigator({
+	Home: {
+		screen: Home,
+		navigationOptions : ({navigation}) => ({
+			title: 'Home',
+			tabBarIcon: ({ tintColor }) => (
+				<Icon name={'home'} size={20} color={tintColor} />
+			)
+		})
+	},
 	Conversas: {
 		screen: Conversas,
 		navigationOptions : ({navigation}) => ({
 			title: 'Conversas',
 			tabBarIcon: ({ tintColor }) => (
 				<Icon name={'bubbles'} size={20} color={tintColor} />
+			)
+		})
+	},
+	Filmes: {
+		screen: Filmes,
+		navigationOptions : ({navigation}) => ({
+			title: 'Filmes',
+			tabBarIcon: ({ tintColor }) => (
+				<Icon name={'film'} size={20} color={tintColor} />
 			)
 		})
 	},
@@ -50,6 +70,7 @@ const TabPricipal = TabNavigator({
 	lazy: true,
 	tabBarOptions: {
 		showIcon: true,
+		showLabel: false,
 		indicatorStyle: {
 			backgroundColor: 'white'
 		},
