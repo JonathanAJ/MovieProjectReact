@@ -12,6 +12,8 @@ export class MensagemDAO{
 		this.chat = {isExist : false, keyValue: null};
 		this.context = context;
 
+		console.log(this.context);
+
 		this.me = me;
 		this.to = to;
 	}
@@ -75,29 +77,26 @@ export class MensagemDAO{
 	 */
 	listarMensagens(){
 		console.log('on '+this.chat.keyValue);
-		this.refMsgs.child(this.chat.keyValue)
-					.on('child_added', this.listenerOneMsg);
-	}
-	
-	listenerOneMsg(snapshot){
+		this.refMsgs.child(this.chat.keyValue).on('child_added', (snapshot) => {
 
-		console.log("mount? "+this.context.mounted);
-		if(this.context.mounted == true){
-			console.log(snapshot.val());
+			console.log("mount? "+ this.context.mounted);
+			if(this.context.mounted == true){
+				console.log(snapshot.val());
 
-			const oldArray = this.context.state.chatData.slice(0);
-			const obj = this.getChartObject(snapshot.val());
-			oldArray.unshift(obj);
+				const oldArray = this.context.state.chatData.slice(0);
+				const obj = this.getChartObject(snapshot.val());
+				oldArray.unshift(obj);
 
-			this.context.setState({
-				chatData: oldArray
-			});
-		}
+				this.context.setState({
+					chatData: oldArray
+				});
+			}
+		});
 	}
 
 	offListarMensagens(){
 		console.log('off '+this.chat.keyValue);
-		this.refMsgs.child(this.chat.keyValue).off(this.listenerOneMsg);
+		this.refMsgs.child(this.chat.keyValue).off();
 	}
 
 	getChartObject(chat){

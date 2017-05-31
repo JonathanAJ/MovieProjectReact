@@ -1,6 +1,6 @@
 'use strict';
 
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import {
   StatusBar,
   StyleSheet,
