@@ -30,9 +30,6 @@ export class Contatos extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        
-        <StatusBar backgroundColor={'#11A3A0'}/>
-
         <FlatList
           style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
           data={this.state.dataContatos}

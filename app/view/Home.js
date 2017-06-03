@@ -3,14 +3,15 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
-  View,
+    StyleSheet,
+    View,
+    StatusBar
 } from 'react-native';
 
 export class Home extends Component {
   render() {
     return (
-      <View />
+        <StatusBar backgroundColor={'#11A3A0'}/>
     );
   }
 }

@@ -88,14 +88,15 @@ const TabPricipal = TabNavigator({
 export const navigatorMain = StackNavigator({
 	Login: {
 		screen: Login,
-		navigationOptions : ({navigation}) => ({
-			title: 'Login',
-		}),
+        headerMode: 'none',
+        navigationOptions : ({navigation}) => ({
+            header: null
+        }),
 	},
 	Main: {
 		screen: TabPricipal,
 		navigationOptions : ({navigation}) => ({
-			title: 'Boraver',
+			title: 'boraver',
 		}),
 	},
 	Chat: {
