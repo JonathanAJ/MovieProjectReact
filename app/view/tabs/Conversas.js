@@ -8,8 +8,8 @@ import {
   ListView,
 } from 'react-native';
 
-import { ConversaDAO } from '../dao/ConversaDAO';
-import { SimpleList } from '../components/SimpleList';
+import { ConversaDAO } from '../../dao/ConversaDAO';
+import { SimpleList } from '../../components/SimpleList';
 
 export class Conversas extends PureComponent {
   

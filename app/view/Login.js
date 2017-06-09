@@ -52,8 +52,8 @@ export class Login extends Component {
             style={{flex: 1, width: this.state.largura}}
             source={require("../assets/img/pessoas_felizes.png")}
             resizeMode="cover">
-          <StatusBar backgroundColor={'#44B7B2'}/>
-          <Grid>
+            <StatusBar backgroundColor={'#11A3A0'}/>
+            <Grid>
               <Row size={50} style={{justifyContent: "center", alignItems: "flex-end", paddingBottom: 80}}>
                   <H1 style={{color: "#44B7B2", fontSize:50}}>boraver</H1>
               </Row>
@@ -68,7 +68,7 @@ export class Login extends Component {
                       Ao logar, você concorda com nossos Termos de Serviço e Política de Privacidade.
                   </Text>
               </Row>
-          </Grid>
+            </Grid>
         </Image>
         );
 

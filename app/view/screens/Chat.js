@@ -1,11 +1,11 @@
 'use-strict'
 
 import React, { Component } from 'react';
-import { Mensagem } from '../components/Mensagem'
-import { UsuarioDAO } from '../dao/UsuarioDAO';
-import { MensagemDAO } from '../dao/MensagemDAO';
+import { Mensagem } from '../../components/Mensagem'
+import { UsuarioDAO } from '../../dao/UsuarioDAO';
+import { MensagemDAO } from '../../dao/MensagemDAO';
 import { GiftedChat, Bubble, Composer, Send, InputToolbar } from 'react-native-gifted-chat';
-import firebase from '../dao/Banco';
+import firebase from '../../dao/Banco';
 
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 

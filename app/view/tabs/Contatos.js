@@ -9,8 +9,8 @@ import {
   Text
 } from 'react-native';
 
-import { UsuarioDAO } from '../dao/UsuarioDAO';
-import { SimpleList } from '../components/SimpleList';
+import { UsuarioDAO } from '../../dao/UsuarioDAO';
+import { SimpleList } from '../../components/SimpleList';
 
 export class Contatos extends PureComponent {
   

@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import firebase from '../dao/Banco';
-import {LoginDAO} from '../dao/LoginDAO';
+import firebase from '../../dao/Banco';
+import {LoginDAO} from '../../dao/LoginDAO';
 
 import {
     Container,

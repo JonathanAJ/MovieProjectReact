@@ -1,6 +1,7 @@
 'use-strict';
 
-import React from 'react';
+import
+	React from 'react';
 
 import {
 	StackNavigator,
@@ -9,14 +10,19 @@ import {
 
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
-//Views Navigation
+//Root
 import { Login } from '../view/Login';
-import { Chat } from '../view/Chat';
-import { Perfil } from '../view/Perfil';
-import { Contatos } from '../view/Contatos';
-import { Conversas } from '../view/Conversas';
-import { Home } from '../view/Home';
-import { Filmes } from '../view/Filmes';
+
+//Views Tab Navigation
+import { Perfil } from '../view/tabs/Perfil';
+import { Contatos } from '../view/tabs/Contatos';
+import { Conversas } from '../view/tabs/Conversas';
+import { Home } from '../view/tabs/Home';
+import { Filmes } from '../view/tabs/Filmes';
+
+//View Screens Navigation
+import { Chat } from '../view/screens/Chat';
+import { Filme } from '../view/screens/Filme';
 
 const TabPricipal = TabNavigator({
 	Home: {
@@ -103,6 +109,12 @@ export const navigatorMain = StackNavigator({
 		screen: Chat,
 		navigationOptions : ({navigation}) => ({
 			
+		}),
+	},
+	Filme: {
+		screen: Filme,
+		navigationOptions : ({navigation}) => ({
+
 		}),
 	}
 },
