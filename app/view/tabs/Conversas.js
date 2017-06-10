@@ -22,8 +22,21 @@ export class Conversas extends PureComponent {
       dataConversas : ds.cloneWithRows([]),
       isLoading : true,
     };
+    this.mounted = false;
 
     this.conversaDAO = new ConversaDAO(this);
+  }
+
+  componentWillMount(){
+      this.mounted = true;
+      console.log('Conversas Will Mount');
+      this.conversaDAO.initConversas();
+  }
+
+  componentWillUnmount(){
+      this.mounted = false;
+      console.log('Conversas Will Unmount');
+      this.conversaDAO.removeListeners();
   }
 
   render() {
@@ -43,11 +56,6 @@ export class Conversas extends PureComponent {
           />
       </View>
     );
-  }
-
-  componentWillMount(){
-    console.log('Conversas Will Mount');
-    this.conversaDAO.initConversas();
   }
 }
 

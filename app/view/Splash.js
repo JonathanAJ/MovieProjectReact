@@ -1,7 +1,6 @@
 'use-strict';
 
 import React, { Component } from 'react';
-import { LoginDAO } from '../dao/LoginDAO';
 
 import { NavigationActions } from 'react-navigation';
 import firebase from '../dao/Banco';
@@ -11,57 +10,71 @@ import {
     Image,
     StatusBar
 } from 'react-native';
+
 import {
-    H1,
-    Button,
-    Text,
-    Spinner,
     Container
 } from "native-base";
-import {Grid, Row, Col} from "react-native-easy-grid";
-
-import Icon from "react-native-vector-icons/FontAwesome";
 
 export class Splash extends Component {
 
-  constructor(props) {
-    super(props);
-    this.nav = props.navigation;
+    constructor(props) {
+        super(props);
 
-    this.state = {
-        largura : Dimensions.get("window").width
-    };
+        this.nav = props.navigation;
+        this.mounted = false;
 
-    Dimensions.addEventListener("change", (event)=> {
-        if(this.mounted){
-            this.setState({
-                largura: event.window.width
-            });
-        }
-    });
-  }
+        this.state = {
+            largura : Dimensions.get("window").width
+        };
 
-    componentWillMount(){
-        console.log('will mount');
-
+        Dimensions.addEventListener("change", (event)=> {
+            if(this.mounted){
+                this.setState({
+                    largura: event.window.width
+                });
+            }
+        });
     }
 
-    componentDidMount(){
+    componentWillMount(){
+        console.log('will mount splash');
+        this.mounted = true;
         setTimeout(() =>{
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName : 'Login'})
-                ]
-            });
-            this.nav.dispatch(resetAction);
-
+            this.goScreen();
         }, 2000);
     }
 
     componentWillUnmount() {
-        console.log('will unmount');
+        this.mounted = false;
+        console.log('will unmount splash');
+    }
 
+    goScreen(){
+        firebase.auth().onAuthStateChanged((userFirebase) => {
+
+            console.log('authchange');
+
+            if (userFirebase) {
+                console.log('authchange true');
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName : 'Main'})
+                    ]
+                });
+                this.nav.dispatch(resetAction);
+            }else{
+                console.log('authchange false');
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName : 'Login'})
+                    ]
+                });
+                this.nav.dispatch(resetAction);
+            }
+
+        });
     }
 
     render() {

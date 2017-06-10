@@ -9,10 +9,12 @@ export class MensagemDAO{
 		this.refUsers = this.database.ref('users');
 		this.refChats = this.database.ref('chats');
 		this.refMsgs = this.database.ref('messages');
-		this.chat = {isExist : false, keyValue: null};
 		this.context = context;
-
-		console.log(this.context);
+        this.chat = {
+            isExist : false,
+			verify	: null,
+            keyValue: null
+        };
 
 		this.me = me;
 		this.to = to;
@@ -33,8 +35,12 @@ export class MensagemDAO{
 				const key = childSnapshot.key;
 
 				this.refUsers.child(to.uid + '/my_chats/' + key).once('value', snap => {
-					
-					if(snap.val() == true){
+
+					console.log("snap",snap);
+                    console.log("snap",snap.val());
+
+					if(snap.val() === true){
+						console.log("chat existe")
 						this.chat = {
 							isExist : true,
 							keyValue : key
@@ -127,7 +133,7 @@ export class MensagemDAO{
 			this.criarChat();
 		}
 
-		if(this.chat.keyValue != null){
+		if(this.chat.keyValue !== null){
 
 			const msgKey = this.refMsgs.child(this.chat.keyValue).push().key;
 

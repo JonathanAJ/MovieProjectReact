@@ -7,7 +7,9 @@ import {
     StyleSheet,
     Image,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableHighlight,
+    TouchableNativeFeedback
 } from 'react-native';
 
 import {
@@ -16,7 +18,7 @@ import {
     Card,
     Text,
     H3,
-	List
+	List,
 } from 'native-base';
 
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -58,7 +60,10 @@ class ListFilmes extends Component{
         let filme = this.props.filme;
 
         return (
-			<TouchableOpacity onPress={this._abreFilme.bind(this)}>
+			<TouchableNativeFeedback
+                onPress={this._abreFilme.bind(this)}
+                background={TouchableNativeFeedback.Ripple('#000', false)}
+            >
 				<Card>
 					<Grid>
 						<Col>
@@ -75,7 +80,7 @@ class ListFilmes extends Component{
 						</Col>
 					</Grid>
 				</Card>
-			</TouchableOpacity>
+			</TouchableNativeFeedback>
         );
     }
 

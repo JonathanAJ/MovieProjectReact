@@ -46,11 +46,11 @@ export class ConversaDAO{
 	initListenerChatsChange(){
 		const me = this.me;
 
-		this.db.ref('users/' + me.uid + '/my_chats').on('child_added', snap => {
+        this.db.ref('users/' + me.uid + '/my_chats').on('child_added', snap => {
 			
 			const key = snap.key;
 
-			this.db.ref('chats/' + key).on('child_changed', snapshot => {
+            this.db.ref('chats/' + key).on('child_changed', snapshot => {
 				
 				const index = this.findIndexInList(key);
 				console.log("index", index);
@@ -60,9 +60,9 @@ export class ConversaDAO{
 
 				const obj = arrayOld[index];
 
-				if(snapshot.key == 'lastMessage')
+				if(snapshot.key === 'lastMessage')
 					obj.lastMessage = snapshot.val();
-				else if(snapshot.key == 'createdAt')
+				else if(snapshot.key === 'createdAt')
 					obj.createdAt = snapshot.val();
 
 				arrayOld[index] = obj;
@@ -80,7 +80,7 @@ export class ConversaDAO{
 
 		arrayOld.forEach((obj, i) => {
 
-			if(obj.keyChat == idKey){
+			if(obj.keyChat === idKey){
 				index = i;
 				return;
 			}
@@ -119,14 +119,22 @@ export class ConversaDAO{
 
 	initState(array){
 		this.clearState();
-		this.context.setState({
-			dataConversas : this.ds.cloneWithRows(array),
-		});
+        if(this.context.mounted) {
+            this.context.setState({
+                dataConversas: this.ds.cloneWithRows(array),
+            });
+        }
 	}
 
 	clearState(){
-		this.context.setState({
-			dataConversas :  this.ds.cloneWithRows([])
-		});	
+		if(this.context.mounted) {
+			this.context.setState({
+				dataConversas: this.ds.cloneWithRows([])
+			});
+		}
 	}
+
+	removeListeners(){
+
+    }
 }

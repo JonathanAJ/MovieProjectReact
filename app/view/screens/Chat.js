@@ -81,6 +81,25 @@ export class Chat extends Component {
 		);
 	}
 
+    onSend = (chatData = []) => {
+        this.updateMensagem(chatData);
+    };
+
+    updateMensagem = (chatData = []) => {
+        this.mensagemDAO.criarMensagem(chatData);
+    };
+
+    componentWillMount(){
+        this.mensagemDAO.iniciaChat();
+        this.mounted = true;
+    }
+
+    componentWillUnmount(){
+        console.log('willUnmount Chat')
+        this.mensagemDAO.offListarMensagens();
+        this.mounted = false;
+    }
+
 	render() {
 		return (
 		  <View style={style.container}>
@@ -97,25 +116,6 @@ export class Chat extends Component {
 			/>
 		  </View>
 		);
-	}
-
-	onSend = (chatData = []) => {
-		this.updateMensagem(chatData);
-	}
-
-	updateMensagem = (chatData = []) => {
-		  this.mensagemDAO.criarMensagem(chatData);
-	}
-
-	componentWillMount(){
-		this.mensagemDAO.iniciaChat();
-		this.mounted = true;
-	}
-
-	componentWillUnmount(){
-		console.log('willUnmount Chat')
-		this.mensagemDAO.offListarMensagens();
-		this.mounted = false;
 	}
 }
 

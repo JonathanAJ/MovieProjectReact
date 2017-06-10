@@ -3,51 +3,58 @@
 import React, { Component } from 'react';
 import { LoginDAO } from '../dao/LoginDAO';
 
-import { NavigationActions } from 'react-navigation';
-import firebase from '../dao/Banco';
-
 import {
     Dimensions,
     Image,
     StatusBar
 } from 'react-native';
+
 import {
-    H1,
     Button,
     Text,
-    Spinner,
     Container
 } from "native-base";
+
 import {Grid, Row, Col} from "react-native-easy-grid";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
 export class Login extends Component {
 
-  constructor(props) {
-    super(props);
-    this.login = new LoginDAO();
-    this.nav = props.navigation;
-    this.unsubscribe = null;
-    this.mounted = false;
+    constructor(props) {
+        super(props);
+        this.login = new LoginDAO();
+        this.nav = props.navigation;
+        this.mounted = false;
 
-    this.state = {
-        isLogado : 'loading',
-        largura : Dimensions.get("window").width
-    };
+        this.state = {
+            largura : Dimensions.get("window").width
+        };
 
-    Dimensions.addEventListener("change", (event)=> {
-        if(this.mounted){
-            this.setState({
-                largura: event.window.width
-            });
-        }
-    });
-  }
+        Dimensions.addEventListener("change", (event)=> {
+            if(this.mounted){
+                this.setState({
+                    largura: event.window.width
+                });
+            }
+        });
+    }
 
-  render() {
-      if(this.state.isLogado === "false"){
-        
+    _autenticar(){
+        this.login.autenticar(this);
+    }
+    componentWillMount(){
+        console.log('will mount');
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        console.log('will unmount');
+        this.mounted = false;
+        Dimensions.removeEventListener("change");
+    }
+
+    render() {
         return (
         <Container>
             <Image
@@ -76,59 +83,5 @@ export class Login extends Component {
             </Image>
         </Container>
         );
-
-      }else if(this.state.isLogado === "loading"){
-        return(
-            <Grid>
-                <Col style={{justifyContent: "center",alignItems:"center"}}>
-                    <Spinner color="#44B7B2" />
-                </Col>
-            </Grid>
-        );
-      }else{
-        return null;
-      }
-  }
-
-  _autenticar(){
-    this.login.autenticar(this.nav);
-  }
-
-  componentWillMount(){
-    console.log('will mount');
-    this.mounted = true;
-    this.unsubscribe = firebase.auth().onAuthStateChanged((userFirebase) => {
-      
-        console.log('authchange');
-
-        if (userFirebase) {
-            console.log('authchange true');
-            this.setState({isLogado : "true"});
-        }else{
-            console.log('authchange false');
-            this.setState({isLogado : "false"});
-        }
-  
-    }); 
-  }
-
-  componentWillUnmount() {
-    console.log('will unmount');
-    this.mounted = false;
-    this.unsubscribe();
-    Dimensions.removeEventListener("change");
-  }
-
-  componentDidUpdate(){
-    
-    console.log('did update');
-
-    if(this.state.isLogado === "true"){
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName : 'Main'})]
-      });
-      this.nav.dispatch(resetAction);
     }
-  }
 }

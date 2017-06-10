@@ -12,7 +12,7 @@ import firebase from './Banco';
 
 export class LoginDAO{
 
-  autenticar(nav){
+  autenticar(context){
     LoginManager.logInWithReadPermissions(['public_profile', "email", "user_friends"]).then(result => {
           
       if (result.isCancelled) {
@@ -38,7 +38,7 @@ export class LoginDAO{
                 index: 0,
                 actions: [NavigationActions.navigate({ routeName : 'Main'})]
               });
-              nav.dispatch(resetAction);
+              context.nav.dispatch(resetAction);
 
             }, error => {
                 console.log("Sign In Firebase Error", error);
