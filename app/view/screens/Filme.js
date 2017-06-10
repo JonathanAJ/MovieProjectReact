@@ -115,23 +115,23 @@ export class Filme extends Component {
                         </Container>
 
                     </Tab>
-                    <Tab
-                        heading="Interesse"
-                        tabStyle={{backgroundColor: '#11A3A0'}}
-                        textStyle={{color: 'white'}}
-                        activeTabStyle={{backgroundColor: '#11A3A0'}}
-                        activeTextStyle={{color: 'white'}} >
+                    {/*<Tab*/}
+                        {/*heading="Interesse"*/}
+                        {/*tabStyle={{backgroundColor: '#11A3A0'}}*/}
+                        {/*textStyle={{color: 'white'}}*/}
+                        {/*activeTabStyle={{backgroundColor: '#11A3A0'}}*/}
+                        {/*activeTextStyle={{color: 'white'}} >*/}
 
 
-                        <Container>
-                            <Content>
-                                <Col style={{marginTop: 16}}>
-                                    <H3>INTERESSES</H3>
-                                </Col>
-                            </Content>
-                        </Container>
+                        {/*<Container>*/}
+                            {/*<Content>*/}
+                                {/*<Col style={{marginTop: 16}}>*/}
+                                    {/*<H3>INTERESSES</H3>*/}
+                                {/*</Col>*/}
+                            {/*</Content>*/}
+                        {/*</Container>*/}
 
-                    </Tab>
+                    {/*</Tab>*/}
                 </Tabs>
             </Container>
         );

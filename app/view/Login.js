@@ -15,7 +15,8 @@ import {
     H1,
     Button,
     Text,
-    Spinner
+    Spinner,
+    Container
 } from "native-base";
 import {Grid, Row, Col} from "react-native-easy-grid";
 
@@ -48,28 +49,32 @@ export class Login extends Component {
       if(this.state.isLogado === "false"){
         
         return (
-        <Image
-            style={{flex: 1, width: this.state.largura}}
-            source={require("../assets/img/pessoas_felizes.png")}
-            resizeMode="cover">
-            <StatusBar backgroundColor={'#11A3A0'}/>
-            <Grid>
-              <Row size={50} style={{justifyContent: "center", alignItems: "flex-end", paddingBottom: 80}}>
-                  <H1 style={{color: "#44B7B2", fontSize:50}}>boraver</H1>
-              </Row>
-              <Row size={40} style={{justifyContent: "center"}}>
-                  <Button style={{backgroundColor: '#44B7B2'}} onPress={this._autenticar.bind(this)}>
-                      <Icon name='facebook-square' size={20} color="white" />
-                      <Text style={{marginLeft: 15,color:'white'}}>Entrar com Facebook</Text>
-                  </Button>
-              </Row>
-              <Row size={10} style={{justifyContent: "center",alignItems:"flex-end"}}>
-                  <Text style={{fontSize:12, color: "white", textAlign:"center", marginLeft:16, marginRight:16, marginBottom:16}}>
-                      Ao logar, você concorda com nossos Termos de Serviço e Política de Privacidade.
-                  </Text>
-              </Row>
-            </Grid>
-        </Image>
+        <Container>
+            <Image
+                style={{flex: 1, width: this.state.largura}}
+                source={require("../assets/img/pessoas_felizes.png")}
+                resizeMode="cover">
+                <StatusBar backgroundColor={'transparent'} translucent={true}/>
+                <Grid>
+                    <Row size={60} style={{justifyContent: "center", alignItems: "flex-end", marginBottom: 40, marginTop: 16}}>
+                        <Image
+                            style={{width:200, height:150}}
+                            source={require("../assets/img/logo.png")}/>
+                    </Row>
+                    <Row size={30} style={{justifyContent: "center"}}>
+                        <Button style={{backgroundColor: '#44B7B2'}} onPress={this._autenticar.bind(this)}>
+                            <Icon name='facebook-square' size={20} color="white" />
+                            <Text style={{marginLeft: 15,color:'white'}}>Entrar com Facebook</Text>
+                        </Button>
+                    </Row>
+                    <Row size={10} style={{justifyContent: "center",alignItems:"flex-end"}}>
+                        <Text style={{fontSize:12, color: "white", textAlign:"center", marginLeft:16, marginRight:16, marginBottom:16}}>
+                            Ao logar, você concorda com nossos Termos de Serviço e Política de Privacidade.
+                        </Text>
+                    </Row>
+                </Grid>
+            </Image>
+        </Container>
         );
 
       }else if(this.state.isLogado === "loading"){

@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 //Root
+import { Splash } from '../view/Splash';
 import { Login } from '../view/Login';
 
 //Views Tab Navigation
@@ -92,6 +93,13 @@ const TabPricipal = TabNavigator({
 });
 
 export const navigatorMain = StackNavigator({
+	Splash: {
+		screen: Splash,
+		headerMode: 'none',
+		navigationOptions : ({navigation}) => ({
+			header: null
+		}),
+	},
 	Login: {
 		screen: Login,
         headerMode: 'none',
