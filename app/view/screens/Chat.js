@@ -19,6 +19,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import * as color from '../../assets/colors';
+
 export class Chat extends Component {
 
 	constructor(props) {
@@ -49,8 +51,8 @@ export class Chat extends Component {
 	    return (
 	      <Bubble
 	      	{...props}
-	        wrapperStyle={{right: {backgroundColor: '#89E3D3'},
-	        			   left: {backgroundColor:'#F2CFA2', marginLeft: 0}}}
+	        wrapperStyle={{right: {backgroundColor: color.lightPrimaryColor},
+	        			   left: {backgroundColor: color.secondaryColor, marginLeft: 0}}}
 	        textStyle={{right: {color: '#444'}, left: {color: '#444'}}}/>
 	    );
 	}
@@ -68,7 +70,7 @@ export class Chat extends Component {
 			<Send
 				{...props}
 				label={'Enviar'}
-				textStyle={{color:'#44B7B2'}} />
+				textStyle={{color: color.darkPrimaryColor}} />
 		);
 	}
 
@@ -103,7 +105,7 @@ export class Chat extends Component {
 	render() {
 		return (
 		  <View style={style.container}>
-		    <StatusBar backgroundColor={'#11A3A0'}/>
+		    <StatusBar backgroundColor={color.darkPrimaryColor}/>
 		    <GiftedChat
 		    	renderBubble={this.renderBubble}
 		    	renderComposer={this.renderComposer}
@@ -120,12 +122,13 @@ export class Chat extends Component {
 }
 
 const style = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  inputChat :{
-    borderTopWidth: 0,
-    elevation: 20,
-    backgroundColor: '#CFEFFC'
-  },
+	container: {
+		flex: 1,
+		backgroundColor: color.backgroundColor
+	},
+	inputChat :{
+		borderTopWidth: 0,
+		elevation: 20,
+		backgroundColor: color.lightColor
+	},
 });

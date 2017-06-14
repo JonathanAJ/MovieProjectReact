@@ -12,6 +12,8 @@ import {
 import { UsuarioDAO } from '../../dao/UsuarioDAO';
 import { SimpleList } from '../../components/SimpleList';
 
+import * as color from '../../assets/colors';
+
 export class Contatos extends PureComponent {
   
   constructor(props) {
@@ -50,5 +52,6 @@ export class Contatos extends PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: color.backgroundColor
   },
 });

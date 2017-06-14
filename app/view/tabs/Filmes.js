@@ -7,8 +7,6 @@ import {
     StyleSheet,
     Image,
     View,
-    TouchableOpacity,
-    TouchableHighlight,
     TouchableNativeFeedback
 } from 'react-native';
 
@@ -22,6 +20,8 @@ import {
 } from 'native-base';
 
 import { Col, Row, Grid } from 'react-native-easy-grid';
+
+import * as color from '../../assets/colors';
 
 export class Filmes extends Component {
 
@@ -42,7 +42,7 @@ export class Filmes extends Component {
 
 	render() {
         return (
-            <Container style={{padding: 16, paddingTop: 0, paddingBottom: 0}}>
+            <Container style={{padding: 16, paddingTop: 0, paddingBottom: 0, backgroundColor: color.backgroundColor}}>
                 <Content>
                     <List
                         dataArray={this.state.dataFilmes}
@@ -61,25 +61,30 @@ class ListFilmes extends Component{
 
         return (
 			<TouchableNativeFeedback
-                onPress={this._abreFilme.bind(this)}
-                background={TouchableNativeFeedback.Ripple('#000', false)}
-            >
-				<Card>
-					<Grid>
-						<Col>
-							<Image
-								style={{flex:1, height: 200}}
-								resizeMode="cover"
-								source={{uri: filme.imagem}}/>
-						</Col>
-						<Col style={{padding: 8, marginBottom: 8}}>
-							<H3 style={{marginBottom: 16}}>{filme.nome}</H3>
-							<Text numberOfLines ={5}>
-                                {filme.sinopse}
-							</Text>
-						</Col>
-					</Grid>
-				</Card>
+                useForeground={true}
+                background={TouchableNativeFeedback.Ripple(color.primaryColor, false)}
+                delayPressIn={0}
+                onPress={this._abreFilme.bind(this)} >
+                <View pointerEvents='box-only'>
+                    <Card style={{elevation: 2}}>
+                        <Grid>
+                            <Col>
+                                <Image
+                                    style={{flex:1, height: 200}}
+                                    resizeMode="cover"
+                                    source={{uri: filme.imagem}}/>
+                            </Col>
+                            <Col style={{padding: 8, marginBottom: 8}}>
+                                <Text style={{marginBottom: 16, fontSize: 16, fontWeight:'bold'}}>
+                                    {filme.nome}
+                                </Text>
+                                <Text numberOfLines ={5}>
+                                    {filme.sinopse}
+                                </Text>
+                            </Col>
+                        </Grid>
+                    </Card>
+                </View>
 			</TouchableNativeFeedback>
         );
     }

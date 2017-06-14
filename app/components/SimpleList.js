@@ -6,11 +6,19 @@ import {
 	StyleSheet,
 	Text,
 	Image,
-	TouchableOpacity,
+    TouchableNativeFeedback,
 	View,
 } from 'react-native';
 
 import {formatDateConversas} from '../rout/Util';
+
+import {
+	Grid,
+	Col,
+	Row
+} from 'native-base';
+
+import * as color from "../assets/colors";
 
 export class SimpleList extends Component {
 
@@ -27,18 +35,30 @@ export class SimpleList extends Component {
 
 	render() {
 		return (
-		<TouchableOpacity style={styles.container} onPress={this._onPress.bind(this)}>
-				<Image
-					style={styles.imagemList}
-					source={{uri: this.user.photoURL}} />
-				<View style={styles.containerText}>
-					<Text style={styles.titulo} numberOfLines ={1}>{this.user.displayName}</Text>
-					<Text style={styles.subTitulo} numberOfLines ={1}>{this.description}</Text>
-				</View>
-				<Text style={styles.subTitulo}>
-					{formatDateConversas(this.props.date)}
-				</Text>
-		</TouchableOpacity>
+		<TouchableNativeFeedback
+			useForeground={true}
+			background={TouchableNativeFeedback.Ripple(color.primaryColor, false)}
+			delayPressIn={0}
+			onPress={this._onPress.bind(this)}>
+			<Grid pointerEvents='box-only' style={styles.container}>
+				<Row>
+					<Col style={{ width: 70 }}>
+						<Image
+							style={styles.imagemList}
+							source={{uri: this.user.photoURL}} />
+					</Col>
+					<Col size={70} style={styles.containerText}>
+						<Text style={styles.titulo} numberOfLines ={1}>{this.user.displayName}</Text>
+						<Text style={styles.subTitulo} numberOfLines ={1}>{this.description}</Text>
+					</Col>
+					<Col size={30} style={styles.containerData}>
+						<Text style={styles.subTitulo}>
+							{formatDateConversas(this.props.date)}
+						</Text>
+					</Col>
+				</Row>
+			</Grid>
+		</TouchableNativeFeedback>
 		);
 	}
 
@@ -50,33 +70,31 @@ export class SimpleList extends Component {
 
 const styles = StyleSheet.create({
 	container : {
-		flex: 1,
-		flexDirection: 'row',
 		paddingLeft: 16,
-		paddingTop: 8,
-		paddingBottom: 8,
-		paddingRight: 8,
-		borderBottomColor: '#bbb',
-		borderBottomWidth: 0.5
+		paddingTop: 16,
+		paddingRight: 16
 	},
-	containerText : {
-		flex: 1,
-		marginLeft: 16,
-		marginRight: 8
-	},
+    containerText : {
+        borderBottomColor: '#bbb',
+        borderBottomWidth: 0.5
+    },
+    containerData : {
+        borderBottomColor: '#bbb',
+        borderBottomWidth: 0.5,
+		alignItems: "flex-end"
+    },
 	titulo : {
 		color: 'black',
 		fontSize : 18,
 	},
 	subTitulo : {
-		marginTop: 4,
-		paddingRight: 16,
+		paddingTop: 4,
+		paddingBottom: 16,
 		fontSize : 12,
 	},
 	imagemList : {
-		margin: 4,
-		width: 50,
-		height: 50,
+		width: 55,
+		height: 55,
 		borderRadius: 100,
 	}
 });

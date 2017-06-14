@@ -22,6 +22,8 @@ import {
 
 import {Row, Col, Grid } from "react-native-easy-grid/";
 
+import * as color from '../../assets/colors';
+
 import firebase from "../../dao/Banco";
 
 export class Filme extends Component {
@@ -50,7 +52,7 @@ export class Filme extends Component {
             });
         });
 
-        // firebase.database().ref('rede_filmes/genero/'+this.filme.genero).once('value', snap => {
+        // firebase.db().ref('rede_filmes/genero/'+this.filme.genero).once('value', snap => {
         //     this.setState({
         //         genero : snap.val().tipo
         //     });
@@ -62,17 +64,16 @@ export class Filme extends Component {
         let filme = this.filme;
 
         return (
-            <Container>
-                {/*<Header hasTabs />*/}
-                <Tabs tabStyle={{color: '#11A3A0'}} >
+            <Container style={{backgroundColor: color.backgroundColor}}>
+                <StatusBar backgroundColor='#11A3A0' />
+                <Tabs>
                     <Tab
                         heading="Filme"
-                        tabStyle={{backgroundColor: '#11A3A0'}}
                         textStyle={{color: 'white'}}
-                        activeTabStyle={{backgroundColor: '#11A3A0'}}
-                        activeTextStyle={{color: 'white'}} >
+                        activeTextStyle={{color: 'white'}}
+                        tabStyle={{backgroundColor: color.primaryColor}}
+                        activeTabStyle={{backgroundColor: color.primaryColor}} >
                         <Content>
-                            <StatusBar backgroundColor='#11A3A0' />
                             <Grid>
                                 <Row>
                                     <Image
@@ -101,10 +102,10 @@ export class Filme extends Component {
                     </Tab>
                     <Tab
                         heading="Sessão"
-                        tabStyle={{backgroundColor: '#11A3A0'}}
                         textStyle={{color: 'white'}}
-                        activeTabStyle={{backgroundColor: '#11A3A0'}}
-                        activeTextStyle={{color: 'white'}} >
+                        activeTextStyle={{color: 'white'}}
+                        tabStyle={{backgroundColor: color.primaryColor}}
+                        activeTabStyle={{backgroundColor: color.primaryColor}}>
 
                         <Container>
                             <Content>
@@ -115,23 +116,6 @@ export class Filme extends Component {
                         </Container>
 
                     </Tab>
-                    {/*<Tab*/}
-                        {/*heading="Interesse"*/}
-                        {/*tabStyle={{backgroundColor: '#11A3A0'}}*/}
-                        {/*textStyle={{color: 'white'}}*/}
-                        {/*activeTabStyle={{backgroundColor: '#11A3A0'}}*/}
-                        {/*activeTextStyle={{color: 'white'}} >*/}
-
-
-                        {/*<Container>*/}
-                            {/*<Content>*/}
-                                {/*<Col style={{marginTop: 16}}>*/}
-                                    {/*<H3>INTERESSES</H3>*/}
-                                {/*</Col>*/}
-                            {/*</Content>*/}
-                        {/*</Container>*/}
-
-                    {/*</Tab>*/}
                 </Tabs>
             </Container>
         );

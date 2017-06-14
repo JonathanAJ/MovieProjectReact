@@ -26,6 +26,8 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconLine from "react-native-vector-icons/SimpleLineIcons";
 
+import * as color from '../assets/colors';
+
 export class Login extends Component {
 
     constructor(props) {
@@ -83,7 +85,7 @@ export class Login extends Component {
                                     FILMES
                                 </Text>
                                 <Text style={styles.txtView}>
-                                    Veja os filmes em cartaz, conheça pessoas compatíveis com seus filmes e compartilhe suas preferências
+                                    Veja filmes em cartaz, conheça pessoas que curtam seus filmes e compartilhe suas preferências
                                 </Text>
                             </Col>
                         </Grid>
@@ -97,14 +99,14 @@ export class Login extends Component {
                         resizeMode="cover">
                         <Grid>
                             <Row size={60} style={{justifyContent: 'center',alignItems: 'flex-end'}}>
-                                <IconLine name="film" size={70} color={'white'}/>
+                                <IconLine name="people" size={70} color={'white'}/>
                             </Row>
                             <Col size={40} >
                                 <Text style={styles.txtTitleView}>
                                     AMIZADES
                                 </Text>
                                 <Text style={styles.txtView}>
-                                    Faça novas amizades, comunique suas emoções ao ver um filme e tenha experiências cinematográficas
+                                    Faça novas amizades, compartilhe sua pipoca e assista a bons filmes com pessoas diversas
                                 </Text>
                             </Col>
                         </Grid>
@@ -126,7 +128,7 @@ export class Login extends Component {
                             <Row size={25} style={{justifyContent: "center"}}>
                                 <Button
                                     title={""}
-                                    style={{backgroundColor: '#44B7B2'}}
+                                    style={{backgroundColor: color.primaryColor}}
                                     onPress={this._autenticar.bind(this)}>
                                     <Icon name='facebook-square' size={20} color="white" />
                                     <Text style={{marginLeft: 15,color:'white'}}>Entrar com Facebook</Text>

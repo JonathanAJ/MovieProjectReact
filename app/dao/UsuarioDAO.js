@@ -7,12 +7,12 @@ export class UsuarioDAO{
 	constructor(context) {
 		this.context = context;
 		this.me = firebase.auth().currentUser;
-		this.database = firebase.database();
-		this.refUsers = this.database.ref('users');
+		this.db = firebase.database();
+		this.refUsers = this.db.ref('users');
 	}
 
 	saveUser(user){
-		this.database.ref("users/"+user.uid).update({
+		this.db.ref("users/"+user.uid).update({
 			displayName  : user.displayName,
 			email : user.email,
 			photoURL : user.photoURL

@@ -10,6 +10,8 @@ import {
 
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
+import * as color from '../assets/colors';
+
 //Root
 import { Splash } from '../view/Splash';
 import { Login } from '../view/Login';
@@ -79,7 +81,7 @@ const TabPricipal = TabNavigator({
 		showIcon: true,
 		showLabel: false,
 		indicatorStyle: {
-			backgroundColor: 'white'
+			backgroundColor: "white"
 		},
 		labelStyle: {
 			margin: 0,
@@ -87,7 +89,7 @@ const TabPricipal = TabNavigator({
 		},
 		style: {
 			height: 50,
-			backgroundColor: '#44B7B2',
+			backgroundColor: color.primaryColor,
 		},
 	}
 });
@@ -110,7 +112,7 @@ export const navigatorMain = StackNavigator({
 	Main: {
 		screen: TabPricipal,
 		navigationOptions : ({navigation}) => ({
-			title: 'boraver',
+			title: 'Boraver',
 		}),
 	},
 	Chat: {
@@ -128,7 +130,7 @@ export const navigatorMain = StackNavigator({
 },
 {
 	navigationOptions : ({navigation}) => ({
-		headerTintColor: '#fff',
-		headerStyle: {backgroundColor: '#44B7B2'}
+		headerTintColor: 'white',
+		headerStyle: {backgroundColor: color.primaryColor}
 	})
 });

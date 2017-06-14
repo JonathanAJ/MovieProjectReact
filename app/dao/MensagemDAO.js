@@ -5,10 +5,7 @@ import firebase from './Banco';
 export class MensagemDAO{
 	
 	constructor(context, me, to){
-		this.database = firebase.database();
-		this.refUsers = this.database.ref('users');
-		this.refChats = this.database.ref('chats');
-		this.refMsgs = this.database.ref('messages');
+		this.db = firebase.database();
 		this.context = context;
         this.chat = {
             isExist : false,
@@ -28,19 +25,19 @@ export class MensagemDAO{
 		const me = this.me;
 		const to = this.to;
 
-		this.refUsers.child(me.uid + '/my_chats').once('value', snap => {
+		this.db.ref('users/' + me.uid + '/my_chats').once('value', snap => {
 
 			snap.forEach(childSnapshot => {
 				
 				const key = childSnapshot.key;
 
-				this.refUsers.child(to.uid + '/my_chats/' + key).once('value', snap => {
+                this.db.ref('users/' + to.uid + '/my_chats/' + key).once('value', snap => {
 
 					console.log("snap",snap);
                     console.log("snap",snap.val());
 
 					if(snap.val() === true){
-						console.log("chat existe")
+						console.log("chat existe");
 						this.chat = {
 							isExist : true,
 							keyValue : key
@@ -60,19 +57,19 @@ export class MensagemDAO{
 		const me = this.me;
 		const to = this.to;
 
-		this.chat.keyValue = this.getKeyPattern(me, to); 
+		this.chat.keyValue = this.getKeyPattern(me, to);
 
-		this.refChats.child(this.chat.keyValue + '/members/' + me.uid).update({
+        this.db.ref('chats/' + this.chat.keyValue + '/members/' + me.uid).update({
 			displayName : me.displayName,
 			photoURL : me.photoURL
 		});
-		this.refChats.child(this.chat.keyValue + '/members/' + to.uid).update({
+        this.db.ref('chats/' + this.chat.keyValue + '/members/' + to.uid).update({
 			displayName : to.displayName,
 			photoURL : to.photoURL
 		});
 
-		this.refUsers.child(me.uid + '/my_chats/' + this.chat.keyValue).set(true);
-		this.refUsers.child(to.uid + '/my_chats/' + this.chat.keyValue).set(true);
+        this.db.ref('users/' + me.uid + '/my_chats/' + this.chat.keyValue).set(true);
+        this.db.ref('users/' + to.uid + '/my_chats/' + this.chat.keyValue).set(true);
 
 		this.chat.isExist = true;
 		this.listarMensagens();
@@ -83,10 +80,10 @@ export class MensagemDAO{
 	 */
 	listarMensagens(){
 		console.log('on '+this.chat.keyValue);
-		this.refMsgs.child(this.chat.keyValue).on('child_added', (snapshot) => {
+        this.db.ref('messages/' + this.chat.keyValue).on('child_added', (snapshot) => {
 
 			console.log("mount? "+ this.context.mounted);
-			if(this.context.mounted == true){
+			if(this.context.mounted === true){
 				console.log(snapshot.val());
 
 				const oldArray = this.context.state.chatData.slice(0);
@@ -102,7 +99,7 @@ export class MensagemDAO{
 
 	offListarMensagens(){
 		console.log('off '+this.chat.keyValue);
-		this.refMsgs.child(this.chat.keyValue).off();
+        this.db.ref('messages/' + this.chat.keyValue).off();
 	}
 
 	getChartObject(chat){
@@ -120,7 +117,7 @@ export class MensagemDAO{
 	}
 
 	criarUltimaMensagem(message){
-		this.refChats.child(this.chat.keyValue).update({
+        this.db.ref('chats/' + this.chat.keyValue).update({
 			lastMessage : message,
 			createdAt : new Date()
 		});
@@ -135,9 +132,9 @@ export class MensagemDAO{
 
 		if(this.chat.keyValue !== null){
 
-			const msgKey = this.refMsgs.child(this.chat.keyValue).push().key;
+			const msgKey = this.db.ref('messages/' + this.chat.keyValue).push().key;
 
-			this.refMsgs.child(this.chat.keyValue +'/'+ msgKey +'/').set({
+            this.db.ref('messages/' + this.chat.keyValue +'/'+ msgKey +'/').set({
 				msgId : msgKey,
 				byId : me.uid,
 				byName : me.displayName,

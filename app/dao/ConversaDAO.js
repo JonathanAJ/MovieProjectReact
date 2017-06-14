@@ -82,7 +82,7 @@ export class ConversaDAO{
 
 			if(obj.keyChat === idKey){
 				index = i;
-				return;
+				return index;
 			}
 		});
 		return index;
@@ -91,7 +91,7 @@ export class ConversaDAO{
 	addArray(obj){
 		for (let keyMember in obj.members) {
 
-			if(keyMember != this.me.uid){
+			if(keyMember !== this.me.uid){
 				obj.uid = keyMember;
 				obj.photoURL = obj.members[keyMember].photoURL;
 				obj.displayName = obj.members[keyMember].displayName;
@@ -134,7 +134,10 @@ export class ConversaDAO{
 		}
 	}
 
-	removeListeners(){
 
+
+    removeListeners(){
+        const me = this.me;
+        this.db.ref('users/' + me.uid + '/my_chats').off();
     }
 }

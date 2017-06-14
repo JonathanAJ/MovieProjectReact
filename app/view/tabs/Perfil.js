@@ -29,6 +29,7 @@ import {
 } from "react-native-easy-grid";
 
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import * as color from '../../assets/colors';
 
 export class Perfil extends Component {
 
@@ -47,7 +48,7 @@ export class Perfil extends Component {
   render() {
     return (
 
-    <Container>
+    <Container style={{backgroundColor: color.backgroundColor}}>
       <Content>
           <Grid>
               <Col style={{alignItems: 'center', marginBottom: 32, marginTop: 16}}>
@@ -61,54 +62,54 @@ export class Perfil extends Component {
                   <Col>
                       <ListItem icon>
                           <Left>
-                              <Icon name="bell" size={20} />
+                              <Icon name="bell" size={20} color={color.accentColor} />
                           </Left>
                           <Body>
                           <Text>Notificações</Text>
                           </Body>
                           <Right style={{paddingLeft: 20}}>
-                              <Switch value={true} />
+                              <Switch  />
                           </Right>
                       </ListItem>
 
                       <ListItem icon>
                           <Left>
-                              <Icon name="emotsmile" size={20} />
+                              <Icon name="emotsmile" size={20} color={color.accentColor}  />
                           </Left>
                           <Body>
                           <Text>Gerenciar Amigos</Text>
                           </Body>
                           <Right>
-                              <Icon name="arrow-right" />
+                              <Icon name="arrow-right" color={color.accentColor}  />
                           </Right>
                       </ListItem>
 
                       <ListItem icon>
                           <Left>
-                              <Icon name="trash" size={20} />
+                              <Icon name="trash" size={20} color={color.accentColor}  />
                           </Left>
                           <Body>
                           <Text>Excluir Conta</Text>
                           </Body>
                           <Right>
-                              <Icon name="arrow-right" />
+                              <Icon name="arrow-right" color={color.accentColor}  />
                           </Right>
                       </ListItem>
 
                       <ListItem icon>
                           <Left>
-                              <Icon name="info" size={20} />
+                              <Icon name="info" size={20} color={color.accentColor}  />
                           </Left>
                           <Body>
                           <Text>Sobre o App</Text>
                           </Body>
                           <Right>
-                              <Icon name="arrow-right" />
+                              <Icon name="arrow-right" color={color.accentColor}  />
                           </Right>
                       </ListItem>
                       <ListItem icon onPress={this._sair.bind(this)}>
                           <Left>
-                              <Icon name="logout" size={20} />
+                              <Icon name="logout" size={20} color={color.accentColor} />
                           </Left>
                           <Body>
                           <Text>Sair</Text>

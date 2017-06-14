@@ -8,10 +8,18 @@ import {
     StatusBar
 } from 'react-native';
 
+import {
+    Container
+} from 'native-base';
+
+import * as color from '../../assets/colors';
+
 export class Home extends Component {
   render() {
     return (
-        <StatusBar backgroundColor={'#11A3A0'}/>
+        <Container style={{backgroundColor: color.backgroundColor}}>
+            <StatusBar backgroundColor={color.darkPrimaryColor}/>
+        </Container>
     );
   }
 }

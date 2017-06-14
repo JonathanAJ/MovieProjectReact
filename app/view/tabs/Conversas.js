@@ -11,6 +11,8 @@ import {
 import { ConversaDAO } from '../../dao/ConversaDAO';
 import { SimpleList } from '../../components/SimpleList';
 
+import * as color from '../../assets/colors';
+
 export class Conversas extends PureComponent {
   
   constructor(props) {
@@ -43,7 +45,7 @@ export class Conversas extends PureComponent {
     return (
       <View style={styles.container}>
         
-        <StatusBar backgroundColor={'#11A3A0'}/>
+        <StatusBar backgroundColor={color.darkPrimaryColor}/>
 
         <ListView
           enableEmptySections={true}
@@ -62,5 +64,6 @@ export class Conversas extends PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: color.backgroundColor
   },
 });
