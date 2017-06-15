@@ -17,7 +17,6 @@ import {
     Text,
     Tab,
     Tabs,
-    Header
 } from 'native-base';
 
 import {Row, Col, Grid } from "react-native-easy-grid/";
@@ -26,18 +25,18 @@ import * as color from '../../assets/colors';
 
 import firebase from "../../dao/Banco";
 
+import {TabFilmeSessoes} from "./TabFilmeSessoes";
+
 export class Filme extends Component {
 
     constructor(props){
         super(props);
 
         this.genero = "";
-
         this.filme = this.props.navigation.state.params.filme;
-
         this.state = {
             genero : this.genero
-        }
+        };
     }
 
     static navigationOptions = ({navigation}) => ({
@@ -51,12 +50,6 @@ export class Filme extends Component {
                 genero : snap.val().tipo
             });
         });
-
-        // firebase.db().ref('rede_filmes/genero/'+this.filme.genero).once('value', snap => {
-        //     this.setState({
-        //         genero : snap.val().tipo
-        //     });
-        // });
     }
 
     render() {
@@ -65,7 +58,7 @@ export class Filme extends Component {
 
         return (
             <Container style={{backgroundColor: color.backgroundColor}}>
-                <StatusBar backgroundColor='#11A3A0' />
+                <StatusBar backgroundColor={color.darkPrimaryColor} />
                 <Tabs>
                     <Tab
                         heading="Filme"
@@ -107,13 +100,7 @@ export class Filme extends Component {
                         tabStyle={{backgroundColor: color.primaryColor}}
                         activeTabStyle={{backgroundColor: color.primaryColor}}>
 
-                        <Container>
-                            <Content>
-                                <Col style={{marginTop: 16}}>
-                                    <H3>SESSÕES</H3>
-                                </Col>
-                            </Content>
-                        </Container>
+                        <TabFilmeSessoes {...this.props}/>
 
                     </Tab>
                 </Tabs>
