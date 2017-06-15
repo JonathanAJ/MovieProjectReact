@@ -34,4 +34,37 @@ export class FilmeDAO{
             });
         });
     }
+
+    getSessoesValue(idFilme){
+
+        this.db.ref('rede_filmes/filmes/' + idFilme + '/sessoes/').once('value', snap => {
+
+            const arraySessoes = []
+
+            snap.forEach(sessoes => {
+
+                const key = sessoes.key;
+                console.log(key);
+
+                this.db.ref('rede_filmes/sessao/' + key).once('value', snap => {
+
+                    const sessao = snap.val();
+                    sessao.id = key;
+
+                    this.db.ref('rede_filmes/cinema/' + sessao.cinema).once('value', snap =>{
+
+                        const objCinema = snap.val();
+                        objCinema.id = snap.key;
+                        sessao.cinema = objCinema;
+
+                        arraySessoes.push(sessao);
+
+                        this.context.setState({
+                            dataSessoes: arraySessoes
+                        });
+                    });
+                });
+            });
+        });
+    }
 }
