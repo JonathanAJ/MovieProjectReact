@@ -29,7 +29,7 @@ export class Chat extends Component {
 		const { params } = this.props.navigation.state;
 
 		this.userChat = params.user;
-		this.userCurrent = firebase.auth().currentUser
+		this.userCurrent = firebase.auth().currentUser;
 
 		this.chatData = [];
 

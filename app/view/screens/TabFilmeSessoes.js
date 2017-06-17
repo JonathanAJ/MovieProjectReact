@@ -1,25 +1,24 @@
 'use strict';
 
 import React from 'react';
-
 import {
     StyleSheet,
     View,
 } from 'react-native';
-
 import {
     Text,
     Button,
     List,
-    Switch
+    Switch,
+    Toast
 } from 'native-base';
-
+import Modal from 'react-native-modal'
 import {Row, Col, Grid } from "react-native-easy-grid/";
-
 import * as color from '../../assets/colors';
 import styles from '../../assets/styles';
-
 import {FilmeDAO} from "../../dao/FilmeDAO";
+import {InterestDAO} from "../../dao/InterestDAO";
+import firebase from "../../dao/Banco";
 
 const arraySessoes = [];
 
@@ -31,7 +30,8 @@ export class TabFilmeSessoes extends React.Component{
         this.filme = this.props.navigation.state.params.filme;
         this.filmeDao = new FilmeDAO(this);
         this.state = {
-            dataSessoes : []
+            dataSessoes : [],
+            isModalVisible: false
         };
     }
 
@@ -39,9 +39,76 @@ export class TabFilmeSessoes extends React.Component{
         this.filmeDao.getSessoesValue(this.filme.id);
     }
 
-    _clickInteresse = () =>{
-        console.log(arraySessoes)
+    _clickInteresse = () => {
+        console.log(arraySessoes);
+        this._showModal();
     };
+
+    _saveInterest = () => {
+        let msgToast;
+
+        let count = 0;
+        arraySessoes.forEach(obj =>{
+            if(obj !== undefined)
+                count++;
+        });
+        console.log('count', count);
+
+        if(count > 0){
+            const interest = {
+                userUID : firebase.auth().currentUser.uid,
+                userName : firebase.auth().currentUser.displayName,
+                userPhoto : firebase.auth().currentUser.photoURL,
+                movieName : this.filme.nome,
+                movieImage : this.filme.imagem,
+                arraySessionsID : arraySessoes
+            };
+            new InterestDAO(this).saveInterest(interest);
+            msgToast = 'Compartilhado com sucesso!'
+
+        }else{
+            msgToast = 'Você deve selecionar pelo menos uma sessão.';
+        }
+
+        Toast.show({
+            supportedOrientations: ['portrait','landscape'],
+            text: msgToast,
+            position: 'bottom',
+            buttonText: 'Certo'
+        });
+        this._hideModal();
+    };
+
+    _modalSessao = () => {
+        return(
+            <View style={{
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                padding: 16,
+                borderRadius: 5
+            }}>
+                <Text style={{color: '#444', fontSize: 18}}>
+                    Você tem certeza disto?
+                </Text>
+                <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
+                    <Button
+                        onPress={this._hideModal}
+                        transparent warning>
+                        <Text>Cancelar</Text>
+                    </Button>
+                    <Button
+                        onPress={this._saveInterest}
+                        transparent success>
+                        <Text>OK</Text>
+                    </Button>
+                </View>
+            </View>
+        );
+    };
+
+    _showModal = () => this.setState({ isModalVisible: true });
+
+    _hideModal = () => this.setState({ isModalVisible: false });
 
     render() {
         return (
@@ -62,6 +129,13 @@ export class TabFilmeSessoes extends React.Component{
                         }} full dark>
                         <Text>Tenho Interesse</Text>
                     </Button>
+
+                    <Modal
+                        isVisible={this.state.isModalVisible}
+                        animationIn={'slideInUp'}
+                        animationOut={'slideOutDown'}>
+                        {this._modalSessao()}
+                    </Modal>
                 </Row>
             </Grid>
         );
