@@ -54,6 +54,25 @@ export class Filme extends Component {
         });
     }
 
+    getClassificacao = () => {
+        const idade = String(this.filme.idade);
+
+        if(idade === "10")
+            return "#0095D9";
+        else if(idade === "12")
+            return "#FFCC03";
+        else if(idade === "14")
+            return "#F6821F";
+        else if(idade === "16")
+            return "#EB1922";
+        else if(idade === "18")
+            return "black";
+        else if(idade === "21")
+            return "black";
+        else
+            return "#01A54F";
+    }
+
     render() {
 
         let filme = this.filme;
@@ -78,7 +97,7 @@ export class Filme extends Component {
                                 </Row>
                                 <Col style={{padding: 16, paddingTop: 16, paddingBottom: 0}}>
                                     <Row>
-                                        <Badge info>
+                                        <Badge style={{backgroundColor: this.getClassificacao()}}>
                                             <Text style={styleBase.txtInvertNormal}>
                                                 {filme.idade} anos
                                             </Text>
