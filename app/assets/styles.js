@@ -13,5 +13,9 @@ export default {
     txtLabelNormal:{
         fontSize: 18,
         color: '#444',
+    },
+    txtLabelBig:{
+        fontSize: 22,
+        color: '#444',
     }
 };

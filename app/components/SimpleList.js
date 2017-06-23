@@ -10,7 +10,7 @@ import {
 	View,
 } from 'react-native';
 
-import {formatDateConversas} from '../rout/Util';
+import {formatDate} from '../rout/Util';
 
 import {
 	Grid,
@@ -19,12 +19,14 @@ import {
 } from 'native-base';
 
 import * as color from "../assets/colors";
+import {Usuario} from "../model/Usuario";
 
 export class SimpleList extends Component {
 
 	constructor(props) {
 		super(props);
-	
+
+		this.user = new Usuario();
 		this.user = this.props.user;
 		this.description = this.props.description;
 
@@ -53,7 +55,7 @@ export class SimpleList extends Component {
 					</Col>
 					<Col size={30} style={styles.containerData}>
 						<Text style={styles.subTitulo}>
-							{formatDateConversas(this.props.date)}
+							{formatDate(this.props.date)}
 						</Text>
 					</Col>
 				</Row>

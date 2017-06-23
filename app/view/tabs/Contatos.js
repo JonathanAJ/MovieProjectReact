@@ -44,7 +44,7 @@ export class Contatos extends PureComponent {
   }
 
   componentWillMount(){
-    console.log('Contatos WillMount');
+    //console.log('Contatos WillMount');
     this.usuarioDAO.listUsers();
   }
 }

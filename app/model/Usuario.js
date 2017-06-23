@@ -1,32 +1,41 @@
 export class Usuario{
 
 	constructor() {
-		this.uid;
-		this.photoURL;
-		this.displayName;
+		this._uid = '';
+		this._photoURL = '';
+		this._displayName = '';
+		this._email = '';
 	}
 
-	get uid(){
-		return this.uid;
-	}
+    get uid() {
+        return this._uid;
+    }
 
-	set uid(uid){
-		this.uid = uid;
-	}
+    set uid(value) {
+        this._uid = value;
+    }
 
-	get photoURL(){
-		return this.photoURL;
-	}
+    get photoURL() {
+        return this._photoURL;
+    }
 
-	set photoURL(photoURL){
-		this.photoURL = photoURL;
-	}
+    set photoURL(value) {
+        this._photoURL = value;
+    }
 
-	get displayName(){
-		return this.displayName;
-	}
+    get displayName() {
+        return this._displayName;
+    }
 
-	set displayName(displayName){
-		this.displayName = displayName;
-	}
+    set displayName(value) {
+        this._displayName = value;
+    }
+
+    get email() {
+        return this._email;
+    }
+
+    set email(value) {
+        this._email = value;
+    }
 }

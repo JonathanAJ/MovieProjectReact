@@ -55,12 +55,12 @@ export class Login extends Component {
         this.login.autenticar(this);
     }
     componentWillMount(){
-        console.log('will mount');
+        //console.log('will mount');
         this.mounted = true;
     }
 
     componentWillUnmount() {
-        console.log('will unmount');
+        //console.log('will unmount');
         this.mounted = false;
         Dimensions.removeEventListener("change");
     }

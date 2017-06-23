@@ -27,7 +27,7 @@ export class FilmeDAO{
                 newObj.id = key;
                 array.push(newObj);
             });
-            console.log(array);
+            //console.log(array);
 
             this.context.setState({
                 dataFilmes: array
@@ -39,12 +39,12 @@ export class FilmeDAO{
 
         this.db.ref('rede_filmes/filmes/' + idFilme + '/sessoes/').once('value', snap => {
 
-            const arraySessoes = []
+            const arraySessoes = [];
 
             snap.forEach(sessoes => {
 
                 const key = sessoes.key;
-                console.log(key);
+                //console.log(key);
 
                 this.db.ref('rede_filmes/sessao/' + key).once('value', snap => {
 

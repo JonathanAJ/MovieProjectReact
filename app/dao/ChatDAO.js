@@ -1,10 +1,11 @@
 'use strict';
 
 import firebase from './Banco';
+import {Usuario} from "../model/Usuario";
 
-export class MensagemDAO{
+export class ChatDAO{
 	
-	constructor(context, me, to){
+	constructor(context, me, to: Usuario){
 		this.db = firebase.database();
 		this.context = context;
         this.chat = {
@@ -33,11 +34,11 @@ export class MensagemDAO{
 
                 this.db.ref('users/' + to.uid + '/my_chats/' + key).once('value', snap => {
 
-					console.log("snap",snap);
-                    console.log("snap",snap.val());
+					//console.log("snap",snap);
+                    //console.log("snap",snap.val());
 
 					if(snap.val() === true){
-						console.log("chat existe");
+						//console.log("chat existe");
 						this.chat = {
 							isExist : true,
 							keyValue : key
@@ -79,12 +80,12 @@ export class MensagemDAO{
 	 Faz uma listagem das mensagens com child added
 	 */
 	listarMensagens(){
-		console.log('on '+this.chat.keyValue);
+		//console.log('on '+this.chat.keyValue);
         this.db.ref('messages/' + this.chat.keyValue).on('child_added', (snapshot) => {
 
-			console.log("mount? "+ this.context.mounted);
+			//console.log("mount? "+ this.context.mounted);
 			if(this.context.mounted === true){
-				console.log(snapshot.val());
+				//console.log(snapshot.val());
 
 				const oldArray = this.context.state.chatData.slice(0);
 				const obj = this.getChartObject(snapshot.val());
@@ -98,7 +99,7 @@ export class MensagemDAO{
 	}
 
 	offListarMensagens(){
-		console.log('off '+this.chat.keyValue);
+		//console.log('off '+this.chat.keyValue);
         this.db.ref('messages/' + this.chat.keyValue).off();
 	}
 
