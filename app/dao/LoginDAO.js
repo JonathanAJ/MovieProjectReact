@@ -16,7 +16,7 @@ export class LoginDAO{
     LoginManager.logInWithReadPermissions(['public_profile', "email", "user_friends"]).then(result => {
           
       if (result.isCancelled) {
-          console.log("login foi cancelado");
+          //console.log("login foi cancelado");
       } else {
         /*
          * Acessa o Token do Facebook gerado para logar-se no FIREBASE
@@ -41,7 +41,7 @@ export class LoginDAO{
               context.nav.dispatch(resetAction);
 
             }, error => {
-                console.log("Sign In Firebase Error", error);
+                //console.log("Sign In Firebase Error", error);
             });
         });
       }

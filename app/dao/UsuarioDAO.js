@@ -27,7 +27,7 @@ export class UsuarioDAO{
 			const value = snapshot.val();
 			value.uid = key;
 
-			if(value.uid != this.me.uid){
+			if(value.uid !== this.me.uid){
 
 				const oldArray = this.context.state.dataContatos.slice(0);
 				oldArray.push(value);

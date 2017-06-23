@@ -31,13 +31,13 @@ export class Conversas extends PureComponent {
 
   componentWillMount(){
       this.mounted = true;
-      console.log('Conversas Will Mount');
+      //console.log('Conversas Will Mount');
       this.conversaDAO.initConversas();
   }
 
   componentWillUnmount(){
       this.mounted = false;
-      console.log('Conversas Will Unmount');
+      //console.log('Conversas Will Unmount');
       this.conversaDAO.removeListeners();
   }
 

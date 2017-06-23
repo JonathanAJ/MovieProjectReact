@@ -90,7 +90,7 @@ class ListFilmes extends Component{
     }
 
     _abreFilme(){
-        console.log(this.props.nav);
+        //console.log(this.props.nav);
         this.props.nav.navigate('Filme', {filme : this.props.filme});
     }
 }

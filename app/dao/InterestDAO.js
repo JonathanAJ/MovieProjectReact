@@ -1,6 +1,7 @@
 'use strict';
 
 import firebase from './Banco';
+import {Usuario} from "../model/Usuario";
 
 export class InterestDAO{
 
@@ -9,20 +10,73 @@ export class InterestDAO{
         this.context = context;
     }
 
-    saveInterest({userUID, userName, userPhoto, movieName, movieImage, arraySessionsID}){
+    saveInterest(user: Usuario, {movieName, createdAt, descriptionSession, arraySessionsID}){
 
         const keyInterest = this.db.ref('interest').push().key;
 
         this.db.ref(`interest/${keyInterest}`).set({
-            userUID,
-            userName,
-            userPhoto,
+            user : {
+                uid: user.uid,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                email: user.email
+            },
             movieName,
-            movieImage,
-            arraySessionsID
+            createdAt,
+            descriptionSession,
+            arraySessionsID,
+            type : 'interest'
         });
-        this.db.ref(`users/${userUID}/my_interest`).update({
+        this.db.ref(`users/${user.uid}/my_interest`).update({
             [keyInterest] : true
+        });
+    }
+
+    listInterest(){
+        this.db.ref(`interest/`).on("value", snap => {
+
+            const arrayInterest = [];
+
+            snap.forEach(interest => {
+
+                const obj = interest.val();
+                obj.id = interest.key;
+
+                console.log(obj);
+
+                arrayInterest.push(obj);
+            });
+
+            if(this.context.mounted) {
+                this.context.setState({
+                    dataFeed: this.sortByDate(arrayInterest),
+                });
+            }
+        });
+    }
+
+    removeListerners(){
+        this.db.ref(`interest`).off();
+    }
+
+    sortByDate(array){
+        array.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        return array;
+    }
+
+    clearState(){
+        if(this.context.mounted) {
+            this.context.setState({
+                dataFeed: []
+            });
+        }
+    }
+
+    initState(array){
+        this.context.setState({
+            dataFeed: array,
         });
     }
 }

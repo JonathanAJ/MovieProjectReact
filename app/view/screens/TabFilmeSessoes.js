@@ -10,15 +10,19 @@ import {
     Button,
     List,
     Switch,
-    Toast
+    Toast,
+    Item,
+    Input
 } from 'native-base';
 import Modal from 'react-native-modal'
+import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import {Row, Col, Grid } from "react-native-easy-grid/";
 import * as color from '../../assets/colors';
 import styles from '../../assets/styles';
 import {FilmeDAO} from "../../dao/FilmeDAO";
 import {InterestDAO} from "../../dao/InterestDAO";
 import firebase from "../../dao/Banco";
+import {Usuario} from "../../model/Usuario";
 
 const arraySessoes = [];
 
@@ -31,7 +35,8 @@ export class TabFilmeSessoes extends React.Component{
         this.filmeDao = new FilmeDAO(this);
         this.state = {
             dataSessoes : [],
-            isModalVisible: false
+            isModalVisible: false,
+            descriptionSession : ""
         };
     }
 
@@ -40,43 +45,53 @@ export class TabFilmeSessoes extends React.Component{
     }
 
     _clickInteresse = () => {
-        console.log(arraySessoes);
-        this._showModal();
-    };
-
-    _saveInterest = () => {
-        let msgToast;
 
         let count = 0;
         arraySessoes.forEach(obj =>{
             if(obj !== undefined)
                 count++;
         });
-        console.log('count', count);
 
-        if(count > 0){
-            const interest = {
-                userUID : firebase.auth().currentUser.uid,
-                userName : firebase.auth().currentUser.displayName,
-                userPhoto : firebase.auth().currentUser.photoURL,
-                movieName : this.filme.nome,
-                movieImage : this.filme.imagem,
-                arraySessionsID : arraySessoes
-            };
-            new InterestDAO(this).saveInterest(interest);
-            msgToast = 'Compartilhado com sucesso!'
-
-        }else{
-            msgToast = 'Você deve selecionar pelo menos uma sessão.';
+        if(count > 0) {
+            this._showModal();
         }
+        else{
+            Toast.show({
+                supportedOrientations: ['portrait','landscape'],
+                text: 'Você deve selecionar pelo menos uma sessão.',
+                position: 'bottom',
+                buttonText: 'Certo'
+            });
+        }
+    };
+
+    _saveInterest = () => {
+        const user = new Usuario();
+        user.uid = firebase.auth().currentUser.uid;
+        user.photoURL = firebase.auth().currentUser.photoURL;
+        user.displayName = firebase.auth().currentUser.displayName;
+        user.email = firebase.auth().currentUser.email;
+
+        const interest = {
+            movieName : this.filme.nome,
+            createdAt : new Date(),
+            descriptionSession : this.state.descriptionSession,
+            arraySessionsID : arraySessoes
+        };
+        new InterestDAO(this).saveInterest(user, interest);
+
+        this._hideModal();
+
+        this.setState({
+            descriptionSession : ""
+        });
 
         Toast.show({
             supportedOrientations: ['portrait','landscape'],
-            text: msgToast,
+            text: 'Compartilhado com sucesso!',
             position: 'bottom',
             buttonText: 'Certo'
         });
-        this._hideModal();
     };
 
     _modalSessao = () => {
@@ -87,9 +102,18 @@ export class TabFilmeSessoes extends React.Component{
                 padding: 16,
                 borderRadius: 5
             }}>
-                <Text style={{color: '#444', fontSize: 18}}>
-                    Você tem certeza disto?
+                <Text style={{color: '#444', fontSize: 18, fontWeight: 'bold'}}>
+                    Compartilhando
                 </Text>
+
+                <Item>
+                    <Icon style={{marginRight: 8}} size={15} color={color.darkPrimaryColor} name='pencil' />
+                    <Input
+                        multiline={true}
+                        onChangeText={(txt) => this.setState({descriptionSession : txt})}
+                        placeholder='Escreva algo sobre'/>
+                </Item>
+
                 <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
                     <Button
                         onPress={this._hideModal}
@@ -112,7 +136,7 @@ export class TabFilmeSessoes extends React.Component{
 
     render() {
         return (
-            <Grid>
+            <Grid style={{marginTop: 8}}>
                 <Row>
                     <List
                         dataArray={this.state.dataSessoes}
@@ -175,7 +199,7 @@ class SessaoList extends React.Component{
                     <Row
                         style={{
                             borderColor: '#bbb',
-                            borderTopWidth:0.5,
+                            // borderTopWidth:0.5,
                             borderBottomWidth: 0.5,
                             padding: 8,
                             paddingLeft:8,

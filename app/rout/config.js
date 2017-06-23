@@ -26,6 +26,7 @@ import { Filmes } from '../view/tabs/Filmes';
 //View Screens Navigation
 import { Chat } from '../view/screens/Chat';
 import { Filme } from '../view/screens/Filme';
+import {PerfilFriend} from "../view/screens/PerfilFriend";
 
 const TabPricipal = TabNavigator({
 	Home: {
@@ -55,15 +56,15 @@ const TabPricipal = TabNavigator({
 			)
 		})
 	},
-	Contatos: {
-		screen: Contatos,
-		navigationOptions : ({navigation}) => ({
-			title: 'Contatos',
-			tabBarIcon: ({ tintColor }) => (
-				<Icon name={'list'} size={20} color={tintColor} />
-			)
-		})
-	},
+	// Contatos: {
+	// 	screen: Contatos,
+	// 	navigationOptions : ({navigation}) => ({
+	// 		title: 'Contatos',
+	// 		tabBarIcon: ({ tintColor }) => (
+	// 			<Icon name={'list'} size={20} color={tintColor} />
+	// 		)
+	// 	})
+	// },
 	Perfil: {
 		screen: Perfil,
 		navigationOptions : ({navigation}) => ({
@@ -125,6 +126,13 @@ export const navigatorMain = StackNavigator({
 		screen: Filme,
 		navigationOptions : ({navigation}) => ({
 
+		}),
+	},
+	PerfilFriend: {
+		screen: PerfilFriend,
+		navigationOptions : ({navigation}) => ({
+            headerTintColor: color.darkPrimaryColor,
+            headerStyle: {backgroundColor: 'transparent'}
 		}),
 	}
 },

@@ -37,7 +37,7 @@ export class Splash extends Component {
     }
 
     componentWillMount(){
-        console.log('will mount splash');
+        //console.log('will mount splash');
         this.mounted = true;
         setTimeout(() =>{
             this.goScreen();
@@ -46,16 +46,16 @@ export class Splash extends Component {
 
     componentWillUnmount() {
         this.mounted = false;
-        console.log('will unmount splash');
+        //console.log('will unmount splash');
     }
 
     goScreen(){
         firebase.auth().onAuthStateChanged((userFirebase) => {
 
-            console.log('authchange');
+            //console.log('authchange');
 
             if (userFirebase) {
-                console.log('authchange true');
+                //console.log('authchange true');
                 const resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
@@ -64,7 +64,7 @@ export class Splash extends Component {
                 });
                 this.nav.dispatch(resetAction);
             }else{
-                console.log('authchange false');
+                //console.log('authchange false');
                 const resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [

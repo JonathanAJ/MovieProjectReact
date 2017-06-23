@@ -1,13 +1,9 @@
 'use-strict'
 
 import React, { Component } from 'react';
-import { Mensagem } from '../../components/Mensagem'
-import { UsuarioDAO } from '../../dao/UsuarioDAO';
-import { MensagemDAO } from '../../dao/MensagemDAO';
+import { ChatDAO } from '../../dao/ChatDAO';
 import { GiftedChat, Bubble, Composer, Send, InputToolbar } from 'react-native-gifted-chat';
 import firebase from '../../dao/Banco';
-
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 import {
   StyleSheet,
@@ -40,7 +36,7 @@ export class Chat extends Component {
 
 		this.mounted = false;
 
-		this.mensagemDAO = new MensagemDAO(this, this.userCurrent, this.userChat);
+		this.mensagemDAO = new ChatDAO(this, this.userCurrent, this.userChat);
 	}
 
 	static navigationOptions = ({navigation}) => ({
@@ -97,7 +93,7 @@ export class Chat extends Component {
     }
 
     componentWillUnmount(){
-        console.log('willUnmount Chat')
+        //console.log('willUnmount Chat')
         this.mensagemDAO.offListarMensagens();
         this.mounted = false;
     }

@@ -5,6 +5,7 @@ import { UsuarioDAO } from './UsuarioDAO';
 import {
   ListView
 } from 'react-native';
+import {Usuario} from "../model/Usuario";
 
 export class ConversaDAO{
 	
@@ -28,9 +29,9 @@ export class ConversaDAO{
 		this.db.ref('users/' + me.uid + '/my_chats').on('value', snap => {
 
 			this.clearState();
-			
+
 			snap.forEach(childSnapshot => {
-				
+
 				const key = childSnapshot.key;
 
 				this.db.ref('chats/' + key).once('value', obj => {
@@ -38,7 +39,7 @@ export class ConversaDAO{
 					let newObj = obj.val();
 					newObj.keyChat = key;
 					this.addArray(newObj);
-				});	
+				});
 			});
 		});
 	}
@@ -53,12 +54,12 @@ export class ConversaDAO{
             this.db.ref('chats/' + key).on('child_changed', snapshot => {
 				
 				const index = this.findIndexInList(key);
-				console.log("index", index);
-				console.log("objChanged", snapshot);
+				//console.log("index", index);
+				//console.log("objChanged", snapshot);
 
 				let arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
 
-				const obj = arrayOld[index];
+				let obj = arrayOld[index];
 
 				if(snapshot.key === 'lastMessage')
 					obj.lastMessage = snapshot.val();
@@ -89,18 +90,21 @@ export class ConversaDAO{
 	}
 
 	addArray(obj){
+		let usuario = new Usuario();
+		usuario = obj;
+
 		for (let keyMember in obj.members) {
 
 			if(keyMember !== this.me.uid){
-				obj.uid = keyMember;
-				obj.photoURL = obj.members[keyMember].photoURL;
-				obj.displayName = obj.members[keyMember].displayName;
+				usuario.uid = keyMember;
+				usuario.photoURL = obj.members[keyMember].photoURL;
+				usuario.displayName = obj.members[keyMember].displayName;
 			}
 		}
 
 		let arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
 
-		arrayOld.push(obj);
+		arrayOld.push(usuario);
 		arrayOld = this.sortByDate(arrayOld);
 
 		this.initState(arrayOld);
@@ -133,8 +137,6 @@ export class ConversaDAO{
 			});
 		}
 	}
-
-
 
     removeListeners(){
         const me = this.me;
