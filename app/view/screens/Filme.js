@@ -27,6 +27,8 @@ import firebase from "../../dao/Banco";
 
 import {TabFilmeSessoes} from "./TabFilmeSessoes";
 
+import styleBase from '../../assets/styles';
+
 export class Filme extends Component {
 
     constructor(props){
@@ -77,16 +79,24 @@ export class Filme extends Component {
                                 <Col style={{padding: 16, paddingTop: 16, paddingBottom: 0}}>
                                     <Row>
                                         <Badge info>
-                                            <Text>{filme.idade} anos</Text>
+                                            <Text style={styleBase.txtInvertNormal}>
+                                                {filme.idade} anos
+                                            </Text>
                                         </Badge>
                                         <Badge primary style={{marginLeft: 16}}>
-                                            <Text>{this.state.genero}</Text>
+                                            <Text style={styleBase.txtInvertNormal}>
+                                                {this.state.genero}
+                                            </Text>
                                         </Badge>
                                     </Row>
                                     <Col style={{marginTop: 16}}>
-                                        <H3>SINOPSE E DETALHES</H3>
+                                        <Text style={styleBase.txtLabelBig}>
+                                            SINOPSE E DETALHES
+                                        </Text>
                                         <Text style={{textAlign: "justify", marginTop: 16, marginBottom: 16}}>
-                                            {filme.sinopse}
+                                            <Text style={styleBase.txtLabelNormal}>
+                                                {filme.sinopse}
+                                            </Text>
                                         </Text>
                                     </Col>
                                 </Col>

@@ -9,11 +9,11 @@ import {
     Dimensions,
     Image,
     StatusBar,
-    Text,
+    Text
 } from 'react-native';
 
 import {
-    Button,
+    Button
 } from "native-base";
 
 import {Grid, Row, Col} from "react-native-easy-grid";
@@ -27,6 +27,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import IconLine from "react-native-vector-icons/SimpleLineIcons";
 
 import * as color from '../assets/colors';
+
+import styleBase from '../assets/styles';
 
 export class Login extends Component {
 
@@ -82,10 +84,14 @@ export class Login extends Component {
                             </Row>
                             <Col size={40} >
                                 <Text style={styles.txtTitleView}>
-                                    FILMES
+                                    <Text style={styleBase.txtInvertBigMedium}>
+                                        FILMES
+                                    </Text>
                                 </Text>
                                 <Text style={styles.txtView}>
-                                    Veja filmes em cartaz, conheça pessoas que curtam seus filmes e compartilhe suas preferências
+                                    <Text style={styleBase.txtInvertNormal}>
+                                        Veja filmes em cartaz, conheça pessoas que curtam seus filmes e compartilhe suas preferências
+                                    </Text>
                                 </Text>
                             </Col>
                         </Grid>
@@ -103,10 +109,14 @@ export class Login extends Component {
                             </Row>
                             <Col size={40} >
                                 <Text style={styles.txtTitleView}>
-                                    AMIZADES
+                                    <Text style={styleBase.txtInvertBigMedium}>
+                                        AMIZADES
+                                    </Text>
                                 </Text>
-                                <Text style={styles.txtView}>
-                                    Faça novas amizades, compartilhe sua pipoca e assista a bons filmes com pessoas diversas
+                                    <Text style={styles.txtView}>
+                                        <Text style={styleBase.txtInvertNormal}>
+                                        Faça novas amizades, compartilhe sua pipoca e assista a bons filmes com pessoas diversas
+                                    </Text>
                                 </Text>
                             </Col>
                         </Grid>
@@ -130,13 +140,19 @@ export class Login extends Component {
                                     title={""}
                                     style={{backgroundColor: color.primaryColor}}
                                     onPress={this._autenticar.bind(this)}>
-                                    <Icon name='facebook-square' size={20} color="white" />
-                                    <Text style={{marginLeft: 15,color:'white'}}>Entrar com Facebook</Text>
+                                    <Icon name='facebook-square' size={22} color="white" />
+                                    <Text style={{marginLeft: 16}}>
+                                        <Text style={styleBase.txtInvertNormal}>
+                                            Entrar com Facebook
+                                        </Text>
+                                    </Text>
                                 </Button>
                             </Row>
                             <Row size={15} style={{justifyContent: "center"}}>
                                 <Text style={{fontSize:12, color: "white", textAlign:"center", marginLeft:16, marginRight:16}}>
-                                    Ao logar, você concorda com nossos Termos de Serviço e Política de Privacidade.
+                                    <Text style={styleBase.txtInvertExtraSmall}>
+                                        Ao logar, você concorda com nossos Termos de Serviço e Política de Privacidade.
+                                    </Text>
                                 </Text>
                             </Row>
                         </Grid>
@@ -149,8 +165,6 @@ export class Login extends Component {
 
 const styles = StyleSheet.create({
     txtTitleView: {
-        fontSize: 22,
-        fontWeight: "bold",
         color: "white",
         textAlign:"center",
         margin: 16

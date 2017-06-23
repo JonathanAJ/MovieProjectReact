@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 
 import {
 	StyleSheet,
-	Text,
 	Image,
     TouchableNativeFeedback,
 	View,
@@ -15,11 +14,14 @@ import {formatDate} from '../rout/Util';
 import {
 	Grid,
 	Col,
-	Row
+	Row,
+    Text,
 } from 'native-base';
 
 import * as color from "../assets/colors";
 import {Usuario} from "../model/Usuario";
+
+import styleBase from "../assets/styles";
 
 export class SimpleList extends Component {
 
@@ -50,11 +52,11 @@ export class SimpleList extends Component {
 							source={{uri: this.user.photoURL}} />
 					</Col>
 					<Col size={70} style={styles.containerText}>
-						<Text style={styles.titulo} numberOfLines ={1}>{this.user.displayName}</Text>
-						<Text style={styles.subTitulo} numberOfLines ={1}>{this.description}</Text>
+						<Text style={styleBase.txtLabelNormal} numberOfLines ={1}>{this.user.displayName}</Text>
+						<Text style={styleBase.txtLabelSmall} numberOfLines ={1}>{this.description}</Text>
 					</Col>
 					<Col size={30} style={styles.containerData}>
-						<Text style={styles.subTitulo}>
+						<Text style={styleBase.txtLabelSmall}>
 							{formatDate(this.props.date)}
 						</Text>
 					</Col>

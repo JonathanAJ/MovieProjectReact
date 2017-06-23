@@ -14,14 +14,16 @@ import {
     Container,
     Content,
     Card,
-    Text,
     H3,
+    Text,
 	List,
 } from 'native-base';
 
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
 import * as color from '../../assets/colors';
+
+import styleBase from '../../assets/styles';
 
 export class Filmes extends Component {
 
@@ -75,10 +77,12 @@ class ListFilmes extends Component{
                                     source={{uri: filme.imagem}}/>
                             </Col>
                             <Col style={{padding: 8, marginBottom: 8}}>
-                                <Text style={{marginBottom: 16, fontSize: 16, fontWeight:'bold'}}>
-                                    {filme.nome}
+                                <Text style={{marginBottom: 8}}>
+                                    <Text style={styleBase.txtLabelNormal}>
+                                        {filme.nome}
+                                    </Text>
                                 </Text>
-                                <Text numberOfLines ={5}>
+                                <Text style={styleBase.txtLabelTiny} numberOfLines ={5}>
                                     {filme.sinopse}
                                 </Text>
                             </Col>

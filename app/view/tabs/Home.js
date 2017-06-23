@@ -22,6 +22,8 @@ import {InterestDAO} from "../../dao/InterestDAO";
 import {Usuario} from "../../model/Usuario";
 import firebase from '../../dao/Banco';
 
+import styleBase from "../../assets/styles";
+
 export class Home extends Component {
 
     constructor(props){
@@ -97,11 +99,11 @@ class FeedList extends Component{
                         </Col>
                         <Col style={styles.containerText}>
                             <Row>
-                                <Text style={{lineHeight: 24}}>
+                                <Text style={styleBase.txtLabelSmall}>
                                     <Text numberOfLines={2} style={styles.titulo}>
                                         {userFeed.displayName}
                                     </Text>
-                                    <Text numberOfLines={2} style={styles.titulo2}>
+                                    <Text numberOfLines={2}>
                                         {" tem interesse em assistir "}
                                     </Text>
                                     <Text numberOfLines={2} style={styles.titulo}>
@@ -111,13 +113,17 @@ class FeedList extends Component{
                             </Row>
                             <Row>
                                 <Row size={75}>
-                                    <Text style={styles.subTitulo}>
-                                        {dataFeed.descriptionSession}
+                                    <Text style={styleBase.txtLabelSmall}>
+                                        <Text style={styles.subTitulo}>
+                                            {dataFeed.descriptionSession}
+                                        </Text>
                                     </Text>
                                 </Row>
                                 <Row size={25} style={styles.containerData}>
-                                    <Text style={styles.subTitulo}>
-                                        {formatDate(dataFeed.createdAt)}
+                                    <Text style={styleBase.txtLabelSmall}>
+                                        <Text style={styles.subTitulo}>
+                                            {formatDate(dataFeed.createdAt)}
+                                        </Text>
                                     </Text>
                                 </Row>
                             </Row>
@@ -142,20 +148,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5
     },
     containerData : {
+        paddingTop: 4,
+        marginBottom: 16,
         justifyContent: "flex-end"
     },
     titulo : {
         color: color.accentColor,
-        fontWeight: 'bold',
-        fontSize : 14,
-    },
-    titulo2 : {
-        color: "#444",
-        fontSize : 14,
+        fontWeight: 'bold'
     },
     subTitulo : {
-        paddingTop: 4,
-        paddingBottom: 16,
         fontSize : 12,
     },
     imagemList : {

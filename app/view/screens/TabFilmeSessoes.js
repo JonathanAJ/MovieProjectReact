@@ -23,6 +23,7 @@ import {FilmeDAO} from "../../dao/FilmeDAO";
 import {InterestDAO} from "../../dao/InterestDAO";
 import firebase from "../../dao/Banco";
 import {Usuario} from "../../model/Usuario";
+import styleBase from '../../assets/styles';
 
 const arraySessoes = [];
 
@@ -102,13 +103,14 @@ export class TabFilmeSessoes extends React.Component{
                 padding: 16,
                 borderRadius: 5
             }}>
-                <Text style={{color: '#444', fontSize: 18, fontWeight: 'bold'}}>
+                <Text style={styleBase.txtLabelBig}>
                     Compartilhando
                 </Text>
 
                 <Item>
                     <Icon style={{marginRight: 8}} size={15} color={color.darkPrimaryColor} name='pencil' />
                     <Input
+                        style={styleBase.txtLabelNormal}
                         multiline={true}
                         onChangeText={(txt) => this.setState({descriptionSession : txt})}
                         placeholder='Escreva algo sobre'/>
@@ -151,7 +153,9 @@ export class TabFilmeSessoes extends React.Component{
                             height: 50,
                             backgroundColor: color.darkPrimaryColor
                         }} full dark>
-                        <Text>Tenho Interesse</Text>
+                        <Text style={styleBase.txtInvertNormal}>
+                            Tenho Interesse
+                        </Text>
                     </Button>
 
                     <Modal
@@ -199,15 +203,16 @@ class SessaoList extends React.Component{
                     <Row
                         style={{
                             borderColor: '#bbb',
-                            // borderTopWidth:0.5,
                             borderBottomWidth: 0.5,
                             padding: 8,
-                            paddingLeft:8,
+                            paddingLeft:8
                         }}>
                         <Switch value={this.state.valueSwitch}
                          onValueChange={this._valueSwitchChange}/>
-                        <Text style={{color: color.darkPrimaryColor, fontWeight: 'bold', paddingLeft: 8}}>
-                            {sessao.cinema.nome}
+                        <Text style={{paddingLeft: 8}}>
+                            <Text style={styleBase.txtLabelTiny} numberOfLines={1}>
+                                {sessao.cinema.nome}
+                            </Text>
                         </Text>
                     </Row>
                     <Row style={{alignItems: 'flex-start', padding: 16, paddingTop: 8}}>

@@ -9,6 +9,8 @@ import {
 	Text
 } from 'react-native';
 
+import styleBase from '../assets/styles';
+
 export class Mensagem extends Component {
 
 	constructor(props) {
@@ -34,7 +36,7 @@ export class Mensagem extends Component {
 				<View style={isMy ? {flex: 1} : {flex:0}}/>
 
 				<Text style={isMy ? style.me : style.you}>
-					<Text>
+					<Text style={styleBase.txtLabelNormal}>
 						{data.content}
 					</Text>
 				</Text>

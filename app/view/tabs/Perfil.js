@@ -16,6 +16,8 @@ import {
     H2,
 } from 'native-base';
 
+import styleBase from "../../assets/styles";
+
 import {
     StyleSheet,
     Image,
@@ -55,8 +57,12 @@ export class Perfil extends Component {
                   <Image
                       style={styles.imagemPerfil}
                       source={{uri: this.state.user.photoURL}}/>
-                  <H2>{this.state.user.displayName}</H2>
-                  <Text>{this.state.user.email}</Text>
+                  <Text style={styleBase.txtLabelBig}>
+                      {this.state.user.displayName}
+                  </Text>
+                  <Text style={styleBase.txtLabelNormal}>
+                    {this.state.user.email}
+                  </Text>
               </Col>
               <Row>
                   <Col>
@@ -65,7 +71,7 @@ export class Perfil extends Component {
                               <Icon name="bell" size={20} color={color.accentColor} />
                           </Left>
                           <Body>
-                          <Text>Notificações</Text>
+                          <Text style={styleBase.txtLabelNormal}>Notificações</Text>
                           </Body>
                           <Right style={{paddingLeft: 20}}>
                               <Switch  />
@@ -77,7 +83,7 @@ export class Perfil extends Component {
                               <Icon name="emotsmile" size={20} color={color.accentColor}  />
                           </Left>
                           <Body>
-                          <Text>Gerenciar Amigos</Text>
+                          <Text style={styleBase.txtLabelNormal}>Gerenciar Amigos</Text>
                           </Body>
                           <Right>
                               <Icon name="arrow-right" color={color.accentColor}  />
@@ -89,7 +95,7 @@ export class Perfil extends Component {
                               <Icon name="trash" size={20} color={color.accentColor}  />
                           </Left>
                           <Body>
-                          <Text>Excluir Conta</Text>
+                          <Text style={styleBase.txtLabelNormal}>Excluir Conta</Text>
                           </Body>
                           <Right>
                               <Icon name="arrow-right" color={color.accentColor}  />
@@ -101,7 +107,7 @@ export class Perfil extends Component {
                               <Icon name="info" size={20} color={color.accentColor}  />
                           </Left>
                           <Body>
-                          <Text>Sobre o App</Text>
+                          <Text style={styleBase.txtLabelNormal}>Sobre o App</Text>
                           </Body>
                           <Right>
                               <Icon name="arrow-right" color={color.accentColor}  />
@@ -112,7 +118,7 @@ export class Perfil extends Component {
                               <Icon name="logout" size={20} color={color.accentColor} />
                           </Left>
                           <Body>
-                          <Text>Sair</Text>
+                          <Text style={styleBase.txtLabelNormal}>Sair</Text>
                           </Body>
                       </ListItem>
                   </Col>

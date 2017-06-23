@@ -49,7 +49,10 @@ export class Chat extends Component {
 	      	{...props}
 	        wrapperStyle={{right: {backgroundColor: color.lightPrimaryColor},
 	        			   left: {backgroundColor: color.secondaryColor, marginLeft: 0}}}
-	        textStyle={{right: {color: '#444'}, left: {color: '#444'}}}/>
+	        textStyle={{
+	        	right: {color: '#444', fontFamily: 'Quicksand-Regular'},
+				left: {color: '#444', fontFamily: 'Quicksand-Regular'}
+	        }}/>
 	    );
 	}
 
