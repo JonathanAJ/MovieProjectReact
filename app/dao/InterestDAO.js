@@ -8,6 +8,7 @@ export class InterestDAO{
     constructor(context){
         this.db = firebase.database();
         this.context = context;
+        this.refInterest;
     }
 
     saveInterest(user: Usuario, {movieName, createdAt, descriptionSession, arraySessionsID}){
@@ -33,8 +34,10 @@ export class InterestDAO{
     }
 
     listInterest(){
-        this.db.ref(`interest/`).on("value", snap => {
+        this.refInterest = this.db.ref(`interest/`);
+        this.refInterest.on("value", snap => {
 
+            this.clearState();
             const arrayInterest = [];
 
             snap.forEach(interest => {
@@ -56,7 +59,7 @@ export class InterestDAO{
     }
 
     removeListerners(){
-        this.db.ref(`interest`).off();
+        this.refInterest.off();
     }
 
     sortByDate(array){
