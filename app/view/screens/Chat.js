@@ -39,10 +39,6 @@ export class Chat extends Component {
 		this.mensagemDAO = new ChatDAO(this, this.userCurrent, this.userChat);
 	}
 
-	static navigationOptions = ({navigation}) => ({
-		title : navigation.state.params.user.displayName,
-	});
-
 	renderBubble(props) {
 	    return (
 	      <Bubble

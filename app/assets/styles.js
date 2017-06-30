@@ -1,11 +1,32 @@
 import * as color from "./colors";
 
+import {
+    Dimensions
+} from 'react-native';
+
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
+
 export default {
     container:{
         margin: 16,
         marginTop: 8,
         marginBottom: 4,
         backgroundColor: color.backgroundColor
+    },
+    txtTitleToolbar:{
+        marginLeft: 8,
+        width: width,
+        fontSize: 18,
+        color: 'white',
+        fontFamily: 'Quicksand-Medium'
+    },
+    txtTitleToolbarCenter:{
+        width: width,
+        fontSize: 18,
+        color: 'white',
+        fontFamily: 'Quicksand-Medium',
+        textAlign: 'center'
     },
     txtInvertExtraSmall:{
         fontSize: 12,

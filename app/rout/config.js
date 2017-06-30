@@ -27,33 +27,53 @@ import { Filmes } from '../view/tabs/Filmes';
 import { Chat } from '../view/screens/Chat';
 import { Filme } from '../view/screens/Filme';
 import {PerfilFriend} from "../view/screens/PerfilFriend";
+import {Filtro} from "../view/screens/Filtro";
+
+import {
+    Text,
+    Header,
+    Body, Right, Button
+} from "native-base";
+
+import styleBase from "../assets/styles";
+import CardStackStyleInterpolator from "react-navigation/src/views/CardStackStyleInterpolator";
+import {TouchableNativeFeedback, View} from "react-native";
 
 const TabPricipal = TabNavigator({
 	Home: {
 		screen: Home,
 		navigationOptions : ({navigation}) => ({
-			title: 'Home',
 			tabBarIcon: ({ tintColor }) => (
 				<Icon name={'home'} size={20} color={tintColor} />
-			)
+			),
+            headerTitle:
+				<Text style={styleBase.txtTitleToolbarCenter}>
+					Home
+				</Text>
 		})
 	},
 	Conversas: {
 		screen: Conversas,
 		navigationOptions : ({navigation}) => ({
-			title: 'Conversas',
 			tabBarIcon: ({ tintColor }) => (
 				<Icon name={'bubbles'} size={20} color={tintColor} />
-			)
+			),
+            headerTitle:
+				<Text style={styleBase.txtTitleToolbarCenter}>
+					Conversas
+				</Text>
 		})
 	},
 	Filmes: {
 		screen: Filmes,
 		navigationOptions : ({navigation}) => ({
-			title: 'Filmes',
 			tabBarIcon: ({ tintColor }) => (
 				<Icon name={'film'} size={20} color={tintColor} />
-			)
+			),
+            headerTitle:
+				<Text style={styleBase.txtTitleToolbarCenter}>
+					Filmes
+				</Text>
 		})
 	},
 	// Contatos: {
@@ -68,10 +88,13 @@ const TabPricipal = TabNavigator({
 	Perfil: {
 		screen: Perfil,
 		navigationOptions : ({navigation}) => ({
-			title: 'Perfil',
 			tabBarIcon: ({ tintColor }) => (
 				<Icon name={'user'} size={20} color={tintColor} />
-			)
+			),
+            headerTitle:
+				<Text style={styleBase.txtTitleToolbarCenter}>
+					Perfil
+				</Text>
 		})
 	}
 },
@@ -91,11 +114,12 @@ const TabPricipal = TabNavigator({
 		style: {
 			height: 50,
 			backgroundColor: color.primaryColor,
+			elevation: 0
 		},
 	}
 });
 
-export const navigatorMain = StackNavigator({
+const navigator = StackNavigator({
 	Splash: {
 		screen: Splash,
 		headerMode: 'none',
@@ -113,32 +137,67 @@ export const navigatorMain = StackNavigator({
 	Main: {
 		screen: TabPricipal,
 		navigationOptions : ({navigation}) => ({
-			title: 'Boraver',
 		}),
 	},
 	Chat: {
 		screen: Chat,
 		navigationOptions : ({navigation}) => ({
-			
+            headerTitle:
+				<Text style={styleBase.txtTitleToolbar}>
+                    {navigation.state.params.user.displayName}
+				</Text>
 		}),
 	},
 	Filme: {
 		screen: Filme,
 		navigationOptions : ({navigation}) => ({
-
+            headerTitle:
+				<Text style={styleBase.txtTitleToolbar}>
+					{navigation.state.params.filme.nome}
+				</Text>
 		}),
 	},
 	PerfilFriend: {
 		screen: PerfilFriend,
 		navigationOptions : ({navigation}) => ({
             headerTintColor: color.darkPrimaryColor,
-            headerStyle: {backgroundColor: 'transparent'}
+            headerStyle: {backgroundColor: color.backgroundColor, elevation: 0}
 		}),
 	}
 },
 {
+	transitionConfig: () => ({
+        screenInterpolator: CardStackStyleInterpolator.forHorizontal,
+	}),
+    headerMode: 'float',
 	navigationOptions : ({navigation}) => ({
 		headerTintColor: 'white',
-		headerStyle: {backgroundColor: color.primaryColor}
+		headerStyle: {backgroundColor: color.primaryColor, elevation: 0}
 	})
 });
+
+const navigatorMain = StackNavigator({
+	Navigator: {
+		screen: navigator,
+		headerMode: 'none',
+		navigationOptions : ({navigation}) => ({
+			header: null
+		}),
+	},
+	Filtro: {
+		screen: Filtro,
+		navigationOptions : ({navigation}) => ({
+
+		}),
+	}
+},
+{
+	transitionConfig: () => ({
+        screenInterpolator: CardStackStyleInterpolator.forVertical,
+	}),
+	navigationOptions : ({navigation}) => ({
+        header: null
+	})
+});
+
+export default navigatorMain;

@@ -2,7 +2,7 @@
 
 import {AppRegistry} from 'react-native';
 
-import { navigatorMain } from './rout/config';
+import navigatorMain from './rout/config';
 
 export class AppMain{
 

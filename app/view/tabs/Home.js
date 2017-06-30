@@ -7,7 +7,7 @@ import {
     View,
     Image,
     StatusBar,
-    Text, TouchableOpacity
+    Text, TouchableOpacity, TouchableNativeFeedback
 } from 'react-native';
 
 import {
@@ -23,6 +23,7 @@ import {Usuario} from "../../model/Usuario";
 import firebase from '../../dao/Banco';
 
 import styleBase from "../../assets/styles";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 export class Home extends Component {
 
@@ -37,6 +38,23 @@ export class Home extends Component {
 
         this.interestDAO = new InterestDAO(this);
     }
+
+    static navigationOptions = ({navigation}) => ({
+        headerRight:
+            <TouchableNativeFeedback
+                background={TouchableNativeFeedback.Ripple('black', true)}
+                delayPressIn={0}
+                onPress={() => navigation.navigate('Filtro')}>
+                <View style={{
+                    height: 60,
+                    width: 60,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <Icon name='settings' size={20} color={'white'} />
+                </View>
+            </TouchableNativeFeedback>
+    });
 
     componentWillMount(){
         this.mounted = true;

@@ -38,14 +38,7 @@ export class PerfilFriend extends Component {
     };
 
     navigateChat = () => {
-        const resetAction = NavigationActions.reset({
-            index: 1,
-            actions: [
-                NavigationActions.navigate({ routeName : 'Main'}),
-                NavigationActions.navigate({ routeName : 'Chat', params : {user : this.user}})
-            ]
-        });
-        this.nav.dispatch(resetAction);
+        this.nav.navigate('Chat', {user : this.user});
     };
 
     render() {
@@ -53,7 +46,7 @@ export class PerfilFriend extends Component {
         const user = this.user;
 
         return (
-            <Grid>
+            <Grid style={{backgroundColor: color.backgroundColor}}>
                 <Row >
                     <Col style={{alignContent: 'center', alignItems: 'center'}}>
                         <Image

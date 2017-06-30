@@ -41,10 +41,6 @@ export class Filme extends Component {
         };
     }
 
-    static navigationOptions = ({navigation}) => ({
-        title : navigation.state.params.filme.nome,
-    });
-
     componentWillMount(){
 
         firebase.database().ref('rede_filmes/genero/'+this.filme.genero).once('value', snap => {
@@ -85,8 +81,8 @@ export class Filme extends Component {
                         heading="Filme"
                         textStyle={{color: 'white'}}
                         activeTextStyle={{color: 'white'}}
-                        tabStyle={{backgroundColor: color.primaryColor}}
-                        activeTabStyle={{backgroundColor: color.primaryColor}} >
+                        tabStyle={{backgroundColor: color.primaryColor, elevation: 0}}
+                        activeTabStyle={{backgroundColor: color.primaryColor, elevation: 0}} >
                         <Content>
                             <Grid>
                                 <Row>
@@ -126,7 +122,7 @@ export class Filme extends Component {
                         heading="Sessão"
                         textStyle={{color: 'white'}}
                         activeTextStyle={{color: 'white'}}
-                        tabStyle={{backgroundColor: color.primaryColor}}
+                        tabStyle={{backgroundColor: color.primaryColor, elevation: 0}}
                         activeTabStyle={{backgroundColor: color.primaryColor}}>
 
                         <TabFilmeSessoes {...this.props}/>
