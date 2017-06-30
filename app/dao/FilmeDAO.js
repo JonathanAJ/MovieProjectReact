@@ -35,6 +35,28 @@ export class FilmeDAO{
         });
     }
 
+    initListenerCinemasValue(){
+
+        this.db.ref('rede_filmes/cinema').once('value', snap => {
+
+            let array = [];
+
+            snap.forEach(childSnapshot => {
+
+                const key = childSnapshot.key;
+
+                let newObj = childSnapshot.val();
+                newObj.id = key;
+                array.push(newObj);
+            });
+            //console.log(array);
+
+            this.context.setState({
+                dataCinemas: array
+            });
+        });
+    }
+
     getSessoesValue(idFilme){
 
         this.db.ref('rede_filmes/filmes/' + idFilme + '/sessoes/').once('value', snap => {
