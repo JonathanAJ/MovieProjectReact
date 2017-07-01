@@ -91,10 +91,7 @@ const TabPricipal = TabNavigator({
 			tabBarIcon: ({ tintColor }) => (
 				<Icon name={'user'} size={20} color={tintColor} />
 			),
-            headerTitle:
-				<Text style={styleBase.txtTitleToolbarCenter}>
-					Perfil
-				</Text>
+            header: null
 		})
 	}
 },

@@ -12,10 +12,11 @@ export class UsuarioDAO{
 	}
 
 	saveUser(user){
-		this.db.ref("users/"+user.uid).update({
+		this.db.ref(`users/${user.uid}`).update({
 			displayName  : user.displayName,
 			email : user.email,
-			photoURL : user.photoURL
+			photoURL : user.photoURL,
+			status : '...'
 		});
 	}
 
