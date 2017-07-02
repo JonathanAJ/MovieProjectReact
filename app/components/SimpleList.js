@@ -38,6 +38,7 @@ export class SimpleList extends Component {
 	}
 
 	render() {
+		console.log(this.user);
 		return (
 		<TouchableNativeFeedback
 			useForeground={true}
@@ -76,7 +77,8 @@ const styles = StyleSheet.create({
 	container : {
 		paddingLeft: 16,
 		paddingTop: 16,
-		paddingRight: 16
+		paddingRight: 16,
+		backgroundColor: color.backgroundColor
 	},
     containerText : {
         borderBottomColor: '#bbb',

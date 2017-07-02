@@ -2,9 +2,6 @@
 
 import firebase from './Banco';
 import { UsuarioDAO } from './UsuarioDAO';
-import {
-  ListView
-} from 'react-native';
 import {Usuario} from "../model/Usuario";
 
 export class ConversaDAO{
@@ -13,7 +10,6 @@ export class ConversaDAO{
 		this.db = firebase.database();
 		this.context = context;
 		this.usuarioDAO = new UsuarioDAO(context);
-		this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.inicialQuery = false;
 		this.me = firebase.auth().currentUser;
 	}
@@ -26,7 +22,8 @@ export class ConversaDAO{
 	initListenerChatsValue(){
 		const me = this.me;
 
-		this.db.ref('users/' + me.uid + '/my_chats').on('value', snap => {
+		this.refChatsValue = this.db.ref('users/' + me.uid + '/my_chats');
+		this.refChatsValue.on('value', snap => {
 
 			this.clearState();
 
@@ -39,6 +36,8 @@ export class ConversaDAO{
 					let newObj = obj.val();
 					newObj.keyChat = key;
 					this.addArray(newObj);
+
+					// console.log(newObj);
 				});
 			});
 		});
@@ -47,7 +46,8 @@ export class ConversaDAO{
 	initListenerChatsChange(){
 		const me = this.me;
 
-        this.db.ref('users/' + me.uid + '/my_chats').on('child_added', snap => {
+		this.refChatsChange = this.db.ref('users/' + me.uid + '/my_chats');
+        this.refChatsChange.on('child_added', snap => {
 			
 			const key = snap.key;
 
@@ -57,7 +57,7 @@ export class ConversaDAO{
 				//console.log("index", index);
 				//console.log("objChanged", snapshot);
 
-				let arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
+				let arrayOld = this.context.state.dataConversas.slice(0);
 
 				let obj = arrayOld[index];
 
@@ -76,7 +76,7 @@ export class ConversaDAO{
 
 	findIndexInList(idKey){
 
-		const arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
+		const arrayOld = this.context.state.dataConversas.slice(0);
 		let index = -1;
 
 		arrayOld.forEach((obj, i) => {
@@ -102,11 +102,12 @@ export class ConversaDAO{
 			}
 		}
 
-		let arrayOld = this.context.state.dataConversas._dataBlob.s1.slice(0);
+		let arrayOld = this.context.state.dataConversas.slice(0);
 
 		arrayOld.push(usuario);
 		arrayOld = this.sortByDate(arrayOld);
 
+		console.log(arrayOld);
 		this.initState(arrayOld);
 	}
 
@@ -117,15 +118,11 @@ export class ConversaDAO{
 		return array;
 	}
 
-	clearArray(){
-		this.context.state.dataConversas._dataBlob.s1 = [];
-	}
-
 	initState(array){
 		this.clearState();
         if(this.context.mounted) {
             this.context.setState({
-                dataConversas: this.ds.cloneWithRows(array),
+                dataConversas: array
             });
         }
 	}
@@ -133,13 +130,13 @@ export class ConversaDAO{
 	clearState(){
 		if(this.context.mounted) {
 			this.context.setState({
-				dataConversas: this.ds.cloneWithRows([])
+				dataConversas: []
 			});
 		}
 	}
 
     removeListeners(){
-        const me = this.me;
-        this.db.ref('users/' + me.uid + '/my_chats').off();
+        this.refChatsValue.off();
+		this.refChatsChange.off();
     }
 }

@@ -5,8 +5,10 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  ListView,
+  FlatList,
 } from 'react-native';
+
+import Animation from 'lottie-react-native';
 
 import { ConversaDAO } from '../../dao/ConversaDAO';
 import { SimpleList } from '../../components/SimpleList';
@@ -19,9 +21,8 @@ export class Conversas extends PureComponent {
     super(props);
 
     this.nav = this.props.navigation;
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataConversas : ds.cloneWithRows([]),
+      dataConversas : [],
       isLoading : true,
     };
     this.mounted = false;
@@ -31,33 +32,48 @@ export class Conversas extends PureComponent {
 
   componentWillMount(){
       this.mounted = true;
-      //console.log('Conversas Will Mount');
       this.conversaDAO.initConversas();
+  }
+
+  componentDidUpdate(){
+    if(this.state.dataConversas.length === 0)
+      this.animation.play();
   }
 
   componentWillUnmount(){
       this.mounted = false;
-      //console.log('Conversas Will Unmount');
       this.conversaDAO.removeListeners();
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        
-        <StatusBar backgroundColor={color.darkPrimaryColor}/>
-
-        <ListView
-          enableEmptySections={true}
-          style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
-          dataSource={this.state.dataConversas}
-          renderRow={item => <SimpleList user={item}
-                                         nav={this.nav}
-                                         date={item.createdAt}
-                                         description={item.lastMessage} />}
+    console.log('data', this.state.dataConversas);
+    if(this.state.dataConversas.length === 0){
+      return(
+        <View style={styles.container}>
+          <Animation
+            ref={animation => {this.animation = animation;}}
+            style={{flex: 1, flexDirection: 'row', backgroundColor: color.primaryColor}}
+            loop={true}
+            source={require("../../assets/anim/mailsent.json")}
           />
-      </View>
-    );
+        </View>
+      );
+    }else{
+      return(
+        <View style={styles.container}>
+          <FlatList
+            style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
+            data={this.state.dataConversas}
+            keyExtractor={(item) => item.keyChat}
+            extraData={this.state}
+            renderItem={item => <SimpleList user={item.item}
+                                          nav={this.nav}
+                                          date={item.item.createdAt}
+                                          description={item.item.lastMessage} />}
+            />
+        </View>
+      );
+    }
   }
 }
 

@@ -70,7 +70,7 @@ export class Filtro extends Component {
 					<Row>
 						<FlatList
 							data={this.state.dataCinemas}
-							keyExtractor={(item) => item.id}
+							keyExtractor={(item) => item.keyChat}
 							renderItem={({item}) => <FiltroButton item={item} />}
 						/>
 					</Row>
