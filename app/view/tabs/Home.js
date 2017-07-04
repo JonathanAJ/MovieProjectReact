@@ -155,6 +155,7 @@ class FeedList extends Component{
         return null;*/
     }
 }
+
 const styles = StyleSheet.create({
     container : {
         paddingLeft: 16,

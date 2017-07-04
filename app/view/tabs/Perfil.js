@@ -48,7 +48,7 @@ export class Perfil extends Component {
         photoURL : this.user.photoURL,
         cover : "/",
         statusTxt : "",
-        status : "...",
+        status : undefined,
         isModalVisible: false,
     };
   }
@@ -87,7 +87,7 @@ export class Perfil extends Component {
                       onPress={this._showModal}>
                       <Text style={{marginBottom: 8, marginLeft: 16, marginRight: 16, textAlign: 'center'}}>
                           <Text style={styleBase.txtLabelNormal}>
-                              {this.state.status}
+                              {this.state.status === undefined?"Insira um status":this.state.status}
                           </Text>
                       </Text>
                   </TouchableOpacity>

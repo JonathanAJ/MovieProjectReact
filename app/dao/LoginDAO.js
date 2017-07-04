@@ -57,9 +57,7 @@ export class LoginDAO{
     autenticar(context){
         LoginManager.logInWithReadPermissions(['public_profile', "email", "user_friends", "user_likes"]).then(result => {
 
-            if (result.isCancelled) {
-
-            } else {
+            if (!result.isCancelled) {
                 /*
                  * Acessa o Token do Facebook gerado para logar-se no FIREBASE
                  */

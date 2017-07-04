@@ -98,6 +98,7 @@ const TabPricipal = TabNavigator({
 {
 	tabBarPosition: 'bottom',
 	lazy: true,
+	swipeEnabled: false,
 	tabBarOptions: {
 		showIcon: true,
 		showLabel: false,
