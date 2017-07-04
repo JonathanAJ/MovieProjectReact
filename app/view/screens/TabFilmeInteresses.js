@@ -27,6 +27,8 @@ import {InterestDAO} from '../../dao/InterestDAO';
 
 import Icon from "react-native-vector-icons/Ionicons";
 
+import AnimationScreenMessage from '../../components/AnimationScreenMessage';
+
 export class TabFilmeInteresses extends Component {
 
     constructor(props){
@@ -50,17 +52,29 @@ export class TabFilmeInteresses extends Component {
 
     render() {
 
-        return (
-            <Content>
-                <FlatList
-                    style={{flex: 1, backgroundColor: color.backgroundColor}}
-                    data={this.state.dataInterest}
-                    keyExtractor={(item) => item.id}
-                    extraData={this.state}
-                    renderItem={item => <MyInterestList interest={item.item} interestDAO={this.interestDAO} />}
-                    />
-            </Content>
-        );
+        if(this.state.dataInterest.length === 0){
+            const voltar = () => this.props.navigation.goBack();
+            return(
+                <AnimationScreenMessage
+                    animation={require("../../assets/anim/filmes.json")}
+                    message={"Você não tem interesses nesse filme. Não fique por fora, compartilhe agora mesmo!"}
+                    messageButton={"Ver outros Filmes"}
+                    buttonPress={voltar}
+                />
+            );
+        }else{
+            return (
+                <Content>
+                    <FlatList
+                        style={{flex: 1, backgroundColor: color.backgroundColor}}
+                        data={this.state.dataInterest}
+                        keyExtractor={(item) => item.id}
+                        extraData={this.state}
+                        renderItem={item => <MyInterestList interest={item.item} interestDAO={this.interestDAO} />}
+                        />
+                </Content>
+            );
+        }
     }
 }
 

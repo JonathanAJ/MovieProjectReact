@@ -102,20 +102,20 @@ class FeedList extends Component{
 
         const dataFeed = this.props.dataFeed;
         let userFeed = this.userFeed;
-/*
-        if(dataFeed.type === "interest"){*/
-
-            return(
-                <Grid style={styles.container}>
+        return(
+            <TouchableNativeFeedback
+                useForeground={true}
+                background={TouchableNativeFeedback.Ripple(color.primaryColor, false)}
+                delayPressIn={0}
+                onPress={this._openChat}>
+                <Grid pointerEvents='box-only' style={styles.container}>
                     <Row>
                         <Col style={{ width: 70 }}>
-                            <TouchableOpacity onPress={this._openChat}>
-                                <Image
-                                    style={styles.imagemList}
-                                    source={{uri: userFeed.photoURL}} />
-                            </TouchableOpacity>
+                            <Image
+                                style={styles.imagemList}
+                                source={{uri: userFeed.photoURL}} />
                         </Col>
-                        <Col style={styles.containerText}>
+                        <Col>
                             <Row>
                                 <Text style={styleBase.txtLabelSmall}>
                                     <Text numberOfLines={2} style={styles.titulo}>
@@ -129,30 +129,27 @@ class FeedList extends Component{
                                     </Text>
                                 </Text>
                             </Row>
-                            <Row>
-                                <Row size={75}>
-                                    <Text style={styleBase.txtLabelSmall}>
-                                        <Text style={styles.subTitulo}>
-                                            {dataFeed.descriptionSession}
-                                        </Text>
-                                    </Text>
-                                </Row>
-                                <Row size={25} style={styles.containerData}>
-                                    <Text style={styleBase.txtLabelSmall}>
-                                        <Text style={styles.subTitulo}>
-                                            {formatDate(dataFeed.createdAt)}
-                                        </Text>
-                                    </Text>
-                                </Row>
-                            </Row>
                         </Col>
                     </Row>
+                    <Row style={styles.containerText}>
+                        <Row size={75} style={{marginLeft: 24, paddingBottom: 8, paddingTop: 8}}>
+                            <Text style={styleBase.txtLabelNormal}>
+                                <Text >
+                                    {dataFeed.descriptionSession}
+                                </Text>
+                            </Text>
+                        </Row>
+                        <Row size={25} style={styles.containerData}>
+                            <Text style={styleBase.txtLabelSmall}>
+                                <Text style={styles.subTitulo}>
+                                    {formatDate(dataFeed.createdAt)}
+                                </Text>
+                            </Text>
+                        </Row>
+                    </Row>
                 </Grid>
-            );
-/*
-        }
-
-        return null;*/
+            </TouchableNativeFeedback>
+        );
     }
 }
 
@@ -167,8 +164,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5
     },
     containerData : {
-        paddingTop: 4,
-        marginBottom: 16,
+        paddingTop: 8,
+        paddingBottom: 8,
         justifyContent: "flex-end"
     },
     titulo : {

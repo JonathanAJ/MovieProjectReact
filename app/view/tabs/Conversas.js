@@ -21,6 +21,8 @@ import {
 
 import Animation from 'lottie-react-native';
 
+import AnimationScreenMessage from "../../components/AnimationScreenMessage";
+
 import { ConversaDAO } from '../../dao/ConversaDAO';
 import { SimpleList } from '../../components/SimpleList';
 
@@ -47,11 +49,6 @@ export class Conversas extends PureComponent {
       this.conversaDAO.initConversas();
   }
 
-  componentDidUpdate(){
-    if(this.state.dataConversas.length === 0)
-      this.animation.play();
-  }
-
   componentWillUnmount(){
       this.mounted = false;
       this.conversaDAO.removeListeners();
@@ -61,36 +58,12 @@ export class Conversas extends PureComponent {
     if(this.state.dataConversas.length === 0){
       const voltar = () => this.props.navigation.goBack();
       return(
-        <Grid style={{
-            backgroundColor: color.primaryColor,
-            alignItems: 'center'
-            }}>
-          <Row size={70}>
-            <Animation
-              ref={animation => {this.animation = animation;}}
-              style={{flex: 1, flexDirection: 'row', backgroundColor: color.primaryColor}}
-              loop={true}
-              source={require("../../assets/anim/mailsent.json")}
-            />
-          </Row>
-          <Row size={30}>
-            <Text style={{textAlign: 'center', margin: 16, marginTop: 0}}>
-              <Text style={styleBase.txtInvertNormal}>
-                Você não tem conversas. Comece agora procurando filmes do seu interesse.
-              </Text>
-            </Text>
-          </Row>
-          <Row style={{height: 70}}>
-            <Button
-              style={{marginLeft: 16, marginTop: 8, marginBottom: 8}}
-              onPress={voltar}
-              light bordered >
-              <Text style={styleBase.txtInvertExtraSmall}>
-                Ir para Timeline
-              </Text>
-            </Button>
-          </Row>
-        </Grid>
+        <AnimationScreenMessage
+          animation={require("../../assets/anim/mailsent.json")}
+          message={"Você não tem conversas. Comece agora procurando filmes do seu interesse."}
+          messageButton={"Ir para Timeline"}
+          buttonPress={voltar}
+          />
       );
     }else{
       return(

@@ -67,33 +67,43 @@ export class TabFilmeSessoes extends React.Component{
     };
 
     _saveInterest = () => {
-        const user = new Usuario();
-        user.uid = firebase.auth().currentUser.uid;
-        user.photoURL = firebase.auth().currentUser.photoURL;
-        user.displayName = firebase.auth().currentUser.displayName;
-        user.email = firebase.auth().currentUser.email;
 
-        const interest = {
-            movieId : this.filme.id,
-            movieName : this.filme.nome,
-            createdAt : new Date(),
-            descriptionSession : this.state.descriptionSession,
-            arraySessionsID : arraySessoes
-        };
-        new InterestDAO(this).saveInterest(user, interest);
+        if(this.state.descriptionSession !== ""){
+            const user = new Usuario();
+            user.uid = firebase.auth().currentUser.uid;
+            user.photoURL = firebase.auth().currentUser.photoURL;
+            user.displayName = firebase.auth().currentUser.displayName;
+            user.email = firebase.auth().currentUser.email;
 
-        this._hideModal();
+            const interest = {
+                movieId : this.filme.id,
+                movieName : this.filme.nome,
+                createdAt : new Date(),
+                descriptionSession : this.state.descriptionSession,
+                arraySessionsID : arraySessoes
+            };
+            new InterestDAO(this).saveInterest(user, interest);
 
-        this.setState({
-            descriptionSession : ""
-        });
+            this._hideModal();
 
-        Toast.show({
-            supportedOrientations: ['portrait','landscape'],
-            text: 'Compartilhado com sucesso!',
-            position: 'bottom',
-            buttonText: 'Certo'
-        });
+            this.setState({
+                descriptionSession : ""
+            });
+
+            Toast.show({
+                supportedOrientations: ['portrait','landscape'],
+                text: 'Compartilhado com sucesso!',
+                position: 'bottom',
+                buttonText: 'Ok'
+            });
+        }else{
+            Toast.show({
+                supportedOrientations: ['portrait','landscape'],
+                text: 'Você precisa dizer algo sobre!',
+                position: 'bottom',
+                buttonText: 'Ok'
+            });
+        }
     };
 
     _modalSessao = () => {
