@@ -6,7 +6,18 @@ import {
   StyleSheet,
   View,
   FlatList,
+  Text
 } from 'react-native';
+
+import {
+  Button
+} from 'native-base';
+
+import {
+  Grid,
+  Row,
+  Col
+} from 'react-native-easy-grid';
 
 import Animation from 'lottie-react-native';
 
@@ -14,6 +25,7 @@ import { ConversaDAO } from '../../dao/ConversaDAO';
 import { SimpleList } from '../../components/SimpleList';
 
 import * as color from '../../assets/colors';
+import styleBase from '../../assets/styles';
 
 export class Conversas extends PureComponent {
   
@@ -46,23 +58,44 @@ export class Conversas extends PureComponent {
   }
 
   render() {
-    console.log('data', this.state.dataConversas);
     if(this.state.dataConversas.length === 0){
+      const voltar = () => this.props.navigation.goBack();
       return(
-        <View style={styles.container}>
-          <Animation
-            ref={animation => {this.animation = animation;}}
-            style={{flex: 1, flexDirection: 'row', backgroundColor: color.primaryColor}}
-            loop={true}
-            source={require("../../assets/anim/mailsent.json")}
-          />
-        </View>
+        <Grid style={{
+            backgroundColor: color.primaryColor,
+            alignItems: 'center'
+            }}>
+          <Row size={70}>
+            <Animation
+              ref={animation => {this.animation = animation;}}
+              style={{flex: 1, flexDirection: 'row', backgroundColor: color.primaryColor}}
+              loop={true}
+              source={require("../../assets/anim/mailsent.json")}
+            />
+          </Row>
+          <Row size={30}>
+            <Text style={{textAlign: 'center', margin: 16, marginTop: 0}}>
+              <Text style={styleBase.txtInvertNormal}>
+                Você não tem conversas. Comece agora procurando filmes do seu interesse.
+              </Text>
+            </Text>
+          </Row>
+          <Row style={{height: 70}}>
+            <Button
+              style={{marginLeft: 16, marginTop: 8, marginBottom: 8}}
+              onPress={voltar}
+              light bordered >
+              <Text style={styleBase.txtInvertExtraSmall}>
+                Ir para Timeline
+              </Text>
+            </Button>
+          </Row>
+        </Grid>
       );
     }else{
       return(
-        <View style={styles.container}>
           <FlatList
-            style={{flex: 1, paddingBottom: 20, marginBottom: 2}}
+            style={{flex: 1, backgroundColor: color.backgroundColor}}
             data={this.state.dataConversas}
             keyExtractor={(item) => item.keyChat}
             extraData={this.state}
@@ -71,15 +104,7 @@ export class Conversas extends PureComponent {
                                           date={item.item.createdAt}
                                           description={item.item.lastMessage} />}
             />
-        </View>
       );
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: color.backgroundColor
-  },
-});

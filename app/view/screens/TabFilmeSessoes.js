@@ -74,6 +74,7 @@ export class TabFilmeSessoes extends React.Component{
         user.email = firebase.auth().currentUser.email;
 
         const interest = {
+            movieId : this.filme.id,
             movieName : this.filme.nome,
             createdAt : new Date(),
             descriptionSession : this.state.descriptionSession,

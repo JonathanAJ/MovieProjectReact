@@ -9,9 +9,10 @@ export class InterestDAO{
         this.db = firebase.database();
         this.context = context;
         this.refInterest;
+		this.me = firebase.auth().currentUser;
     }
 
-    saveInterest(user: Usuario, {movieName, createdAt, descriptionSession, arraySessionsID}){
+    saveInterest(user: Usuario, {movieId, movieName, createdAt, descriptionSession, arraySessionsID}){
 
         const keyInterest = this.db.ref('interest').push().key;
 
@@ -22,6 +23,7 @@ export class InterestDAO{
                 photoURL: user.photoURL,
                 email: user.email
             },
+            movieId,
             movieName,
             createdAt,
             descriptionSession,
@@ -60,6 +62,48 @@ export class InterestDAO{
 
     removeListerners(){
         this.refInterest.off();
+    }
+
+    listMyInterestByMovie(filmeId){
+        this.refMyInterest = this.db.ref(`users/${this.me.uid}/my_interest/`);
+        this.refMyInterest.on("value", snap => {
+    
+            const arrayInterest = [];
+
+            snap.forEach(interest => {
+
+                this.db.ref(`interest/${interest.key}/`).once("value", snap => {
+
+                    const interest = snap.val();
+                    
+                    console.log("interest", interest)
+
+                    if(interest.movieId === filmeId){
+                        interest.id = snap.key;
+                        arrayInterest.push(interest);
+                        
+                        this.context.setState({
+                            dataInterest: arrayInterest
+                        });
+                    }
+                });
+            });
+                        
+            this.context.setState({
+                dataInterest: arrayInterest
+            });
+        });
+    }
+
+    removeInterest(id){
+        console.log("removeu", id);
+
+        this.db.ref(`interest/${id}`).remove();
+        this.db.ref(`users/${this.me.uid}/my_interest/${id}`).remove();
+    }
+
+    removeListenerMyInterestByMovie(){
+        this.refMyInterest.off()
     }
 
     sortByDate(array){

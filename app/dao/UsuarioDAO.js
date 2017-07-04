@@ -15,8 +15,7 @@ export class UsuarioDAO{
 		this.db.ref(`users/${user.uid}`).update({
 			displayName  : user.displayName,
 			email : user.email,
-			photoURL : user.photoURL,
-			status : '...'
+			photoURL : user.photoURL
 		});
 	}
 

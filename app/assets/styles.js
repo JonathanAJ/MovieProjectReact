@@ -16,14 +16,14 @@ export default {
     },
     txtTitleToolbar:{
         marginLeft: 8,
-        width: width,
-        fontSize: 18,
+        marginRight: 8,
+        fontSize: 16,
         color: 'white',
         fontFamily: 'Quicksand-Medium'
     },
     txtTitleToolbarCenter:{
         width: width,
-        fontSize: 18,
+        fontSize: 16,
         color: 'white',
         fontFamily: 'Quicksand-Medium',
         textAlign: 'center'
