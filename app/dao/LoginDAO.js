@@ -54,6 +54,10 @@ export class LoginDAO{
         new GraphRequestManager().addRequest(coverMovie).start();
 	}
 
+    sincronizarFirebase(){
+        firebase.database().ref('/').keepSynced(true);
+    }
+
     autenticar(context){
         LoginManager.logInWithReadPermissions(['public_profile', "email", "user_friends", "user_likes"]).then(result => {
 
@@ -81,6 +85,8 @@ export class LoginDAO{
                         context.nav.dispatch(resetAction);
 
                         this.buscarPerfil();
+
+                        this.sincronizarFirebase();
 
                     }, error => {
 
