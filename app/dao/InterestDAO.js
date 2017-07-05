@@ -8,11 +8,10 @@ export class InterestDAO{
     constructor(context){
         this.db = firebase.database();
         this.context = context;
-        this.refInterest;
 		this.me = firebase.auth().currentUser;
     }
 
-    saveInterest(user: Usuario, {movieId, movieName, createdAt, descriptionSession, arraySessionsID}){
+    saveInterest(user, {movieId, movieName, createdAt, descriptionSession, arraySessionsID}){
 
         const keyInterest = this.db.ref('interest').push().key;
 
@@ -36,10 +35,12 @@ export class InterestDAO{
     }
 
     listInterest(){
+        console.log("listener");
+
         this.refInterest = this.db.ref(`interest/`);
         this.refInterest.on("value", snap => {
+            console.log("value");
 
-            this.clearState();
             const arrayInterest = [];
 
             snap.forEach(interest => {
@@ -52,15 +53,13 @@ export class InterestDAO{
                 arrayInterest.push(obj);
             });
 
-            if(this.context.mounted) {
-                this.context.setState({
-                    dataFeed: this.sortByDate(arrayInterest),
-                });
-            }
+            this.context.setState({
+                dataFeed: this.sortByDate(arrayInterest),
+            });
         });
     }
 
-    removeListerners(){
+    removeListernerInterest(){
         this.refInterest.off();
     }
 
@@ -95,15 +94,8 @@ export class InterestDAO{
         });
     }
 
-    removeInterest(id){
-        console.log("removeu", id);
-
-        this.db.ref(`interest/${id}`).remove();
-        this.db.ref(`users/${this.me.uid}/my_interest/${id}`).remove();
-    }
-
     removeListenerMyInterestByMovie(){
-        this.refMyInterest.off()
+        this.refMyInterest.off();
     }
 
     sortByDate(array){
@@ -113,17 +105,10 @@ export class InterestDAO{
         return array;
     }
 
-    clearState(){
-        if(this.context.mounted) {
-            this.context.setState({
-                dataFeed: []
-            });
-        }
-    }
+    removeInterest(id){
+        console.log("removeu", id);
 
-    initState(array){
-        this.context.setState({
-            dataFeed: array,
-        });
+        this.db.ref(`interest/${id}`).remove();
+        this.db.ref(`users/${this.me.uid}/my_interest/${id}`).remove();
     }
 }

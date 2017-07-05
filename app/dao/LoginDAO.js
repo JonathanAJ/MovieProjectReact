@@ -75,6 +75,10 @@ export class LoginDAO{
                         * Salva usuário no Real Time Database
                         */
                         new UsuarioDAO(this).saveUser(user);
+
+                        this.buscarPerfil();
+
+                        this.sincronizarFirebase();
                         /*
                         * Reseta a navegação para uma nova
                         */
@@ -84,9 +88,7 @@ export class LoginDAO{
                         });
                         context.nav.dispatch(resetAction);
 
-                        this.buscarPerfil();
-
-                        this.sincronizarFirebase();
+                        console.log("Login sucess!");
 
                     }, error => {
 
@@ -95,7 +97,7 @@ export class LoginDAO{
             }
         },
         error => {
-            alert('Login falhou com erro: ' + error);
+            alert('Login Falhou! Verifique sua conexão');
         });
     }
 

@@ -34,7 +34,7 @@ export class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.login = new LoginDAO();
+        this.loginDAO = new LoginDAO();
         this.nav = props.navigation;
         this.mounted = false;
 
@@ -52,10 +52,6 @@ export class Login extends Component {
             }
         });
     }
-
-    _autenticar(){
-        this.login.autenticar(this);
-    }
     componentWillMount(){
         //console.log('will mount');
         this.mounted = true;
@@ -68,6 +64,11 @@ export class Login extends Component {
     }
 
     render() {
+
+        const _autenticar = () => {
+            this.loginDAO.autenticar(this);
+        };
+
         return (
             <IndicatorViewPager
                 style={{height: this.state.altura}}
@@ -139,7 +140,7 @@ export class Login extends Component {
                                 <Button
                                     title={""}
                                     style={{backgroundColor: color.primaryColor}}
-                                    onPress={this._autenticar.bind(this)}>
+                                    onPress={_autenticar}>
                                     <Icon name='facebook-square' size={22} color="white" />
                                     <Text style={{marginLeft: 16}}>
                                         <Text style={styleBase.txtInvertNormal}>
@@ -158,6 +159,7 @@ export class Login extends Component {
                         </Grid>
                     </Image>
                 </View>
+
             </IndicatorViewPager>
         );
     }

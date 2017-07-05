@@ -2,6 +2,12 @@ package com.batepaporeact;
 
 import android.app.Application;
 
+// Firebase Modules
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; // Firebase Auth
+import io.invertase.firebase.crash.RNFirebaseCrashPackage; // Firebase Crash Reporting
+import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Realtime Database
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage; // Firebase Cloud Messaging
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -34,10 +40,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new LottiePackage(),
-            new VectorIconsPackage(),
+          new LottiePackage(),
+          new VectorIconsPackage(),
           new FBSDKPackage(mCallbackManager),
-          new RNFirebasePackage()
+          new RNFirebasePackage(),
+          // firebase packages modules
+          new RNFirebaseAuthPackage(),
+          new RNFirebaseCrashPackage(),
+          new RNFirebaseDatabasePackage(),
+          new RNFirebaseMessagingPackage()
       );
     }
   };

@@ -140,7 +140,7 @@ export class Perfil extends Component {
                                   <Icon name="arrow-right" color={color.accentColor}  />
                               </Right>
                           </ListItem>
-                          <ListItem icon onPress={this._sair.bind(this)}>
+                          <ListItem icon onPress={this._sair}>
                               <Left>
                                   <Icon name="logout" size={20} color={color.accentColor} />
                               </Left>
@@ -163,7 +163,7 @@ export class Perfil extends Component {
     );
   }
 
-    _sair(){
+    _sair = () => {
         new LoginDAO().sair(this.nav);
     }
 

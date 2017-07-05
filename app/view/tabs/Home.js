@@ -32,8 +32,7 @@ export class Home extends Component {
         this.nav = this.props.navigation;
 
         this.state = {
-            dataFeed: [],
-            mounted: false
+            dataFeed: []
         };
 
         this.interestDAO = new InterestDAO(this);
@@ -57,13 +56,11 @@ export class Home extends Component {
     });
 
     componentWillMount(){
-        this.mounted = true;
         this.interestDAO.listInterest();
     }
 
     componentWillUnmount(){
-        this.mounted = false;
-        this.interestDAO.removeListerners();
+        this.interestDAO.removeListernerInterest();
     }
 
     render() {

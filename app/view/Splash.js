@@ -37,8 +37,11 @@ export class Splash extends Component {
     }
 
     componentWillMount(){
-        //console.log('will mount splash');
+        console.log('will mount splash');
         this.mounted = true;
+    }
+
+    componentDidMount(){
         setTimeout(() =>{
             this.goScreen();
         }, 2000);
@@ -46,36 +49,32 @@ export class Splash extends Component {
 
     componentWillUnmount() {
         this.mounted = false;
-        //console.log('will unmount splash');
+    }
+
+    authListenerLogin = (userFirebase) => {
+        let routString;
+
+        if (userFirebase) {
+            console.log('authchange true');
+            routString = 'Main';
+        }else{
+            console.log('authchange false');
+            routString = 'Login';
+        }
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName : routString})
+            ]
+        });
+        this.nav.dispatch(resetAction);
     }
 
     goScreen(){
-        firebase.auth().onAuthStateChanged((userFirebase) => {
-
-            //console.log('authchange');
-
-            if (userFirebase) {
-                //console.log('authchange true');
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName : 'Main'})
-                    ]
-                });
-                this.nav.dispatch(resetAction);
-            }else{
-                //console.log('authchange false');
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName : 'Login'})
-                    ]
-                });
-                this.nav.dispatch(resetAction);
-            }
-
-        });
+        console.log(firebase.auth().currentUser);
+        this.authListenerLogin(firebase.auth().currentUser);
     }
+
 
     render() {
       return(

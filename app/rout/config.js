@@ -8,7 +8,7 @@ import {
 	TabNavigator
 } from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import * as color from '../assets/colors';
 
@@ -30,22 +30,27 @@ import {PerfilFriend} from "../view/screens/PerfilFriend";
 import {Filtro} from "../view/screens/Filtro";
 
 import {
-    Text,
-    Header,
-    Body, Right, Button
+    Text
 } from "native-base";
 
 import styleBase from "../assets/styles";
 import CardStackStyleInterpolator from "react-navigation/src/views/CardStackStyleInterpolator";
-import {TouchableNativeFeedback, View} from "react-native";
 
 const TabPricipal = TabNavigator({
 	Home: {
 		screen: Home,
 		navigationOptions : ({navigation}) => ({
-			tabBarIcon: ({ tintColor }) => (
-				<Icon name={'home'} size={20} color={tintColor} />
-			),
+			tabBarIcon: ({focused, tintColor }) => {
+				if(focused){
+					return (
+						<Ionicon name={'ios-home'} size={30} color={tintColor} />
+					);
+				}else{
+					return (
+						<Ionicon name={'ios-home-outline'} size={30} color={tintColor} />
+					);
+				}
+			},
             headerTitle:
 				<Text style={styleBase.txtTitleToolbarCenter}>
 					Home
@@ -55,9 +60,17 @@ const TabPricipal = TabNavigator({
 	Conversas: {
 		screen: Conversas,
 		navigationOptions : ({navigation}) => ({
-			tabBarIcon: ({ tintColor }) => (
-				<Icon name={'bubbles'} size={20} color={tintColor} />
-			),
+			tabBarIcon: ({focused, tintColor }) => {
+				if(focused){
+					return (
+						<Ionicon name={'ios-chatbubbles'} size={30} color={tintColor} />
+					);
+				}else{
+					return (
+						<Ionicon name={'ios-chatbubbles-outline'} size={30} color={tintColor} />
+					);
+				}
+			},
             headerTitle:
 				<Text style={styleBase.txtTitleToolbarCenter}>
 					Conversas
@@ -67,9 +80,17 @@ const TabPricipal = TabNavigator({
 	Filmes: {
 		screen: Filmes,
 		navigationOptions : ({navigation}) => ({
-			tabBarIcon: ({ tintColor }) => (
-				<Icon name={'film'} size={20} color={tintColor} />
-			),
+			tabBarIcon: ({focused, tintColor }) => {
+				if(focused){
+					return (
+						<Ionicon name={'ios-film'} size={30} color={tintColor} />
+					);
+				}else{
+					return (
+						<Ionicon name={'ios-film-outline'} size={30} color={tintColor} />
+					);
+				}
+			},
             headerTitle:
 				<Text style={styleBase.txtTitleToolbarCenter}>
 					Filmes
@@ -88,9 +109,17 @@ const TabPricipal = TabNavigator({
 	Perfil: {
 		screen: Perfil,
 		navigationOptions : ({navigation}) => ({
-			tabBarIcon: ({ tintColor }) => (
-				<Icon name={'user'} size={20} color={tintColor} />
-			),
+			tabBarIcon: ({focused, tintColor }) => {
+				if(focused){
+					return (
+						<Ionicon name={'ios-person'} size={35} color={tintColor} />
+					);
+				}else{
+					return (
+						<Ionicon name={'ios-person-outline'} size={35} color={tintColor} />
+					);
+				}
+			},
             header: null
 		})
 	}
@@ -99,18 +128,19 @@ const TabPricipal = TabNavigator({
 	tabBarPosition: 'bottom',
 	lazy: true,
 	swipeEnabled: false,
+	animationEnabled: false,
 	tabBarOptions: {
 		showIcon: true,
 		showLabel: false,
 		indicatorStyle: {
-			backgroundColor: "white"
+			backgroundColor: "transparent"
 		},
 		labelStyle: {
 			margin: 0,
 			fontSize: 8,
 		},
 		style: {
-			height: 50,
+			height: 48,
 			backgroundColor: color.primaryColor,
 			elevation: 0
 		},
