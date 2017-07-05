@@ -26,7 +26,7 @@ export class Filtro extends Component {
 
         this.state = {
             dataFilmes : [],
-            dataCinemas : []
+            // dataCinemas : []
         };
 
         this.filmeDAO = new FilmeDAO(this);
@@ -34,7 +34,7 @@ export class Filtro extends Component {
 
     componentWillMount(){
         this.filmeDAO.initListenerFilmesValue();
-        this.filmeDAO.initListenerCinemasValue();
+        // this.filmeDAO.initListenerCinemasValue();
     }
 
     render() {
@@ -46,6 +46,8 @@ export class Filtro extends Component {
 			params.context.setState({
 				filtro: undefined
 			});
+			
+			params.context.interestDAO.listInterest();
 
 			this.props.navigation.goBack();
 		};
@@ -57,7 +59,7 @@ export class Filtro extends Component {
 				</TouchableOpacity>
 				<Row style={{height: 1, alignSelf: "flex-end"}}>
 					<TouchableOpacity style={{height: 40}} onPress={limparFiltro}>
-						<Icon name="ios-trash-outline" size={40} color='white'/>
+						<Icon name="ios-trash-outline" size={30} color='white'/>
 					</TouchableOpacity>
 				</Row>
 				<Row style={{height: 1}}>
@@ -67,18 +69,19 @@ export class Filtro extends Component {
 						</Text>
 					</View>
 				</Row>
-				<Col style={{marginTop: 32}}>
+				<Col style={{marginTop: 50}}>
 					<Text style={styleBase.txtInvertNormal}>
 						Filmes
 					</Text>
 					<Row>
 						<FlatList
+							style={{marginTop: 16}}
 							data={this.state.dataFilmes}
 							keyExtractor={(item) => item.id}
 							renderItem={({item}) => <FiltroButton item={item} {...this.props} />}
 						/>
 					</Row>
-					<Text style={styleBase.txtInvertNormal}>
+					{/*<Text style={styleBase.txtInvertNormal}>
 						Cinemas
 					</Text>
 					<Row>
@@ -87,7 +90,7 @@ export class Filtro extends Component {
 							keyExtractor={(item) => item.id}
 							renderItem={({item}) => <FiltroButton item={item} {...this.props} />}
 						/>
-					</Row>
+					</Row>*/}
 				</Col>
 			</Grid>
         );
@@ -106,6 +109,8 @@ export class FiltroButton extends Component {
 			params.context.setState({
 				filtro: item
 			});
+			
+			params.context.interestDAO.listInterest(item);
 
 			this.props.navigation.goBack();
 		};

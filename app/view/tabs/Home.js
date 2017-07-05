@@ -69,12 +69,23 @@ export class Home extends Component {
     }
 
     render() {
+
+        
         return (
             <Container style={{backgroundColor: color.backgroundColor}}>
                 <StatusBar backgroundColor={color.darkPrimaryColor}/>
                 {
                     this.state.filtro?
-                        <Text>Filtro: {this.state.filtro.nome}</Text>:null
+                        <View style={{alignItems: 'center', padding: 4, backgroundColor: color.secondaryColor}}>
+                            <Text style={styleBase.txtLabelNormal}>
+                                {"Filtro: "}
+                                <Text style={styles.titulo}>
+                                    {this.state.filtro.nome}
+                                </Text>
+                            </Text>
+                        </View>
+                        :
+                        null
                 }
                 <List
                     dataArray={this.state.dataFeed}

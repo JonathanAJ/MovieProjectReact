@@ -1,7 +1,6 @@
 'use strict';
 
 import firebase from './Banco';
-import {Usuario} from "../model/Usuario";
 
 export class InterestDAO{
 
@@ -9,6 +8,7 @@ export class InterestDAO{
         this.db = firebase.database();
         this.context = context;
 		this.me = firebase.auth().currentUser;
+        this.refInterest = this.db.ref(`interest/`);
     }
 
     saveInterest(user, {movieId, movieName, createdAt, descriptionSession, arraySessionsID}){
@@ -34,60 +34,45 @@ export class InterestDAO{
         });
     }
 
-    listInterest(){
-        console.log("listener");
+    queryInterest = (snap) => {
+        console.log("value");
 
-        this.refInterest = this.db.ref(`interest/`);
+        const arrayInterest = [];
 
-        if(this.context.state.filtro == undefined){
-            this.refInterest.on("value", snap => {
-                console.log("value");
+        snap.forEach(interest => {
 
-                const arrayInterest = [];
+            const obj = interest.val();
+            obj.id = interest.key;
 
-                snap.forEach(interest => {
+            console.log(obj);
 
-                    const obj = interest.val();
-                    obj.id = interest.key;
+            arrayInterest.push(obj);
+        });
 
-                    console.log(obj);
+        this.context.setState({
+            dataFeed: this.sortByDate(arrayInterest),
+        });
+    };
 
-                    arrayInterest.push(obj);
-                });
+    listInterest(filtro){
+        console.log("filtro value", filtro);
 
-                this.context.setState({
-                    dataFeed: this.sortByDate(arrayInterest),
-                });
-            });
-        }
-        else{
-            this.db.ref(`interest/`)
-                    .child('movieId')
-                    .equalTo(this.context.state.filtro.id)
-                    .once("value", snap => {
-                console.log("value");
-
-                const arrayInterest = [];
-
-                snap.forEach(interest => {
-
-                    const obj = interest.val();
-                    obj.id = interest.key;
-
-                    console.log(obj);
-
-                    arrayInterest.push(obj);
-                });
-
-                this.context.setState({
-                    dataFeed: this.sortByDate(arrayInterest),
-                });
-            });
+        if(filtro === undefined){
+            this.removeListernerInterest();
+            this.refInterest.on("value", this.queryInterest);
+        
+        }else{
+            this.removeListernerInterest();
+            this.refInterest
+                    .orderByChild('movieId')
+                    .equalTo(filtro.id)
+                    .once("value", this.queryInterest);
         }
     }
 
     removeListernerInterest(){
-        this.refInterest.off();
+        if(this.refInterest)
+            this.refInterest.off("value", this.queryInterest);
     }
 
     listMyInterestByMovie(filmeId){
@@ -102,7 +87,7 @@ export class InterestDAO{
 
                     const interest = snap.val();
                     
-                    console.log("interest", interest)
+                    console.log("interest", interest);
 
                     if(interest.movieId === filmeId){
                         interest.id = snap.key;
