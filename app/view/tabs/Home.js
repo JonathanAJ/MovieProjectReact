@@ -25,6 +25,8 @@ import firebase from '../../dao/Banco';
 import styleBase from "../../assets/styles";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 
+let context = null;
+
 export class Home extends Component {
 
     constructor(props){
@@ -32,8 +34,11 @@ export class Home extends Component {
         this.nav = this.props.navigation;
 
         this.state = {
-            dataFeed: []
+            dataFeed: [],
+			filtro: undefined,
         };
+
+        context = this;
 
         this.interestDAO = new InterestDAO(this);
     }
@@ -43,7 +48,7 @@ export class Home extends Component {
             <TouchableNativeFeedback
                 background={TouchableNativeFeedback.Ripple('black', true)}
                 delayPressIn={0}
-                onPress={() => navigation.navigate('Filtro')}>
+                onPress={() => navigation.navigate('Filtro', {context : context})}>
                 <View style={{
                     height: 60,
                     width: 60,
@@ -67,6 +72,10 @@ export class Home extends Component {
         return (
             <Container style={{backgroundColor: color.backgroundColor}}>
                 <StatusBar backgroundColor={color.darkPrimaryColor}/>
+                {
+                    this.state.filtro?
+                        <Text>Filtro: {this.state.filtro.nome}</Text>:null
+                }
                 <List
                     dataArray={this.state.dataFeed}
                     renderRow={

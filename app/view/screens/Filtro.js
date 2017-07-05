@@ -39,15 +39,29 @@ export class Filtro extends Component {
 
     render() {
 
+		const { params } = this.props.navigation.state;
         const voltar = () => this.props.navigation.goBack();
+        const limparFiltro = () => {
+			
+			params.context.setState({
+				filtro: undefined
+			});
+
+			this.props.navigation.goBack();
+		};
 
         return (
 			<Grid style={{backgroundColor: color.primaryColor, paddingLeft:32, paddingRight:32}}>
 				<TouchableOpacity onPress={voltar}>
 					<Icon style={{marginTop: 8}} name="ios-close" size={40} color='white'/>
 				</TouchableOpacity>
-				<Row style={{height: 16}}>
-					<View style={{marginTop: 8}}>
+				<Row style={{height: 1, alignSelf: "flex-end"}}>
+					<TouchableOpacity style={{height: 40}} onPress={limparFiltro}>
+						<Icon name="ios-trash-outline" size={40} color='white'/>
+					</TouchableOpacity>
+				</Row>
+				<Row style={{height: 1}}>
+					<View>
 						<Text style={styleBase.txtInvertBigMedium}>
 							FILTROS
 						</Text>
@@ -61,7 +75,7 @@ export class Filtro extends Component {
 						<FlatList
 							data={this.state.dataFilmes}
 							keyExtractor={(item) => item.id}
-							renderItem={({item}) => <FiltroButton item={item} />}
+							renderItem={({item}) => <FiltroButton item={item} {...this.props} />}
 						/>
 					</Row>
 					<Text style={styleBase.txtInvertNormal}>
@@ -70,8 +84,8 @@ export class Filtro extends Component {
 					<Row>
 						<FlatList
 							data={this.state.dataCinemas}
-							keyExtractor={(item) => item.keyChat}
-							renderItem={({item}) => <FiltroButton item={item} />}
+							keyExtractor={(item) => item.id}
+							renderItem={({item}) => <FiltroButton item={item} {...this.props} />}
 						/>
 					</Row>
 				</Col>
@@ -83,10 +97,22 @@ export class Filtro extends Component {
 export class FiltroButton extends Component {
     render() {
 
+		const { params } = this.props.navigation.state;
+
 		const item = this.props.item;
+
+		const selectFiltro = () => {
+			
+			params.context.setState({
+				filtro: item
+			});
+
+			this.props.navigation.goBack();
+		};
 
         return (
 			<Button
+				onPress={selectFiltro}
 				style={{marginLeft: 16, marginTop: 8, marginBottom: 8}}
 				light bordered >
 				<Text style={styleBase.txtInvertExtraSmall}>

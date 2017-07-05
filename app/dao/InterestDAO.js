@@ -38,25 +38,52 @@ export class InterestDAO{
         console.log("listener");
 
         this.refInterest = this.db.ref(`interest/`);
-        this.refInterest.on("value", snap => {
-            console.log("value");
 
-            const arrayInterest = [];
+        if(this.context.state.filtro == undefined){
+            this.refInterest.on("value", snap => {
+                console.log("value");
 
-            snap.forEach(interest => {
+                const arrayInterest = [];
 
-                const obj = interest.val();
-                obj.id = interest.key;
+                snap.forEach(interest => {
 
-                console.log(obj);
+                    const obj = interest.val();
+                    obj.id = interest.key;
 
-                arrayInterest.push(obj);
+                    console.log(obj);
+
+                    arrayInterest.push(obj);
+                });
+
+                this.context.setState({
+                    dataFeed: this.sortByDate(arrayInterest),
+                });
             });
+        }
+        else{
+            this.db.ref(`interest/`)
+                    .child('movieId')
+                    .equalTo(this.context.state.filtro.id)
+                    .once("value", snap => {
+                console.log("value");
 
-            this.context.setState({
-                dataFeed: this.sortByDate(arrayInterest),
+                const arrayInterest = [];
+
+                snap.forEach(interest => {
+
+                    const obj = interest.val();
+                    obj.id = interest.key;
+
+                    console.log(obj);
+
+                    arrayInterest.push(obj);
+                });
+
+                this.context.setState({
+                    dataFeed: this.sortByDate(arrayInterest),
+                });
             });
-        });
+        }
     }
 
     removeListernerInterest(){
