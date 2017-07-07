@@ -46,7 +46,6 @@ export class Perfil extends Component {
 
     this.state = {
         photoURL : this.user.photoURL,
-        cover : "/",
         statusTxt : "",
         status : undefined,
         isModalVisible: false,
@@ -58,7 +57,6 @@ export class Perfil extends Component {
         const user = snap.val();
         this.setState({
             photoURL : user.photoLargeURL,
-            cover : user.cover,
             status : user.status
         });
     });
@@ -71,26 +69,27 @@ export class Perfil extends Component {
               <Grid>
                   <Image
                       style={{alignItems: 'center'}}
-                      blurRadius={10}
-                      source={{uri: this.state.cover}}>
+                      blurRadius={3}
+                      source={{uri: this.state.photoURL}}>
 
                       <Image
-                          style={styles.imagemPerfil}
-                          source={{uri: this.state.photoURL}}/>
+                        style={styles.imagemPerfil}
+                        source={{uri: this.state.photoURL}}/>
+
+                        <Text style={{textAlign: 'center'}}>
+                            <Text style={styleBase.txtInvertBig}>
+                                {this.user.displayName}
+                            </Text>
+                        </Text>
+                        <TouchableOpacity
+                            onPress={this._showModal}>
+                            <Text style={{marginBottom: 16, marginLeft: 16, marginRight: 16, textAlign: 'center'}}>
+                                <Text style={styleBase.txtInvertNormal}>
+                                    {this.state.status === undefined?"Insira um status":this.state.status}
+                                </Text>
+                            </Text>
+                        </TouchableOpacity>
                   </Image>
-                  <Text style={{marginTop: 8, textAlign: 'center'}}>
-                      <Text style={styleBase.txtLabelBig}>
-                          {this.user.displayName}
-                      </Text>
-                  </Text>
-                  <TouchableOpacity
-                      onPress={this._showModal}>
-                      <Text style={{marginBottom: 8, marginLeft: 16, marginRight: 16, textAlign: 'center'}}>
-                          <Text style={styleBase.txtLabelNormal}>
-                              {this.state.status === undefined?"Insira um status":this.state.status}
-                          </Text>
-                      </Text>
-                  </TouchableOpacity>
                   <Row>
                       <Col>
                           <ListItem icon>
@@ -234,10 +233,10 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   imagemPerfil : {
-    marginTop: 16,
-    marginBottom: 16,
-    width: 150,
-    height: 150,
+    marginTop: 50,
+    marginBottom: 30,
+    width: 100,
+    height: 100,
     borderRadius: 100
   }
 });
