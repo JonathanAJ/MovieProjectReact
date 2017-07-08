@@ -100,7 +100,7 @@ export class Chat extends Component {
 	render() {
 		return (
 		  <View style={style.container}>
-		    <StatusBar backgroundColor={color.darkPrimaryColor}/>
+		    <StatusBar backgroundColor={color.darkPrimaryColor} translucent={false}/>
 		    <GiftedChat
 		    	renderBubble={this.renderBubble}
 		    	renderComposer={this.renderComposer}

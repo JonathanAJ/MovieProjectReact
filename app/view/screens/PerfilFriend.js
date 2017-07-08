@@ -5,7 +5,9 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    // Text
+    Dimensions,
+    StatusBar,
+    TouchableOpacity
 } from 'react-native';
 
 import {
@@ -16,21 +18,39 @@ import {
 
 import{
     Button,
-    Text
+    Text,
+    Spinner
 } from "native-base";
 
 import * as color from "../../assets/colors";
 import stylesBase from "../../assets/styles";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {RoundIconButton} from "../../components/RoundIconButton";
 import { NavigationActions } from 'react-navigation';
+
+import {UsuarioDAO} from '../../dao/UsuarioDAO';
 
 export class PerfilFriend extends Component {
 
     constructor(props) {
         super(props);
-        this.user = this.props.navigation.state.params.user;
         this.nav = this.props.navigation;
+
+        this.user = this.props.navigation.state.params.user;
+
+        this.state = {
+            user : this.user
+        }
+    }
+
+    componentWillMount(){
+        UsuarioDAO.listUserById(this.user.uid, (user) =>{
+            console.log(user);
+            this.setState({
+                user : user
+            });
+        });
     }
 
     navigateBack = () => {
@@ -42,42 +62,57 @@ export class PerfilFriend extends Component {
     };
 
     render() {
-
-        const user = this.user;
+        
+        const voltar = () => this.props.navigation.goBack();
+        const user = this.state.user;
 
         return (
-            <Grid style={{backgroundColor: color.backgroundColor}}>
-                <Row >
-                    <Col style={{alignContent: 'center', alignItems: 'center'}}>
-                        <Image
-                            style={styles.imagemPerfil}
-                            source={{uri: user.photoURL}}/>
-                        <Text style={stylesBase.txtLabelBig}>
-                            {user.displayName}
-                        </Text>
-                        <Text style={stylesBase.txtLabelNormal}>
-                            {user.displayName}
-                        </Text>
-                    </Col>
-                </Row>
-                <Row style={{alignItems: 'flex-end'}}>
-                    <Col style={{alignItems: 'flex-end'}}>
-                        <RoundIconButton
-                            onPress={this.navigateBack}
-                            colorRipple="red"
-                            icon={<Icon name="dislike" color="red" size={30} />}
-                        />
-                    </Col>
-                    <Col style={{alignItems: 'flex-start'}}>
-                        <RoundIconButton
-                            onPress={this.navigateChat}
-                            colorRipple="green"
-                            icon={<Icon name="like" color="green" size={30} />}
-                        />
-                    </Col>
-                </Row>
 
-            </Grid>
+            <Image
+                style={{flex: 1, width: Dimensions.get("window").width}}
+                source={{uri:  user.photoLargeURL ? user.photoLargeURL : user.photoURL}}
+                blurRadius={3}
+                resizeMode="cover">
+
+                <StatusBar backgroundColor={'transparent'} translucent={true}/>
+                
+                <TouchableOpacity
+                    style={{marginLeft: 24, marginTop: 24}}
+                    onPress={voltar}>
+                    <Ionicons style={{marginTop: 8}} name="ios-close" size={40} color='white'/>
+                </TouchableOpacity>
+                <Grid>
+                    <Row >
+                        <Col style={{alignContent: 'center', alignItems: 'center'}}>
+                            <Image
+                                style={styles.imagemPerfil}
+                                source={{uri: user.photoLargeURL ? user.photoLargeURL : user.photoURL}}/>
+                            <Text style={stylesBase.txtInvertBig}>
+                                {user.displayName}
+                            </Text>
+                            <Text style={stylesBase.txtInvertNormal}>
+                                {user.status}
+                            </Text>
+                        </Col>
+                    </Row>
+                    <Row style={{alignItems: 'flex-end'}}>
+                        <Col style={{alignItems: 'flex-end'}}>
+                            <RoundIconButton
+                                onPress={this.navigateBack}
+                                color="white"
+                                icon={<Icon name="dislike" color="red" size={30} />}
+                            />
+                        </Col>
+                        <Col style={{alignItems: 'flex-start'}}>
+                            <RoundIconButton
+                                onPress={this.navigateChat}
+                                icon={<Icon name="like" color="green" size={30} />}
+                            />
+                        </Col>
+                    </Row>
+
+                </Grid>
+            </Image>
         );
     }
 }
@@ -87,6 +122,8 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 100,
-        marginBottom: 16
+        marginBottom: 16,
+        borderColor: 'white',
+        borderWidth: 1
     }
 });

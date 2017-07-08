@@ -188,8 +188,7 @@ const navigator = StackNavigator({
 	PerfilFriend: {
 		screen: PerfilFriend,
 		navigationOptions : ({navigation}) => ({
-            headerTintColor: color.darkPrimaryColor,
-            headerStyle: {backgroundColor: color.backgroundColor, elevation: 0}
+			header: null
 		}),
 	}
 },

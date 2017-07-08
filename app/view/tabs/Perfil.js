@@ -81,6 +81,7 @@ export class Perfil extends Component {
                                 {this.user.displayName}
                             </Text>
                         </Text>
+                        
                         <TouchableOpacity
                             onPress={this._showModal}>
                             <Text style={{marginBottom: 16, marginLeft: 16, marginRight: 16, textAlign: 'center'}}>
@@ -237,6 +238,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 100,
     height: 100,
-    borderRadius: 100
+    borderRadius: 100,
+    borderColor: 'white',
+    borderWidth: 1
   }
 });

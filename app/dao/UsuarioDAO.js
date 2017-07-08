@@ -39,10 +39,8 @@ export class UsuarioDAO{
 		});
 	}
 
-
-	listUserById(id, callback){
-
-		this.refUsers.child(id).once('value', snapshot => {
+	static listUserById(id, callback){
+		firebase.database().ref(`users/${id}`).once('value', snapshot => {
 
 			const key = snapshot.key;
 			const value = snapshot.val();

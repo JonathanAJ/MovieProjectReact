@@ -12,7 +12,8 @@ import {
 
 import {
     Container,
-    List
+    List,
+    Spinner
 } from 'native-base';
 
 import * as color from '../../assets/colors';
@@ -73,7 +74,7 @@ export class Home extends Component {
         
         return (
             <Container style={{backgroundColor: color.backgroundColor}}>
-                <StatusBar backgroundColor={color.darkPrimaryColor}/>
+    		    <StatusBar backgroundColor={color.darkPrimaryColor} translucent={false}/>
                 {
                     this.state.filtro?
                         <View style={{alignItems: 'center', padding: 4, backgroundColor: color.secondaryColor}}>
@@ -87,13 +88,18 @@ export class Home extends Component {
                         :
                         null
                 }
-                <List
-                    dataArray={this.state.dataFeed}
-                    renderRow={
-                        (dataFeed, sectionID, rowID) => <FeedList dataFeed={dataFeed}
-                                                                  index={rowID}
-                                                                  nav={this.nav}/>
-                    } />
+                {
+                    this.state.dataFeed.length === 0 ?
+                        <Spinner color={color.accentColor}/>
+                        :
+                        <List
+                            dataArray={this.state.dataFeed}
+                            renderRow={
+                                (dataFeed, sectionID, rowID) => <FeedList dataFeed={dataFeed}
+                                                                        index={rowID}
+                                                                        nav={this.nav}/>
+                            } />
+                }
             </Container>
         );
     }
@@ -151,7 +157,7 @@ class FeedList extends Component{
                     <Row style={styles.containerText}>
                         <Row size={75} style={{marginLeft: 24, paddingBottom: 8, paddingTop: 8}}>
                             <Text style={styleBase.txtLabelNormal}>
-                                <Text >
+                                <Text>
                                     {dataFeed.descriptionSession}
                                 </Text>
                             </Text>

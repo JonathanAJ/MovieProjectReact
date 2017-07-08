@@ -57,9 +57,14 @@ export class InterestDAO{
     listInterest(filtro){
         console.log("filtro value", filtro);
 
+        this.context.setState({
+            dataFeed: [],
+        });
+
         if(filtro === undefined){
             this.removeListernerInterest();
-            this.refInterest.on("value", this.queryInterest);
+            this.refInterest
+                    .on("value", this.queryInterest);
         
         }else{
             this.removeListernerInterest();
