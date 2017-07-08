@@ -34,9 +34,10 @@
           
           <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" />
 
-          <provider android:authorities="com.facebook.app.FacebookContentProvider421249038244314"
+          <provider
+                android:authorities="com.facebook.app.FacebookContentProvider421249038244314"
                 android:name="com.facebook.FacebookContentProvider"
                 android:exported="true" />
 
