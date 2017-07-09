@@ -39,6 +39,10 @@ export class InterestDAO{
 
         const arrayInterest = [];
 
+        this.context.setState({
+            dataFeed: arrayInterest,
+        });
+
         snap.forEach(interest => {
 
             const obj = interest.val();
@@ -56,10 +60,6 @@ export class InterestDAO{
 
     listInterest(filtro){
         console.log("filtro value", filtro);
-
-        this.context.setState({
-            dataFeed: [],
-        });
 
         if(filtro === undefined){
             this.removeListernerInterest();

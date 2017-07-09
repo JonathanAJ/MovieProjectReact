@@ -5,6 +5,7 @@ export class Usuario{
 		this._photoURL = '';
 		this._displayName = '';
 		this._email = '';
+        this._photoLargeURL = '';
 	}
 
     get uid() {
@@ -37,5 +38,13 @@ export class Usuario{
 
     set email(value) {
         this._email = value;
+    }
+
+    get photoLargeURL() {
+        return this._photoLargeURL;
+    }
+
+    set photoLargeURL(value){
+        this._photoLargeURL = value;
     }
 }

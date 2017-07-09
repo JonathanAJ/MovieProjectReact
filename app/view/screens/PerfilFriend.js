@@ -7,7 +7,9 @@ import {
     Image,
     Dimensions,
     StatusBar,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList,
+    View
 } from 'react-native';
 
 import {
@@ -23,7 +25,7 @@ import{
 } from "native-base";
 
 import * as color from "../../assets/colors";
-import stylesBase from "../../assets/styles";
+import styleBase from "../../assets/styles";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {RoundIconButton} from "../../components/RoundIconButton";
@@ -31,16 +33,21 @@ import { NavigationActions } from 'react-navigation';
 
 import {UsuarioDAO} from '../../dao/UsuarioDAO';
 
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+import fontelloConfig from '../../assets/customIcon/config_pop_light.json';
+const IconCustom = createIconSetFromFontello(fontelloConfig);
+
 export class PerfilFriend extends Component {
 
     constructor(props) {
         super(props);
+
         this.nav = this.props.navigation;
 
         this.user = this.props.navigation.state.params.user;
 
         this.state = {
-            user : this.user
+            user : this.user,
         }
     }
 
@@ -75,44 +82,77 @@ export class PerfilFriend extends Component {
                 resizeMode="cover">
 
                 <StatusBar backgroundColor={'transparent'} translucent={true}/>
-                
-                <TouchableOpacity
-                    style={{marginLeft: 24, marginTop: 24}}
-                    onPress={voltar}>
-                    <Ionicons style={{marginTop: 8}} name="ios-close" size={40} color='white'/>
-                </TouchableOpacity>
                 <Grid>
-                    <Row >
-                        <Col style={{alignContent: 'center', alignItems: 'center'}}>
-                            <Image
-                                style={styles.imagemPerfil}
-                                source={{uri: user.photoLargeURL ? user.photoLargeURL : user.photoURL}}/>
-                            <Text style={stylesBase.txtInvertBig}>
-                                {user.displayName}
+                
+                    <TouchableOpacity
+                        style={{marginLeft: 24, marginTop: 24}}
+                        onPress={voltar}>
+                        <Ionicons style={{marginTop: 8}} name="ios-close" size={40} color='white'/>
+                    </TouchableOpacity>
+                    
+                    <View style={{alignContent: 'center', alignItems: 'center'}}>
+                        <Image
+                            style={styles.imagemPerfil}
+                            source={{uri: user.photoLargeURL ? user.photoLargeURL : user.photoURL}}/>
+                        
+                        <Text style={styleBase.txtInvertBig}>
+                            {user.displayName}
+                        </Text>
+
+                        <Text style={styleBase.txtInvertNormal}>
+                            {user.status}
+                        </Text>
+                    
+                        <Text style={{marginLeft: 8, marginTop: 24}}>
+                            <Text style={styleBase.txtInvertExtraSmall}>
+                                CURTIDAS
                             </Text>
-                            <Text style={stylesBase.txtInvertNormal}>
-                                {user.status}
-                            </Text>
-                        </Col>
-                    </Row>
-                    <Row style={{alignItems: 'flex-end'}}>
+                        </Text>
+                    </View>
+
+                    <FlatList
+                        data={user.movies ? user.movies.data : []}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({item}) => <ListButton item={item} {...this.props} />}
+                    />
+
+                    <Row style={{height: 80, alignItems: 'flex-end'}}>
                         <Col style={{alignItems: 'flex-end'}}>
                             <RoundIconButton
                                 onPress={this.navigateBack}
                                 color="white"
-                                icon={<Icon name="dislike" color="red" size={30} />}
+                                icon={<IconCustom name="flashlight" color="red" size={30} />}
                             />
                         </Col>
                         <Col style={{alignItems: 'flex-start'}}>
                             <RoundIconButton
                                 onPress={this.navigateChat}
-                                icon={<Icon name="like" color="green" size={30} />}
+                                icon={<IconCustom name="popcorn" color="green" size={30} />}
                             />
                         </Col>
                     </Row>
-
                 </Grid>
             </Image>
+        );
+    }
+}
+
+export class ListButton extends Component {
+    render() {
+
+		const item = this.props.item;
+
+        return (
+            <View style={{alignSelf: 'center'}}>
+                <Button
+                    style={{marginLeft: 16, marginTop: 8, marginBottom: 8}}
+                    light bordered >
+                    <Text style={styleBase.txtInvertExtraSmall}>
+                        {item.name}
+                    </Text>
+                </Button>
+            </View>
+
         );
     }
 }
@@ -122,7 +162,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 100,
-        marginBottom: 16,
+        marginBottom: 4,
         borderColor: 'white',
         borderWidth: 1
     }
