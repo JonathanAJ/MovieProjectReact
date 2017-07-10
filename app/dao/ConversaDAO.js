@@ -32,12 +32,15 @@ export class ConversaDAO{
 				const key = childSnapshot.key;
 
 				this.db.ref('chats/' + key).once('value', obj => {
+					
+					if(obj.val()){
+						
+						const newObj = obj.val();
+						newObj.keyChat = key;
+						this.addArray(newObj);
 
-					let newObj = obj.val();
-					newObj.keyChat = key;
-					this.addArray(newObj);
-
-					// console.log(newObj);
+						console.log(newObj);
+					}
 				});
 			});
 		});
@@ -53,23 +56,26 @@ export class ConversaDAO{
 
             this.db.ref('chats/' + key).on('child_changed', snapshot => {
 				
-				const index = this.findIndexInList(key);
-				//console.log("index", index);
-				//console.log("objChanged", snapshot);
+				if(snapshot.val()){
 
-				let arrayOld = this.context.state.dataConversas.slice(0);
+					const index = this.findIndexInList(key);
+					//console.log("index", index);
+					//console.log("objChanged", snapshot);
 
-				let obj = arrayOld[index];
+					let arrayOld = this.context.state.dataConversas.slice(0);
 
-				if(snapshot.key === 'lastMessage')
-					obj.lastMessage = snapshot.val();
-				else if(snapshot.key === 'createdAt')
-					obj.createdAt = snapshot.val();
+					const obj = arrayOld[index];
 
-				arrayOld[index] = obj;
-				arrayOld = this.sortByDate(arrayOld);
-				
-				this.initState(arrayOld);
+					if(snapshot.key === 'lastMessage')
+						obj.lastMessage = snapshot.val();
+					else if(snapshot.key === 'createdAt')
+						obj.createdAt = snapshot.val();
+
+					arrayOld[index] = obj;
+					arrayOld = this.sortByDate(arrayOld);
+					
+					this.initState(arrayOld);
+				}
 			});
 		});
 	}
@@ -90,8 +96,7 @@ export class ConversaDAO{
 	}
 
 	addArray(obj){
-		let usuario = new Usuario();
-		usuario = obj;
+		const usuario = obj;
 
 		for (let keyMember in obj.members) {
 

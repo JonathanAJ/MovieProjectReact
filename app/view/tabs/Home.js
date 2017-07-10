@@ -25,6 +25,7 @@ import firebase from '../../dao/Banco';
 
 import styleBase from "../../assets/styles";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 let context = null;
 
@@ -50,13 +51,16 @@ export class Home extends Component {
                 background={TouchableNativeFeedback.Ripple('black', true)}
                 delayPressIn={0}
                 onPress={() => navigation.navigate('Filtro', {context : context})}>
-                <View style={{
-                    height: 60,
-                    width: 60,
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <Icon name='settings' size={20} color={'white'} />
+                    
+                    <View style={{
+                        height: 60,
+                        width: 60,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+
+                    <Ionicons name='ios-funnel-outline' size={20} color={'white'} />
+                    
                 </View>
             </TouchableNativeFeedback>
     });

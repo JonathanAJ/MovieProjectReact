@@ -58,8 +58,11 @@ export class Filtro extends Component {
 					<Icon style={{marginTop: 8}} name="ios-close" size={40} color='white'/>
 				</TouchableOpacity>
 				<Row style={{height: 1, alignSelf: "flex-end"}}>
-					<TouchableOpacity style={{height: 40}} onPress={limparFiltro}>
-						<Icon name="ios-trash-outline" size={30} color='white'/>
+					<TouchableOpacity style={{height: 50}} onPress={limparFiltro}>
+						<Text style={styleBase.txtInvertExtraSmall}>
+							<Icon name="ios-trash-outline" size={20} color='white'/>
+							{" LIMPAR FILTRO"}
+						</Text>
 					</TouchableOpacity>
 				</Row>
 				<Row style={{height: 1}}>
