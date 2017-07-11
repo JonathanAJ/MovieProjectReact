@@ -37,131 +37,128 @@ import Modal from 'react-native-modal'
 
 export class Perfil extends Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.user = firebase.auth().currentUser;
+        this.user = firebase.auth().currentUser;
 
-    this.nav = props.navigation;
+        this.nav = props.navigation;
 
-    this.state = {
-        photoURL : this.user.photoURL,
-        statusTxt : "",
-        status : undefined,
-        isModalVisible: false,
-    };
-  }
+        this.state = {
+            photoURL : this.user.photoURL,
+            statusTxt : "",
+            status : undefined,
+            isModalVisible: false,
+            valueSwitch : true
+        };
+    }
 
-  componentWillMount(){
-    firebase.database().ref(`users/${this.user.uid}`).once("value", snap => {
-        const user = snap.val();
-        this.setState({
-            photoURL : user.photoLargeURL,
-            status : user.status
+    componentWillMount(){
+        firebase.database().ref(`users/${this.user.uid}`).once("value", snap => {
+            const user = snap.val();
+            this.setState({
+                photoURL : user.photoLargeURL,
+                status : user.status
+            });
         });
-    });
-  }
+    }
 
-  render() {
-    return (
-        <Container style={{backgroundColor: color.backgroundColor}}>
-          <Content>
-              <Grid>
-                  <Image
-                      style={{alignItems: 'center'}}
-                      blurRadius={3}
-                      source={{uri: this.state.photoURL}}>
+    _valueSwitchChange = (event) => {
+        this.setState({
+            valueSwitch: event
+        });
+    };
 
-                      <Image
-                        style={styles.imagemPerfil}
-                        source={{uri: this.state.photoURL}}/>
+    render() {
+        return (
+            <Container style={{backgroundColor: color.backgroundColor}}>
+                <Content>
+                    <Grid>
+                        <Image
+                            style={{alignItems: 'center'}}
+                            blurRadius={3}
+                            source={{uri: this.state.photoURL}}>
 
-                        <Text style={{textAlign: 'center'}}>
-                            <Text style={styleBase.txtInvertBig}>
-                                {this.user.displayName}
-                            </Text>
-                        </Text>
-                        
-                        <TouchableOpacity
-                            onPress={this._showModal}>
-                            <Text style={{marginBottom: 16, marginLeft: 16, marginRight: 16, textAlign: 'center'}}>
-                                <Text style={styleBase.txtInvertNormal}>
-                                    {this.state.status === undefined?"Insira um status":this.state.status}
+                            <Image
+                            style={styles.imagemPerfil}
+                            source={{uri: this.state.photoURL}}/>
+
+                            <Text style={{textAlign: 'center'}}>
+                                <Text style={styleBase.txtInvertBig}>
+                                    {this.user.displayName}
                                 </Text>
                             </Text>
-                        </TouchableOpacity>
-                  </Image>
-                  <Row>
-                      <Col>
-                          <ListItem icon>
-                              <Left>
-                                  <Icon name="bell" size={20} color={color.accentColor} />
-                              </Left>
-                              <Body>
-                              <Text style={styleBase.txtLabelNormal}>Notificações</Text>
-                              </Body>
-                              <Right style={{paddingLeft: 20}}>
-                                  <Switch  />
-                              </Right>
-                          </ListItem>
+                            
+                            <TouchableOpacity
+                                onPress={this._showModal}>
+                                <Text style={{marginBottom: 16, marginLeft: 16, marginRight: 16, textAlign: 'center'}}>
+                                    <Text style={styleBase.txtInvertNormal}>
+                                        {this.state.status === undefined?"Insira um status":this.state.status}
+                                    </Text>
+                                </Text>
+                            </TouchableOpacity>
+                        </Image>
+                        <Row>
+                            <Col>
+                                <ListItem icon>
+                                    <Left>
+                                        <Icon name="bell" size={20} color={color.accentColor} />
+                                    </Left>
+                                    <Body>
+                                    <Text style={styleBase.txtLabelNormal}>Notificações</Text>
+                                    </Body>
+                                    <Right style={{paddingLeft: 20}}>
+                                    <Switch
+                                        value={this.state.valueSwitch}
+                                        onValueChange={this._valueSwitchChange}/>
+                                    </Right>
+                                </ListItem>
 
-                          <ListItem icon>
-                              <Left>
-                                  <Icon name="emotsmile" size={20} color={color.accentColor}  />
-                              </Left>
-                              <Body>
-                              <Text style={styleBase.txtLabelNormal}>Gerenciar Amigos</Text>
-                              </Body>
-                              <Right>
-                                  <Icon name="arrow-right" color={color.accentColor}  />
-                              </Right>
-                          </ListItem>
+                                <ListItem icon>
+                                    <Left>
+                                        <Icon name="emotsmile" size={20} color={color.accentColor}  />
+                                    </Left>
+                                    <Body>
+                                    <Text style={styleBase.txtLabelNormal}>Gerenciar Amigos</Text>
+                                    </Body>
+                                    <Right>
+                                        <Icon name="arrow-right" color={color.accentColor}  />
+                                    </Right>
+                                </ListItem>
 
-                          <ListItem icon>
-                              <Left>
-                                  <Icon name="trash" size={20} color={color.accentColor}  />
-                              </Left>
-                              <Body>
-                              <Text style={styleBase.txtLabelNormal}>Excluir Conta</Text>
-                              </Body>
-                              <Right>
-                                  <Icon name="arrow-right" color={color.accentColor}  />
-                              </Right>
-                          </ListItem>
+                                <ListItem icon>
+                                    <Left>
+                                        <Icon name="info" size={20} color={color.accentColor}  />
+                                    </Left>
+                                    <Body>
+                                    <Text style={styleBase.txtLabelNormal}>Sobre o App</Text>
+                                    </Body>
+                                    <Right>
+                                        <Icon name="arrow-right" color={color.accentColor}  />
+                                    </Right>
+                                </ListItem>
+                                <ListItem icon onPress={this._sair}>
+                                    <Left>
+                                        <Icon name="logout" size={20} color={color.accentColor} />
+                                    </Left>
+                                    <Body>
+                                    <Text style={styleBase.txtLabelNormal}>Sair</Text>
+                                    </Body>
+                                </ListItem>
+                            </Col>
+                        </Row>
+                    </Grid>
 
-                          <ListItem icon>
-                              <Left>
-                                  <Icon name="info" size={20} color={color.accentColor}  />
-                              </Left>
-                              <Body>
-                              <Text style={styleBase.txtLabelNormal}>Sobre o App</Text>
-                              </Body>
-                              <Right>
-                                  <Icon name="arrow-right" color={color.accentColor}  />
-                              </Right>
-                          </ListItem>
-                          <ListItem icon onPress={this._sair}>
-                              <Left>
-                                  <Icon name="logout" size={20} color={color.accentColor} />
-                              </Left>
-                              <Body>
-                              <Text style={styleBase.txtLabelNormal}>Sair</Text>
-                              </Body>
-                          </ListItem>
-                      </Col>
-                  </Row>
-              </Grid>
-
-              <Modal
-                  isVisible={this.state.isModalVisible}
-                  animationIn={'slideInUp'}
-                  animationOut={'slideOutDown'}>
-                  {this._modal()}
-              </Modal>
-          </Content>
-        </Container>
-    );
-  }
+                    <Modal
+                        isVisible={this.state.isModalVisible}
+                        animationIn={'slideInUp'}
+                        animationOut={'slideOutDown'}>
+                        {this._modal()}
+                    </Modal>
+                </Content>
+            </Container>
+        );
+    }
 
     _sair = () => {
         new LoginDAO().sair(this.nav);
