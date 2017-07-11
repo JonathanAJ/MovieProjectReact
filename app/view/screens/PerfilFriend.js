@@ -9,7 +9,8 @@ import {
     StatusBar,
     TouchableOpacity,
     FlatList,
-    View
+    View,
+    Text
 } from 'react-native';
 
 import {
@@ -20,8 +21,9 @@ import {
 
 import{
     Button,
-    Text,
-    Spinner
+    Spinner,
+    Segment,
+    Content
 } from "native-base";
 
 import * as color from "../../assets/colors";
@@ -32,6 +34,7 @@ import {RoundIconButton} from "../../components/RoundIconButton";
 import { NavigationActions } from 'react-navigation';
 
 import {UsuarioDAO} from '../../dao/UsuarioDAO';
+import {SessaoDAO} from '../../dao/SessaoDAO';
 
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import fontelloConfig from '../../assets/customIcon/config_pop_light.json';
@@ -45,19 +48,28 @@ export class PerfilFriend extends Component {
         this.nav = this.props.navigation;
 
         this.user = this.props.navigation.state.params.user;
+        this.interest = this.props.navigation.state.params.interest;
 
         this.state = {
             user : this.user,
+            isSession : true,
+            dataSessions : []
         }
+
+        this.sessaoDAO = new SessaoDAO(this);
+
+        console.log(this.interest);
     }
 
     componentWillMount(){
-        UsuarioDAO.listUserById(this.user.uid, (user) =>{
+        UsuarioDAO.listUserById(this.user.uid, (user) => {
             console.log(user);
             this.setState({
                 user : user
             });
         });
+
+        this.sessaoDAO.listSessions(this.interest.arraySessionsID);
     }
 
     navigateBack = () => {
@@ -70,6 +82,7 @@ export class PerfilFriend extends Component {
 
     render() {
         
+        const _toggleSession = () => this.setState({isSession: !this.state.isSession});
         const voltar = () => this.props.navigation.goBack();
         const user = this.state.user;
 
@@ -81,57 +94,95 @@ export class PerfilFriend extends Component {
                 blurRadius={3}
                 resizeMode="cover">
 
-                <StatusBar backgroundColor={'transparent'} translucent={true}/>
-                <Grid>
-                
-                    <TouchableOpacity
-                        style={{marginLeft: 24, marginTop: 24}}
-                        onPress={voltar}>
-                        <Ionicons style={{marginTop: 8}} name="ios-close" size={40} color='white'/>
-                    </TouchableOpacity>
-                    
-                    <View style={{alignContent: 'center', alignItems: 'center'}}>
-                        <Image
-                            style={styles.imagemPerfil}
-                            source={{uri: user.photoLargeURL ? user.photoLargeURL : user.photoURL}}/>
-                        
-                        <Text style={styleBase.txtInvertBig}>
-                            {user.displayName}
-                        </Text>
-
-                        <Text style={styleBase.txtInvertNormal}>
-                            {user.status}
-                        </Text>
-                    
-                        <Text style={{marginLeft: 8, marginTop: 24}}>
-                            <Text style={styleBase.txtInvertExtraSmall}>
-                                CURTIDAS
-                            </Text>
-                        </Text>
-                    </View>
-
-                    <FlatList
-                        data={user.movies ? user.movies.data : []}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({item}) => <ListButton item={item} {...this.props} />}
+                    <View
+                        style={{
+                            position: 'absolute',
+                            height: Dimensions.get("window").height,
+                            width: Dimensions.get("window").width,
+                            backgroundColor: 'black',
+                            opacity: 0.3
+                        }}
                     />
 
-                    <Row style={{height: 80, alignItems: 'flex-end'}}>
-                        <Col style={{alignItems: 'flex-end'}}>
-                            <RoundIconButton
-                                onPress={this.navigateBack}
-                                color="white"
-                                icon={<IconCustom name="flashlight" color="red" size={30} />}
-                            />
-                        </Col>
-                        <Col style={{alignItems: 'flex-start'}}>
-                            <RoundIconButton
-                                onPress={this.navigateChat}
-                                icon={<IconCustom name="popcorn" color="green" size={30} />}
-                            />
-                        </Col>
-                    </Row>
-                </Grid>
+                    <StatusBar backgroundColor={'transparent'} translucent={true}/>
+
+                    <Grid>
+                    
+                        <TouchableOpacity
+                            style={{marginLeft: 24, marginTop: 16}}
+                            onPress={voltar}>
+                            <Ionicons style={{marginTop: 8}} name="ios-close" size={40} color='white'/>
+                        </TouchableOpacity>
+                        
+                        <View style={{alignContent: 'center', alignItems: 'center'}}>
+                            <Image
+                                style={styles.imagemPerfil}
+                                source={{uri: user.photoLargeURL ? user.photoLargeURL : user.photoURL}}/>
+                            
+                            <Text style={styleBase.txtInvertBig}>
+                                {user.displayName}
+                            </Text>
+
+                            <Text style={styleBase.txtInvertNormal}>
+                                {user.status}
+                            </Text>
+                        </View>
+
+                        <Segment style={{backgroundColor: 'transparent', height: 40}} >
+                            <Button
+                                onPress={_toggleSession}
+                                first light={this.state.isSession}>
+                                <Text
+                                    style={{
+                                        color: this.state.isSession ? '#444' : 'white'
+                                    }}>
+                                    <Text style={styleBase.txtFontRegular}>Sessões</Text>
+                                </Text>
+                            </Button>
+                            <Button
+                                onPress={_toggleSession}
+                                last light={!this.state.isSession}>
+                                <Text
+                                    style={{
+                                        color: !this.state.isSession ? '#444' : 'white'
+                                    }}>
+                                    <Text style={styleBase.txtFontRegular}>Curtidas</Text>
+                                </Text>
+                            </Button>
+                        </Segment>
+
+                        {
+                            this.state.isSession ?
+                                <FlatList
+                                    data={this.state.dataSessions}
+                                    keyExtractor={(item) => item.id}
+                                    renderItem={({item}) => <SessaoList sessao={item} {...this.props} />}
+                                />
+                                :
+                                <FlatList
+                                    data={user.movies ? user.movies.data : []}
+                                    keyExtractor={(item) => item.id}
+                                    renderItem={({item}) => <ListButton item={item} {...this.props} />}
+                                />
+                            
+                        }
+
+                        <Row style={{height: 80, alignItems: 'flex-end'}}>
+                            <Col style={{alignItems: 'flex-end'}}>
+                                <RoundIconButton
+                                    onPress={this.navigateBack}
+                                    color="white"
+                                    icon={<IconCustom name="flashlight" color="red" size={30} />}
+                                />
+                            </Col>
+                            <Col style={{alignItems: 'flex-start'}}>
+                                <RoundIconButton
+                                    onPress={this.navigateChat}
+                                    icon={<IconCustom name="popcorn" color="green" size={30} />}
+                                />
+                            </Col>
+                        </Row>
+                    </Grid>
             </Image>
         );
     }
@@ -151,6 +202,69 @@ export class ListButton extends Component {
                         {item.name}
                     </Text>
                 </Button>
+            </View>
+
+        );
+    }
+}
+
+class SessaoList extends React.Component{
+    
+    render() {
+
+        const sessao = this.props.sessao;
+
+        return (
+            <View>
+                <Grid>
+                    <Row
+                        style={{
+                            alignSelf: 'center',
+                            borderColor: 'white',
+                            borderBottomWidth: 0.5,
+                            padding: 8
+                        }}>
+                        <Text>
+                            <Text style={styleBase.txtInvertTiny} numberOfLines={1}>
+                                {sessao.cinema.nome}
+                            </Text>
+                        </Text>
+                    </Row>
+                    <Row style={{alignItems: 'flex-start', padding: 16, paddingTop: 8}}>
+                        <Col size={30}>
+                            <Text style={styleBase.txtInvertSmall}>
+                                horário
+                            </Text>
+                            <Text style={styleBase.txtInvertTiny} numberOfLines={1}>
+                                {sessao.horario}
+                            </Text>
+                        </Col>
+                        <Col size={20}>
+                            <Text style={styleBase.txtInvertSmall}>
+                                sala
+                            </Text>
+                            <Text style={styleBase.txtInvertTiny} numberOfLines={1}>
+                                {sessao.sala}
+                            </Text>
+                        </Col>
+                        <Col size={20}>
+                            <Text style={styleBase.txtInvertSmall}>
+                                modo
+                            </Text>
+                            <Text style={styleBase.txtInvertTiny} numberOfLines={1}>
+                                {sessao.modo}
+                            </Text>
+                        </Col>
+                        <Col size={30}>
+                            <Text style={styleBase.txtInvertSmall}>
+                                tipo
+                            </Text>
+                            <Text style={styleBase.txtInvertTiny} numberOfLines={1}>
+                                {sessao.tipo}
+                            </Text>
+                        </Col>
+                    </Row>
+                </Grid>
             </View>
 
         );

@@ -14,6 +14,15 @@ export default {
         marginBottom: 4,
         backgroundColor: color.backgroundColor
     },
+    txtFontLight:{
+        fontFamily: 'Quicksand-Light',
+    },
+    txtFontRegular:{
+        fontFamily: 'Quicksand-Regular',
+    },
+    txtFontMedium:{
+        fontFamily: 'Quicksand-Medium',
+    },
     txtTitleToolbar:{
         marginLeft: 8,
         marginRight: 8,
@@ -38,9 +47,19 @@ export default {
         color: '#444',
         fontFamily: 'Quicksand-Regular'
     },
+    txtInvertSmall:{
+        fontSize: 14,
+        color: 'white',
+        fontFamily: 'Quicksand-Regular'
+    },
     txtLabelTiny:{
         fontSize: 16,
         color: '#444',
+        fontFamily: 'Quicksand-Regular'
+    },
+    txtInvertTiny:{
+        fontSize: 16,
+        color: 'white',
         fontFamily: 'Quicksand-Regular'
     },
     txtLabelNormal:{

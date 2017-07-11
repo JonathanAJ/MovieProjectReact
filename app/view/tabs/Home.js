@@ -120,7 +120,7 @@ class FeedList extends Component{
 
     _openChat = () => {
         if(this.userFeed.uid !== firebase.auth().currentUser.uid)
-            this.nav.navigate('PerfilFriend', {user : this.userFeed});
+            this.nav.navigate('PerfilFriend', {user : this.userFeed, interest : this.props.dataFeed});
         else
             this.nav.navigate('Perfil');
     };
