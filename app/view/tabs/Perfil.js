@@ -69,6 +69,10 @@ export class Perfil extends Component {
         });
     };
 
+    _goAboutApp = () => {
+        this.nav.navigate("Sobre");
+    }
+
     render() {
         return (
             <Container style={{backgroundColor: color.backgroundColor}}>
@@ -126,7 +130,7 @@ export class Perfil extends Component {
                                     </Right>
                                 </ListItem>
 
-                                <ListItem icon>
+                                <ListItem icon onPress={this._goAboutApp}>
                                     <Left>
                                         <Icon name="info" size={20} color={color.accentColor}  />
                                     </Left>
@@ -137,6 +141,7 @@ export class Perfil extends Component {
                                         <Icon name="arrow-right" color={color.accentColor}  />
                                     </Right>
                                 </ListItem>
+
                                 <ListItem icon onPress={this._sair}>
                                     <Left>
                                         <Icon name="logout" size={20} color={color.accentColor} />

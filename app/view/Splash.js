@@ -75,16 +75,14 @@ export class Splash extends Component {
         this.authListenerLogin(firebase.auth().currentUser);
     }
 
-
     render() {
       return(
         <Container>
+            <StatusBar hidden={true}/>
             <Image
                 style={{flex: 1, width: this.state.largura}}
                 source={require("../assets/img/gif_splash.gif")}
-                resizeMode="cover">
-                <StatusBar hidden={true}/>
-            </Image>
+                resizeMode="cover"/>
         </Container>
       );
     }

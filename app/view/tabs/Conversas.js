@@ -1,25 +1,10 @@
 'use strict';
 
 import React, { PureComponent } from 'react';
+
 import {
-  StatusBar,
-  StyleSheet,
-  View,
   FlatList,
-  Text
 } from 'react-native';
-
-import {
-  Button
-} from 'native-base';
-
-import {
-  Grid,
-  Row,
-  Col
-} from 'react-native-easy-grid';
-
-import Animation from 'lottie-react-native';
 
 import AnimationScreenMessage from "../../components/AnimationScreenMessage";
 
@@ -27,7 +12,6 @@ import { ConversaDAO } from '../../dao/ConversaDAO';
 import { SimpleList } from '../../components/SimpleList';
 
 import * as color from '../../assets/colors';
-import styleBase from '../../assets/styles';
 
 export class Conversas extends PureComponent {
   

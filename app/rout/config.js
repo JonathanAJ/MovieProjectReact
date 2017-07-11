@@ -28,6 +28,7 @@ import { Chat } from '../view/screens/Chat';
 import { Filme } from '../view/screens/Filme';
 import {PerfilFriend} from "../view/screens/PerfilFriend";
 import {Filtro} from "../view/screens/Filtro";
+import {Sobre} from "../view/screens/Sobre";
 
 import {
     Text
@@ -213,6 +214,12 @@ const navigatorMain = StackNavigator({
 	},
 	Filtro: {
 		screen: Filtro,
+		navigationOptions : ({navigation}) => ({
+
+		}),
+	},
+	Sobre: {
+		screen: Sobre,
 		navigationOptions : ({navigation}) => ({
 
 		}),
