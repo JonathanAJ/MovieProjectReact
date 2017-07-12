@@ -74,9 +74,10 @@ export class Login extends Component {
                 style={{height: this.state.altura}}
                 indicator={<PagerDotIndicator pageCount={3} />}>
 
-                <StatusBar backgroundColor={'transparent'} translucent={true}/>
-
                 <View>
+
+                    <StatusBar backgroundColor={'transparent'} translucent={true}/>
+                    
                     <Image
                         style={{flex: 1, width: this.state.largura}}
                         source={require("../assets/img/view_pager_init_1.png")}

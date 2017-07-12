@@ -73,6 +73,10 @@ export class Perfil extends Component {
         this.nav.navigate("Sobre");
     }
 
+    _goFriends = () => {
+        this.nav.navigate("Amigos");
+    }
+
     render() {
         return (
             <Container style={{backgroundColor: color.backgroundColor}}>
@@ -118,7 +122,7 @@ export class Perfil extends Component {
                                     </Right>
                                 </ListItem>
 
-                                <ListItem icon>
+                                <ListItem icon onPress={this._goFriends}>
                                     <Left>
                                         <Icon name="emotsmile" size={20} color={color.accentColor}  />
                                     </Left>

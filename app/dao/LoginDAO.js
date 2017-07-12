@@ -39,19 +39,39 @@ export class LoginDAO{
         }
     }
 
+    _responseFriends(error, result) {
+        if (error) {
+            console.log('Error', error);
+        } else {
+             // Salva dados obtidos do usuário no Real Time Database
+            const userUid = firebase.auth().currentUser.uid;
+            firebase.database().ref(`friends/${userUid}`).update({
+                result
+            });
+        }
+    }
+
+    // Cria as queries na API Graph
     buscarPerfil(){
-		// Cria as queries na API Graph
+        //pega a foto grande
 		const picture = new GraphRequest(
 			'me/picture?redirect=0&type=large',
 			null, this._responseLargePicture
 		);
+        //pega as curtidas de filmes
 		const coverMovie = new GraphRequest(
             'me?fields=cover{source},movies{name}',
 			null, this._responseCoverMovies
 		);
-		// Faz uma requisição
+        //pega os amigos que usam o app
+        const friends = new GraphRequest(
+            'me/?fields=friends.limit(1000){id,name,picture{url}}',
+			null, this._responseFriends
+		);
+		// Faz as requisições
 		new GraphRequestManager().addRequest(picture).start();
         new GraphRequestManager().addRequest(coverMovie).start();
+        new GraphRequestManager().addRequest(friends).start();
 	}
 
     sincronizarFirebase(){

@@ -29,6 +29,7 @@ import { Filme } from '../view/screens/Filme';
 import {PerfilFriend} from "../view/screens/PerfilFriend";
 import {Filtro} from "../view/screens/Filtro";
 import {Sobre} from "../view/screens/Sobre";
+import {Amigos} from "../view/screens/Amigos";
 
 import {
     Text
@@ -190,6 +191,15 @@ const navigator = StackNavigator({
 		screen: PerfilFriend,
 		navigationOptions : ({navigation}) => ({
 			header: null
+		}),
+	},
+	Amigos: {
+		screen: Amigos,
+		navigationOptions : ({navigation}) => ({
+            headerTitle:
+				<Text style={styleBase.txtTitleToolbar}>
+					Meus Amigos
+				</Text>
 		}),
 	}
 },

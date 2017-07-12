@@ -37,6 +37,14 @@ export class SimpleList extends Component {
 		};
 	}
 
+	_onPress(){
+		if(!this.props.onPress){
+			this.props.nav.navigate('Chat', {user : this.user});
+		}else{
+			this.props.onPress;
+		}
+	}
+
 	render() {
 		console.log(this.user);
 		return (
@@ -65,10 +73,6 @@ export class SimpleList extends Component {
 			</Grid>
 		</TouchableNativeFeedback>
 		);
-	}
-
-	_onPress(){
-			this.props.nav.navigate('Chat', {user : this.user});
 	}
 
 }
