@@ -34,8 +34,6 @@ export class Chat extends Component {
 		  chatData      : this.chatData,
 		};
 
-		this.mounted = false;
-
 		this.mensagemDAO = new ChatDAO(this, this.userCurrent, this.userChat);
 	}
 
@@ -87,15 +85,14 @@ export class Chat extends Component {
     };
 
     componentWillMount(){
+		console.log("will mount")
         this.mensagemDAO.iniciaChat();
-        this.mounted = true;
     }
 
     componentWillUnmount(){
-        //console.log('willUnmount Chat')
+		console.log("remove lis")
         this.mensagemDAO.offListarMensagens();
-        this.mounted = false;
-    }
+    }	
 
 	render() {
 		return (

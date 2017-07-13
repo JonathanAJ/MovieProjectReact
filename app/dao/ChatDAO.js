@@ -13,7 +13,6 @@ export class ChatDAO{
 			verify	: null,
             keyValue: null
         };
-
 		this.me = me;
 		this.to = to;
 	}
@@ -37,8 +36,9 @@ export class ChatDAO{
 					//console.log("snap",snap);
                     //console.log("snap",snap.val());
 
-					if(snap.val() === true){
-						//console.log("chat existe");
+					if(snap.val()){
+						console.log("chat já existe");
+
 						this.chat = {
 							isExist : true,
 							keyValue : key
@@ -55,6 +55,8 @@ export class ChatDAO{
 	 Aqui cria o chat caso ele não exista
 	 */
 	criarChat(){
+		console.log("chat não existe, criando...");
+
 		const me = this.me;
 		const to = this.to;
 
@@ -73,34 +75,33 @@ export class ChatDAO{
         this.db.ref('users/' + to.uid + '/my_chats/' + this.chat.keyValue).set(true);
 
 		this.chat.isExist = true;
+		
 		this.listarMensagens();
+	}
+
+	queryMessages = snapshot => {
+		if(snapshot.val()){
+			const oldArray = this.context.state.chatData.slice(0);
+			const obj = this.getChartObject(snapshot.val());
+			oldArray.unshift(obj);
+
+			this.context.setState({
+				chatData: oldArray
+			});
+		}
 	}
 
 	/*
 	 Faz uma listagem das mensagens com child added
 	 */
 	listarMensagens(){
-		//console.log('on '+this.chat.keyValue);
-        this.db.ref('messages/' + this.chat.keyValue).on('child_added', (snapshot) => {
-
-			//console.log("mount? "+ this.context.mounted);
-			if(this.context.mounted === true){
-				//console.log(snapshot.val());
-
-				const oldArray = this.context.state.chatData.slice(0);
-				const obj = this.getChartObject(snapshot.val());
-				oldArray.unshift(obj);
-
-				this.context.setState({
-					chatData: oldArray
-				});
-			}
-		});
+		this.refMessages = this.db.ref(`messages/${this.chat.keyValue}`);
+        this.refMessages.on('child_added', this.queryMessages);
 	}
 
 	offListarMensagens(){
-		//console.log('off '+this.chat.keyValue);
-        this.db.ref('messages/' + this.chat.keyValue).off();
+        if(this.refMessages)
+        	this.refMessages.off('child_added', this.queryMessages);
 	}
 
 	getChartObject(chat){

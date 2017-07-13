@@ -44,13 +44,11 @@ export class InterestDAO{
         });
 
         snap.forEach(interest => {
-
             const obj = interest.val();
-            obj.id = interest.key;
-
-            console.log(obj);
-
-            arrayInterest.push(obj);
+            if(obj){
+                obj.id = interest.key;
+                arrayInterest.push(obj);
+            }
         });
 
         this.context.setState({
@@ -89,18 +87,17 @@ export class InterestDAO{
             snap.forEach(interest => {
 
                 this.db.ref(`interest/${interest.key}/`).once("value", snap => {
-
-                    const interest = snap.val();
                     
-                    console.log("interest", interest);
-
-                    if(interest.movieId === filmeId){
-                        interest.id = snap.key;
-                        arrayInterest.push(interest);
-                        
-                        this.context.setState({
-                            dataInterest: arrayInterest
-                        });
+                    const interest = snap.val();
+                    if(interest){
+                        if(interest.movieId === filmeId){
+                            interest.id = snap.key;
+                            arrayInterest.push(interest);
+                            
+                            this.context.setState({
+                                dataInterest: arrayInterest
+                            });
+                        }
                     }
                 });
             });
