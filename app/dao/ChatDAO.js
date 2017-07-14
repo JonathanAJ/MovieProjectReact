@@ -37,7 +37,7 @@ export class ChatDAO{
                     //console.log("snap",snap.val());
 
 					if(snap.val()){
-						console.log("chat já existe");
+						// console.log("chat já existe");
 
 						this.chat = {
 							isExist : true,
@@ -55,7 +55,7 @@ export class ChatDAO{
 	 Aqui cria o chat caso ele não exista
 	 */
 	criarChat(){
-		console.log("chat não existe, criando...");
+		// console.log("chat não existe, criando...");
 
 		const me = this.me;
 		const to = this.to;

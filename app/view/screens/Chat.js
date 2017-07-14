@@ -85,12 +85,12 @@ export class Chat extends Component {
     };
 
     componentWillMount(){
-		console.log("will mount")
+		// console.log("will mount")
         this.mensagemDAO.iniciaChat();
     }
 
     componentWillUnmount(){
-		console.log("remove lis")
+		// console.log("remove lis")
         this.mensagemDAO.offListarMensagens();
     }	
 

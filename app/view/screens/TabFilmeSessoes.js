@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native';
 import {
+    Container,
     Text,
     Button,
     List,
@@ -111,38 +112,40 @@ export class TabFilmeSessoes extends React.Component{
 
     _modalSessao = () => {
         return(
-            <View style={{
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                padding: 16,
-                borderRadius: 5
-            }}>
-                <Text style={styleBase.txtLabelBig}>
-                    Compartilhando
-                </Text>
+            // <Container>
+                <View style={{
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    padding: 16,
+                    borderRadius: 5
+                }}>
+                    <Text style={styleBase.txtLabelBig}>
+                        Compartilhando
+                    </Text>
 
-                <Item>
-                    <Icon style={{marginRight: 8}} size={15} color={color.darkPrimaryColor} name='pencil' />
-                    <Input
-                        style={styleBase.txtLabelNormal}
-                        multiline={true}
-                        onChangeText={(txt) => this.setState({descriptionSession : txt})}
-                        placeholder='Escreva algo sobre'/>
-                </Item>
+                    <Item>
+                        <Icon style={{marginRight: 8}} size={15} color={color.darkPrimaryColor} name='pencil' />
+                        <Input
+                            style={styleBase.txtLabelNormal}
+                            multiline={true}
+                            onChangeText={(txt) => this.setState({descriptionSession : txt})}
+                            placeholder='Escreva algo sobre'/>
+                    </Item>
 
-                <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
-                    <Button
-                        onPress={this._hideModal}
-                        transparent warning>
-                        <Text>Cancelar</Text>
-                    </Button>
-                    <Button
-                        onPress={this._saveInterest}
-                        transparent success>
-                        <Text>OK</Text>
-                    </Button>
+                    <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
+                        <Button
+                            onPress={this._hideModal}
+                            transparent warning>
+                            <Text>Cancelar</Text>
+                        </Button>
+                        <Button
+                            onPress={this._saveInterest}
+                            transparent success>
+                            <Text>OK</Text>
+                        </Button>
+                    </View>
                 </View>
-            </View>
+            // </Container>
         );
     };
 
@@ -152,34 +155,36 @@ export class TabFilmeSessoes extends React.Component{
 
     render() {
         return (
-            <Grid style={{marginTop: 8}}>
-                <Row>
-                    <List
-                        dataArray={this.state.dataSessoes}
-                        renderRow={(sessao, sectionID, rowID) => <SessaoList sessao={sessao} index={rowID} />} />
-                </Row>
-                <Row style={{height: 50}}>
-                    <Button
-                        onPress={this._clickInteresse}
-                        style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            height: 50,
-                            backgroundColor: color.darkPrimaryColor
-                        }} full dark>
-                        <Text style={styleBase.txtInvertNormal}>
-                            Tenho Interesse
-                        </Text>
-                    </Button>
+            <Container>
+                <Grid style={{marginTop: 8}}>
+                    <Row>
+                        <List
+                            dataArray={this.state.dataSessoes}
+                            renderRow={(sessao, sectionID, rowID) => <SessaoList sessao={sessao} index={rowID} />} />
+                    </Row>
+                    <Row style={{height: 50}}>
+                        <Button
+                            onPress={this._clickInteresse}
+                            style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                                height: 50,
+                                backgroundColor: color.darkPrimaryColor
+                            }} full dark>
+                            <Text style={styleBase.txtInvertNormal}>
+                                Tenho Interesse
+                            </Text>
+                        </Button>
 
-                    <Modal
-                        isVisible={this.state.isModalVisible}
-                        animationIn={'slideInUp'}
-                        animationOut={'slideOutDown'}>
-                        {this._modalSessao()}
-                    </Modal>
-                </Row>
-            </Grid>
+                        <Modal
+                            isVisible={this.state.isModalVisible}
+                            animationIn={'slideInUp'}
+                            animationOut={'slideOutDown'}>
+                            {this._modalSessao()}
+                        </Modal>
+                    </Row>
+                </Grid>
+            </Container>
         );
     }
 }
