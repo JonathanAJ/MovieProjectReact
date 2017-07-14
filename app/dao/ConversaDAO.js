@@ -10,8 +10,9 @@ export class ConversaDAO{
 		this.db = firebase.database();
 		this.context = context;
 		this.usuarioDAO = new UsuarioDAO(context);
-		this.inicialQuery = false;
 		this.me = firebase.auth().currentUser;
+
+		this.refChatsChildChange = []
 	}
 
 	initConversas(){
@@ -19,66 +20,83 @@ export class ConversaDAO{
 		this.initListenerChatsChange();
 	}
 
+	queryChatValue = snap => {
+
+		this.clearState();
+
+		snap.forEach(childSnapshot => {
+
+			const key = childSnapshot.key;
+
+			this.db.ref('chats/' + key).once('value', obj => {
+				
+				if(obj.val()){
+					
+					const newObj = obj.val();
+					newObj.keyChat = key;
+					this.addArray(newObj);
+
+					// console.log(newObj);
+				}
+			});
+		});
+	}
+
 	initListenerChatsValue(){
 		const me = this.me;
 
-		this.refChatsValue = this.db.ref('users/' + me.uid + '/my_chats');
-		this.refChatsValue.on('value', snap => {
+		this.refChatsValue = this.db.ref(`users/${me.uid}/my_chats`);
+		this.refChatsValue.on('value', this.queryChatValue);
+	}
 
-			this.clearState();
+	queryChatChange = snap => {
+		const key = snap.key;
+		
+		this.refChatsChildChange.push(this.db.ref(`chats/${key}`));
+		const ref = this.refChatsChildChange[this.refChatsChildChange.length - 1]
+		ref.on('child_changed', snapshot => {
+			
+			if(snapshot.val()){
 
-			snap.forEach(childSnapshot => {
+				const index = this.findIndexInList(key);
 
-				const key = childSnapshot.key;
+				let arrayOld = this.context.state.dataConversas.slice(0);
 
-				this.db.ref('chats/' + key).once('value', obj => {
-					
-					if(obj.val()){
-						
-						const newObj = obj.val();
-						newObj.keyChat = key;
-						this.addArray(newObj);
+				const obj = arrayOld[index];
 
-						console.log(newObj);
-					}
-				});
-			});
+				if(snapshot.key === 'lastMessage')
+					obj.lastMessage = snapshot.val();
+				else if(snapshot.key === 'createdAt')
+					obj.createdAt = snapshot.val();
+
+				arrayOld[index] = obj;
+				arrayOld = this.sortByDate(arrayOld);
+				
+				this.initState(arrayOld);
+			}
 		});
 	}
 
 	initListenerChatsChange(){
 		const me = this.me;
 
-		this.refChatsChange = this.db.ref('users/' + me.uid + '/my_chats');
-        this.refChatsChange.on('child_added', snap => {
-			
-			const key = snap.key;
-
-            this.db.ref('chats/' + key).on('child_changed', snapshot => {
-				
-				if(snapshot.val()){
-
-					const index = this.findIndexInList(key);
-					//console.log("index", index);
-					//console.log("objChanged", snapshot);
-
-					let arrayOld = this.context.state.dataConversas.slice(0);
-
-					const obj = arrayOld[index];
-
-					if(snapshot.key === 'lastMessage')
-						obj.lastMessage = snapshot.val();
-					else if(snapshot.key === 'createdAt')
-						obj.createdAt = snapshot.val();
-
-					arrayOld[index] = obj;
-					arrayOld = this.sortByDate(arrayOld);
-					
-					this.initState(arrayOld);
-				}
-			});
-		});
+		this.refChatsChange = this.db.ref(`users/${me.uid}/my_chats`);
+        this.refChatsChange.on('child_added', this.queryChatChange);
 	}
+
+    removeListeners(){
+		if(this.refChatsValue)
+	        this.refChatsValue.off('value', this.queryChatValue);
+		
+		if(this.refChatsChange)
+			this.refChatsChange.off('child_added', this.queryChatChange);
+		
+		if(this.refChatsChildChange !== []){
+			this.refChatsChildChange.forEach(ref => {
+				ref.off('child_changed');
+			});
+		}
+    }
 
 	findIndexInList(idKey){
 
@@ -112,7 +130,7 @@ export class ConversaDAO{
 		arrayOld.push(usuario);
 		arrayOld = this.sortByDate(arrayOld);
 
-		console.log(arrayOld);
+		// console.log(arrayOld);
 		this.initState(arrayOld);
 	}
 
@@ -125,23 +143,14 @@ export class ConversaDAO{
 
 	initState(array){
 		this.clearState();
-        if(this.context.mounted) {
-            this.context.setState({
-                dataConversas: array
-            });
-        }
+		this.context.setState({
+			dataConversas: array
+		});
 	}
 
 	clearState(){
-		if(this.context.mounted) {
-			this.context.setState({
-				dataConversas: []
-			});
-		}
+		this.context.setState({
+			dataConversas: []
+		});
 	}
-
-    removeListeners(){
-        this.refChatsValue.off();
-		this.refChatsChange.off();
-    }
 }

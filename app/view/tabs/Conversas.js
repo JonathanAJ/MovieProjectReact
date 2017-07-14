@@ -20,21 +20,17 @@ export class Conversas extends PureComponent {
 
     this.nav = this.props.navigation;
     this.state = {
-      dataConversas : [],
-      isLoading : true,
+      dataConversas : []
     };
-    this.mounted = false;
 
     this.conversaDAO = new ConversaDAO(this);
   }
 
   componentWillMount(){
-      this.mounted = true;
       this.conversaDAO.initConversas();
   }
 
   componentWillUnmount(){
-      this.mounted = false;
       this.conversaDAO.removeListeners();
   }
 

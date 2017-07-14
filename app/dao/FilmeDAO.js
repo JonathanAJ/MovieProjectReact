@@ -59,7 +59,7 @@ export class FilmeDAO{
 
     getSessoesValue(idFilme){
 
-        this.db.ref('rede_filmes/filmes/' + idFilme + '/sessoes/').once('value', snap => {
+        this.db.ref(`rede_filmes/filmes/${idFilme}/sessoes/`).once('value', snap => {
 
             const arraySessoes = [];
 
@@ -68,12 +68,12 @@ export class FilmeDAO{
                 const key = sessoes.key;
                 //console.log(key);
 
-                this.db.ref('rede_filmes/sessao/' + key).once('value', snap => {
+                this.db.ref(`rede_filmes/sessao/${key}/`).once('value', snap => {
 
                     const sessao = snap.val();
                     sessao.id = key;
 
-                    this.db.ref('rede_filmes/cinema/' + sessao.cinema).once('value', snap =>{
+                    this.db.ref(`rede_filmes/cinema/${sessao.cinema}/`).once('value', snap =>{
 
                         const objCinema = snap.val();
                         objCinema.id = snap.key;

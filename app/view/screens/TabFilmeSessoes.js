@@ -58,6 +58,7 @@ export class TabFilmeSessoes extends React.Component{
         }
         else{
             Toast.show({
+                type: 'warning',
                 supportedOrientations: ['portrait','landscape'],
                 text: 'Você deve selecionar pelo menos uma sessão.',
                 position: 'bottom',
@@ -91,6 +92,7 @@ export class TabFilmeSessoes extends React.Component{
             });
 
             Toast.show({
+                type: 'success',
                 supportedOrientations: ['portrait','landscape'],
                 text: 'Compartilhado com sucesso!',
                 position: 'bottom',
@@ -98,6 +100,7 @@ export class TabFilmeSessoes extends React.Component{
             });
         }else{
             Toast.show({
+                type: 'warning',
                 supportedOrientations: ['portrait','landscape'],
                 text: 'Você precisa dizer algo sobre!',
                 position: 'bottom',
